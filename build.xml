@@ -4,7 +4,7 @@
   <!-- ================== PROPERTIES ================== -->
   <!-- BAR from Git checkout path -->
   <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar"/>
-  <property name="IS_NAME" value="devops-is"/>
+  <property name="IR_NAME" value="server-5"/>
   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
   <property name="NAMESPACE" value="cp4i"/>
 
@@ -44,39 +44,28 @@
     </exec>
   </target>
 
-  <!-- ================== PATCH INTEGRATION SERVER ================== -->
-  <target name="patch-is" depends="create-configmap">
-    <echo message="🚀 Patching IntegrationServer ${IS_NAME} with new BAR ConfigMap..."/>
-
-    <!-- Try replace first (for updates) -->
-    <exec executable="oc" failonerror="false">
+  <!-- ================== PATCH INTEGRATION RUNTIME ================== -->
+  <target name="patch-ir" depends="create-configmap">
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with new BAR ConfigMap..."/>
+    <exec executable="oc" failonerror="true">
       <arg value="patch"/>
-      <arg value="integrationserver"/>
-      <arg value="${IS_NAME}"/>
-      <arg value="--type=json"/>
+      <arg value="integrationruntime"/>
+      <arg value="${IR_NAME}"/>
+      <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value='[{"op":"replace","path":"/spec/configurations","value":[{"type":"configmap","name":"ace-bar-cm"}]}]'/>
-    </exec>
-
-    <!-- If replace fails, fallback to add (for first-time deploys) -->
-    <exec executable="oc" failonerror="false">
-      <arg value="patch"/>
-      <arg value="integrationserver"/>
-      <arg value="${IS_NAME}"/>
-      <arg value="--type=json"/>
-      <arg value="-p"/>
-      <arg value='[{"op":"add","path":"/spec/configurations","value":[{"type":"configmap","name":"ace-bar-cm"}]}]'/>
+      <arg value='{"spec":{"configurations":["ace-bar-cm","server-5-ir-adminssl","serverconfig"]}}'/>
     </exec>
   </target>
 
   <!-- ================== VERIFY ================== -->
-  <target name="verify" depends="patch-is">
+  <target name="verify" depends="patch-ir">
     <echo message="🔍 Checking pod rollout..."/>
     <exec executable="oc" failonerror="true">
-      <arg value="get"/>
-      <arg value="pods"/>
-      <arg value="-l"/>
-      <arg value="app.kubernetes.io/name=${IS_NAME}"/>
+      <arg value="rollout"/>
+      <arg value="status"/>
+      <arg value="deployment/${IR_NAME}"/>
+      <arg value="-n"/>
+      <arg value="${NAMESPACE}"/>
     </exec>
   </target>
 
