@@ -52,15 +52,15 @@
 
   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
   <target name="patch-ir" depends="upload-s3,oc-login">
-    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3 REST endpoint..."/>
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3 public URL..."/>
     <exec executable="oc" failonerror="true">
       <arg value="patch"/>
       <arg value="integrationruntime"/>
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <!-- JSON payload -->
-      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}&quot;],&quot;pullSecrets&quot;:[{&quot;name&quot;:&quot;s3-cred-secret&quot;}]}}"/>
+      <!-- JSON payload (only barURL, barURLAuth already configured in IR YAML) -->
+      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}&quot;]}}"/>
     </exec>
   </target>
 
