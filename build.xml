@@ -8,7 +8,7 @@
   <property name="NAMESPACE" value="cp4i"/>
   <property name="AWS_REGION" value="ap-south-1"/>
   <property name="S3_BUCKET" value="ace-bars-prod"/>
-  <property name="S3_KEY" value="prod/server-5/myApp-demo.bar"/>
+  <property name="S3_KEY" value="prod/server-5/SampleGetApi.regenerated.bar"/>
 
   <!-- ⚠️ Hardcoded AWS credentials (demo only, not production) -->
   <property name="AWS_ACCESS_KEY_ID" value="AKIASEULZXXGVK2PGL54"/>
