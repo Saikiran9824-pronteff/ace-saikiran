@@ -64,7 +64,7 @@
       <arg value="--for=condition=Ready"/>
       <arg value="pod"/>
       <arg value="-l"/>
-      <arg value="appconnect.ibm.com/component=integrationruntime,appconnect.ibm.com/name=${IR_NAME}"/>
+      <arg value="release=${IR_NAME}"/>
       <arg value="--timeout=300s"/>
       <arg value="-n"/>
       <arg value="${NAMESPACE}"/>
