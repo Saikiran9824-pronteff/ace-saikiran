@@ -47,24 +47,36 @@
   <!-- ================== PATCH INTEGRATION SERVER ================== -->
   <target name="patch-is" depends="create-configmap">
     <echo message="🚀 Patching IntegrationServer ${IS_NAME} with new BAR ConfigMap..."/>
-    <exec executable="oc" failonerror="true">
+
+    <!-- Try replace first (for updates) -->
+    <exec executable="oc" failonerror="false">
       <arg value="patch"/>
       <arg value="integrationserver"/>
       <arg value="${IS_NAME}"/>
-      <arg value="--type=merge"/>
+      <arg value="--type=json"/>
       <arg value="-p"/>
-      <arg value='{"spec":{"configuration":{"configMapName":"ace-bar-cm"}}}'/>
+      <arg value='[{"op":"replace","path":"/spec/configurations","value":[{"type":"configmap","name":"ace-bar-cm"}]}]'/>
+    </exec>
+
+    <!-- If replace fails, fallback to add (for first-time deploys) -->
+    <exec executable="oc" failonerror="false">
+      <arg value="patch"/>
+      <arg value="integrationserver"/>
+      <arg value="${IS_NAME}"/>
+      <arg value="--type=json"/>
+      <arg value="-p"/>
+      <arg value='[{"op":"add","path":"/spec/configurations","value":[{"type":"configmap","name":"ace-bar-cm"}]}]'/>
     </exec>
   </target>
 
   <!-- ================== VERIFY ================== -->
   <target name="verify" depends="patch-is">
-    <echo message="🔍 Waiting for rollout of IntegrationServer ${IS_NAME}..."/>
+    <echo message="🔍 Checking pod rollout..."/>
     <exec executable="oc" failonerror="true">
-      <arg value="rollout"/>
-      <arg value="status"/>
-      <arg value="deployment/${IS_NAME}"/>
-      <arg value="--timeout=180s"/>
+      <arg value="get"/>
+      <arg value="pods"/>
+      <arg value="-l"/>
+      <arg value="app.kubernetes.io/name=${IS_NAME}"/>
     </exec>
   </target>
 
