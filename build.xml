@@ -52,7 +52,7 @@
 
   <!-- ================== GENERATE PRE-SIGNED URL ================== -->
   <target name="presign-url" depends="upload-s3">
-    <echo message="🔗 Generating pre-signed URL..."/>
+    <echo message="🔗 Generating pre-signed URL (valid 24h)..."/>
     <exec executable="aws" outputproperty="PRESIGNED_URL" failonerror="true">
       <env key="AWS_ACCESS_KEY_ID" value="${AWS_ACCESS_KEY_ID}"/>
       <env key="AWS_SECRET_ACCESS_KEY" value="${AWS_SECRET_ACCESS_KEY}"/>
@@ -62,7 +62,7 @@
       <arg value="--region"/>
       <arg value="${AWS_REGION}"/>
       <arg value="--expires-in"/>
-      <arg value="3600"/>
+      <arg value="86400"/> <!-- 24 hours -->
     </exec>
     <echo message="✅ Pre-signed URL generated: ${PRESIGNED_URL}"/>
   </target>
@@ -76,10 +76,9 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;${PRESIGNED_URL}&quot;]}}"/>
+      <arg value={"spec":{"barURL":["${PRESIGNED_URL}"]}}"/>
     </exec>
   </target>
-
 
   <!-- ================== VERIFY ROLLOUT ================== -->
   <target name="verify" depends="patch-ir">
