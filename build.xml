@@ -76,7 +76,9 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value="{\"spec\":{\"barURL\":[\"${PRESIGNED_URL}\"]}}"/>
+      <arg>
+        <![CDATA[{"spec":{"barURL":["${PRESIGNED_URL}"]}}]]>
+      </arg>
     </exec>
   </target>
 
