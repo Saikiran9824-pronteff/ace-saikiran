@@ -20,6 +20,9 @@
   <property environment="env"/>
   <property name="OCP_TOKEN" value="${env.OCP_TOKEN}"/>
 
+  <!-- Construct S3 REST API Endpoint -->
+  <property name="S3_REST_URL" value="https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}"/>
+
   <!-- ================== LOGIN TO OCP ================== -->
   <target name="oc-login">
     <echo message="🔐 Logging into OpenShift..."/>
@@ -50,33 +53,16 @@
     </exec>
   </target>
 
-  <!-- ================== GENERATE PRE-SIGNED URL ================== -->
-  <target name="presign-url" depends="upload-s3">
-    <echo message="🔗 Generating pre-signed URL (valid 24h)..."/>
-    <exec executable="aws" outputproperty="PRESIGNED_URL" failonerror="true">
-      <env key="AWS_ACCESS_KEY_ID" value="${AWS_ACCESS_KEY_ID}"/>
-      <env key="AWS_SECRET_ACCESS_KEY" value="${AWS_SECRET_ACCESS_KEY}"/>
-      <arg value="s3"/>
-      <arg value="presign"/>
-      <arg value="s3://${S3_BUCKET}/${S3_KEY}"/>
-      <arg value="--region"/>
-      <arg value="${AWS_REGION}"/>
-      <arg value="--expires-in"/>
-      <arg value="86400"/> <!-- 24 hours -->
-    </exec>
-    <echo message="✅ Pre-signed URL generated: ${PRESIGNED_URL}"/>
-  </target>
-
   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
-  <target name="patch-ir" depends="presign-url,oc-login">
-    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3..."/>
+  <target name="patch-ir" depends="upload-s3,oc-login">
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3 REST endpoint..."/>
     <exec executable="oc" failonerror="true">
       <arg value="patch"/>
       <arg value="integrationruntime"/>
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value={"spec":{"barURL":["${PRESIGNED_URL}"]}}"/>
+      <arg value="{\"spec\":{\"barURL\":[\"${S3_REST_URL}\"]}}"/>
     </exec>
   </target>
 
