@@ -2,6 +2,7 @@
 <project name="ace-cp4i-deploy" default="deploy" basedir=".">
 
   <!-- ================== PROPERTIES ================== -->
+  <!-- BAR from Git checkout path -->
   <property name="BAR_FILE" value="target/myApp.bar"/>
   <property name="IR_NAME" value="server-5"/>
   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
@@ -52,19 +53,28 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value='{"spec":{"configurations":["ace-bar-cm","server-5-ir-adminssl","serverconfig"]}}'/>
+      <arg value='{"spec":{"configurations":["ace-bar-cm","${IR_NAME}-ir-adminssl","serverconfig"]}}'/>
     </exec>
   </target>
 
   <!-- ================== VERIFY ================== -->
   <target name="verify" depends="patch-ir">
     <echo message="🔍 Checking pod rollout for IntegrationRuntime ${IR_NAME}..."/>
+    <!-- Debug: show all pods and labels -->
+    <exec executable="oc" failonerror="false">
+      <arg value="get"/>
+      <arg value="pods"/>
+      <arg value="-n"/>
+      <arg value="${NAMESPACE}"/>
+      <arg value="--show-labels"/>
+    </exec>
+    <!-- Wait for pods with the IntegrationRuntime label -->
     <exec executable="oc" failonerror="true">
       <arg value="wait"/>
       <arg value="--for=condition=Ready"/>
       <arg value="pod"/>
       <arg value="-l"/>
-      <arg value="release=${IR_NAME}"/>
+      <arg value="app.kubernetes.io/instance=${IR_NAME}"/>
       <arg value="--timeout=300s"/>
       <arg value="-n"/>
       <arg value="${NAMESPACE}"/>
