@@ -3,16 +3,24 @@
 
   <!-- ================== PROPERTIES ================== -->
   <!-- BAR from Git checkout path -->
-  <property name="BAR_FILE" value="target/myApp.bar"/>
+  <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar"/>
   <property name="IR_NAME" value="server-5"/>
-  <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
   <property name="NAMESPACE" value="cp4i"/>
+  <property name="AWS_REGION" value="ap-south-1"/>
+  <property name="S3_BUCKET" value="ace-bars-prod"/>
+  <property name="S3_KEY" value="prod/server-5/myApp-demo.bar"/>
 
-  <!-- Token from Jenkins credentials -->
+  <!-- ⚠️ Hardcoded AWS credentials (only for demo, not for production) -->
+  <property name="AWS_ACCESS_KEY_ID" value="AKIASEULZXXGVK2PGL54"/>
+  <property name="AWS_SECRET_ACCESS_KEY" value="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"/>
+
+  <!-- OCP cluster details -->
+  <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
+  <!-- Token will be injected by Jenkins credentials -->
   <property environment="env"/>
   <property name="OCP_TOKEN" value="${env.OCP_TOKEN}"/>
 
-  <!-- ================== LOGIN ================== -->
+  <!-- ================== LOGIN TO OCP ================== -->
   <target name="oc-login">
     <echo message="🔐 Logging into OpenShift..."/>
     <exec executable="oc" failonerror="true">
@@ -27,48 +35,54 @@
     </exec>
   </target>
 
-  <!-- ================== CREATE CONFIGMAP ================== -->
-  <target name="create-configmap" depends="oc-login">
-    <echo message="📦 Creating BAR ConfigMap from Git checkout..."/>
-    <exec executable="oc" failonerror="false">
-      <arg value="delete"/>
-      <arg value="configmap"/>
-      <arg value="ace-bar-cm"/>
-      <arg value="--ignore-not-found"/>
-    </exec>
-    <exec executable="oc" failonerror="true">
-      <arg value="create"/>
-      <arg value="configmap"/>
-      <arg value="ace-bar-cm"/>
-      <arg value="--from-file=${BAR_FILE}"/>
+  <!-- ================== UPLOAD TO S3 ================== -->
+  <target name="upload-s3">
+    <echo message="📦 Uploading BAR to S3: s3://${S3_BUCKET}/${S3_KEY}"/>
+    <exec executable="aws" failonerror="true">
+      <env key="AWS_ACCESS_KEY_ID" value="${AWS_ACCESS_KEY_ID}"/>
+      <env key="AWS_SECRET_ACCESS_KEY" value="${AWS_SECRET_ACCESS_KEY}"/>
+      <arg value="s3"/>
+      <arg value="cp"/>
+      <arg value="${BAR_FILE}"/>
+      <arg value="s3://${S3_BUCKET}/${S3_KEY}"/>
+      <arg value="--region"/>
+      <arg value="${AWS_REGION}"/>
     </exec>
   </target>
 
-  <!-- ================== PATCH INTEGRATION RUNTIME ================== -->
-  <target name="patch-ir" depends="create-configmap">
-    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with new BAR ConfigMap..."/>
+  <!-- ================== GENERATE PRE-SIGNED URL ================== -->
+  <target name="presign-url" depends="upload-s3">
+    <echo message="🔗 Generating pre-signed URL..."/>
+    <exec executable="aws" outputproperty="PRESIGNED_URL" failonerror="true">
+      <env key="AWS_ACCESS_KEY_ID" value="${AWS_ACCESS_KEY_ID}"/>
+      <env key="AWS_SECRET_ACCESS_KEY" value="${AWS_SECRET_ACCESS_KEY}"/>
+      <arg value="s3"/>
+      <arg value="presign"/>
+      <arg value="s3://${S3_BUCKET}/${S3_KEY}"/>
+      <arg value="--region"/>
+      <arg value="${AWS_REGION}"/>
+      <arg value="--expires-in"/>
+      <arg value="3600"/>
+    </exec>
+    <echo message="✅ Pre-signed URL generated: ${PRESIGNED_URL}"/>
+  </target>
+
+  <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
+  <target name="patch-ir" depends="presign-url,oc-login">
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3..."/>
     <exec executable="oc" failonerror="true">
       <arg value="patch"/>
       <arg value="integrationruntime"/>
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value='{"spec":{"configurations":["ace-bar-cm","${IR_NAME}-ir-adminssl","serverconfig"]}}'/>
+      <arg value="{\"spec\":{\"barURL\":[\"${PRESIGNED_URL}\"]}}"/>
     </exec>
   </target>
 
-  <!-- ================== VERIFY ================== -->
+  <!-- ================== VERIFY ROLLOUT ================== -->
   <target name="verify" depends="patch-ir">
-    <echo message="🔍 Checking pod rollout for IntegrationRuntime ${IR_NAME}..."/>
-    <!-- Debug: show all pods and labels -->
-    <exec executable="oc" failonerror="false">
-      <arg value="get"/>
-      <arg value="pods"/>
-      <arg value="-n"/>
-      <arg value="${NAMESPACE}"/>
-      <arg value="--show-labels"/>
-    </exec>
-    <!-- Wait for pods with the IntegrationRuntime label -->
+    <echo message="🔍 Waiting for IntegrationRuntime pod to restart..."/>
     <exec executable="oc" failonerror="true">
       <arg value="wait"/>
       <arg value="--for=condition=Ready"/>
@@ -79,11 +93,10 @@
       <arg value="-n"/>
       <arg value="${NAMESPACE}"/>
     </exec>
-  </target>
-
-  <!-- ================== DEPLOY ================== -->
-  <target name="deploy" depends="verify">
     <echo message="✅ BAR Deployment Completed Successfully!"/>
   </target>
+
+  <!-- ================== MAIN ENTRY ================== -->
+  <target name="deploy" depends="verify"/>
 
 </project>
