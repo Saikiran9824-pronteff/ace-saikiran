@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ace-cp4i-deploy" default="deploy" basedir=".">
+
+  <!-- ================== PROPERTIES ================== -->
+  <!-- BAR from Git checkout path -->
+  <property name="BAR_FILE" value="target/myApp.bar"/>
+  <property name="IS_NAME" value="my-integration-server"/>
+  <property name="OCP_URL" value="https://api.openshift.example.com:6443"/>
+  <property name="NAMESPACE" value="cp4i-namespace"/>
+
+  <!-- Token from Jenkins credentials -->
+  <property environment="env"/>
+  <property name="OCP_TOKEN" value="${env.OCP_TOKEN}"/>
+
+  <!-- ================== LOGIN ================== -->
+  <target name="oc-login">
+    <echo message="🔐 Logging into OpenShift..."/>
+    <exec executable="oc" failonerror="true">
+      <arg value="login"/>
+      <arg value="${OCP_URL}"/>
+      <arg value="--token=${OCP_TOKEN}"/>
+      <arg value="--insecure-skip-tls-verify=true"/>
+    </exec>
+    <exec executable="oc" failonerror="true">
+      <arg value="project"/>
+      <arg value="${NAMESPACE}"/>
+    </exec>
+  </target>
+
+  <!-- ================== CREATE CONFIGMAP ================== -->
+  <target name="create-configmap" depends="oc-login">
+    <echo message="📦 Creating BAR ConfigMap from Git checkout..."/>
+    <exec executable="oc" failonerror="false">
+      <arg value="delete"/>
+      <arg value="configmap"/>
+      <arg value="ace-bar-cm"/>
+      <arg value="--ignore-not-found"/>
+    </exec>
+    <exec executable="oc" failonerror="true">
+      <arg value="create"/>
+      <arg value="configmap"/>
+      <arg value="ace-bar-cm"/>
+      <arg value="--from-file=${BAR_FILE}"/>
+    </exec>
+  </target>
+
+  <!-- ================== PATCH INTEGRATION SERVER ================== -->
+  <target name="patch-is" depends="create-configmap">
+    <echo message="🚀 Patching IntegrationServer ${IS_NAME} with new BAR ConfigMap..."/>
+    <exec executable="oc" failonerror="true">
+      <arg value="patch"/>
+      <arg value="integrationserver"/>
+      <arg value="${IS_NAME}"/>
+      <arg value="--type=json"/>
+      <arg value="-p"/>
+      <arg value='[{"op":"replace","path":"/spec/configuration/configMapName","value":"ace-bar-cm"}]'/>
+    </exec>
+  </target>
+
+  <!-- ================== VERIFY ================== -->
+  <target name="verify" depends="patch-is">
+    <echo message="🔍 Checking pod rollout..."/>
+    <exec executable="oc" failonerror="true">
+      <arg value="get"/>
+      <arg value="pods"/>
+      <arg value="-l"/>
+      <arg value="app.kubernetes.io/name=${IS_NAME}"/>
+    </exec>
+  </target>
+
+  <!-- ================== DEPLOY ================== -->
+  <target name="deploy" depends="verify">
+    <echo message="✅ BAR Deployment Completed Successfully!"/>
+  </target>
+
+</project>
