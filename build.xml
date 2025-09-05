@@ -76,11 +76,10 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg>
-        <![CDATA[{"spec":{"barURL":["${PRESIGNED_URL}"]}}]]>
-      </arg>
+      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;${PRESIGNED_URL}&quot;]}}"/>
     </exec>
   </target>
+
 
   <!-- ================== VERIFY ROLLOUT ================== -->
   <target name="verify" depends="patch-ir">
