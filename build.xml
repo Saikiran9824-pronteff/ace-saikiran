@@ -8,7 +8,7 @@
   <property name="NAMESPACE" value="cp4i"/>
   <property name="AWS_REGION" value="ap-south-1"/>
   <property name="S3_BUCKET" value="ace-bars-prod"/>
-  <property name="S3_KEY" value="prod/server-5/SampleGetApi.regenerated.bar"/>
+  <property name="S3_KEY" value="prod/server-5/myApp-demo.bar"/>
 
   <!-- ⚠️ Hardcoded AWS credentials (only for demo, not for production) -->
   <property name="AWS_ACCESS_KEY_ID" value="AKIASEULZXXGVK2PGL54"/>
@@ -59,7 +59,8 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value={"spec":{"barURL":["https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}"]}}"/>
+      <!-- FIX: JSON escaped properly -->
+      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}&quot;]}}"/>
       <arg value="-n"/>
       <arg value="${NAMESPACE}"/>
     </exec>
