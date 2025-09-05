@@ -3,10 +3,10 @@
 
   <!-- ================== PROPERTIES ================== -->
   <!-- BAR from Git checkout path -->
-  <property name="BAR_FILE" value="target/myApp.bar"/>
-  <property name="IS_NAME" value="my-integration-server"/>
-  <property name="OCP_URL" value="https://api.openshift.example.com:6443"/>
-  <property name="NAMESPACE" value="cp4i-namespace"/>
+  <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar"/>
+  <property name="IS_NAME" value="devops-is"/>
+  <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
+  <property name="NAMESPACE" value="cp4i"/>
 
   <!-- Token from Jenkins credentials -->
   <property environment="env"/>
