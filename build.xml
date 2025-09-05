@@ -16,12 +16,9 @@
 
   <!-- OCP cluster details -->
   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
-  <!-- Token will be injected by Jenkins credentials -->
+  <!-- Token injected by Jenkins credentials -->
   <property environment="env"/>
   <property name="OCP_TOKEN" value="${env.OCP_TOKEN}"/>
-
-  <!-- Construct S3 REST API Endpoint -->
-  <property name="S3_REST_URL" value="https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}"/>
 
   <!-- ================== LOGIN TO OCP ================== -->
   <target name="oc-login">
@@ -55,15 +52,16 @@
 
   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
   <target name="patch-ir" depends="upload-s3,oc-login">
-    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3 REST endpoint..."/>
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from public S3 URL..."/>
     <exec executable="oc" failonerror="true">
       <arg value="patch"/>
       <arg value="integrationruntime"/>
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <!-- JSON must be fully escaped -->
-      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;${S3_REST_URL}&quot;]}}"/>
+      <arg value={"spec":{"barURL":["https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}"]}}"/>
+      <arg value="-n"/>
+      <arg value="${NAMESPACE}"/>
     </exec>
   </target>
 
