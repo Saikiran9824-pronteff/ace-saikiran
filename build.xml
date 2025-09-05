@@ -59,8 +59,8 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <!-- JSON payload with &quot; instead of raw quotes -->
-      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}&quot;],&quot;barURLAuth&quot;:&quot;s3-cred-secret&quot;}}"/>
+      <!-- JSON payload -->
+      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}&quot;],&quot;pullSecrets&quot;:[{&quot;name&quot;:&quot;s3-cred-secret&quot;}]}}"/>
     </exec>
   </target>
 
