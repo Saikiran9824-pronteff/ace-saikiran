@@ -2,8 +2,7 @@
 <project name="ace-cp4i-deploy" default="deploy" basedir=".">
 
   <!-- ================== PROPERTIES ================== -->
-  <!-- BAR from Git checkout path -->
-  <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar"/>
+  <property name="BAR_FILE" value="target/myApp.bar"/>
   <property name="IR_NAME" value="server-5"/>
   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
   <property name="NAMESPACE" value="cp4i"/>
@@ -59,11 +58,14 @@
 
   <!-- ================== VERIFY ================== -->
   <target name="verify" depends="patch-ir">
-    <echo message="🔍 Checking pod rollout..."/>
+    <echo message="🔍 Checking pod rollout for IntegrationRuntime ${IR_NAME}..."/>
     <exec executable="oc" failonerror="true">
-      <arg value="rollout"/>
-      <arg value="status"/>
-      <arg value="deployment/${IR_NAME}"/>
+      <arg value="wait"/>
+      <arg value="--for=condition=Ready"/>
+      <arg value="pod"/>
+      <arg value="-l"/>
+      <arg value="appconnect.ibm.com/component=integrationruntime,appconnect.ibm.com/name=${IR_NAME}"/>
+      <arg value="--timeout=300s"/>
       <arg value="-n"/>
       <arg value="${NAMESPACE}"/>
     </exec>
