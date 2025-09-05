@@ -62,7 +62,8 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <arg value="{\"spec\":{\"barURL\":[\"${S3_REST_URL}\"]}}"/>
+      <!-- JSON must be fully escaped -->
+      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;${S3_REST_URL}&quot;]}}"/>
     </exec>
   </target>
 
