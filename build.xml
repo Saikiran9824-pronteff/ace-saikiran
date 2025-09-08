@@ -73,10 +73,12 @@
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <!-- JSON payload with GitHub raw URL -->
-      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://raw.githubusercontent.com/YourOrg/ace-bars/${GITHUB_BRANCH}/${GITHUB_PATH}&quot;]}}"/>
+      <arg>
+        <![CDATA[{ "spec": { "barURL": [ "https://raw.githubusercontent.com/YourOrg/ace-bars/${GITHUB_BRANCH}/${GITHUB_PATH}" ] } }]]>
+      </arg>
     </exec>
   </target>
+
 
   <!-- ================== VERIFY ROLLOUT ================== -->
   <target name="verify" depends="patch-ir">
