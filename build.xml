@@ -8,12 +8,12 @@
   <property name="NAMESPACE" value="cp4i"/>
 
   <!-- GitHub repo details -->
-  <property name="GITHUB_REPO" value="github.com/Saikiran9824-pronteff/ace-saikiran.git"/>
+  <property name="GITHUB_REPO" value="github.com/YourOrg/ace-bars.git"/>
   <property name="GITHUB_BRANCH" value="main"/>
   <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar"/>
   <!-- Token will be injected by Jenkins credentials -->
   <property environment="env"/>
-  <property name="GITHUB_TOKEN" value="${env.GITHUB_TOKEN}"/>
+  <property name="GIT_TOKEN" value="${env.GIT_TOKEN}"/>
 
   <!-- OCP cluster details -->
   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
@@ -49,10 +49,10 @@
       <arg value="user.name"/>
       <arg value="ci-bot"/>
     </exec>
-    <exec executable="git" failonerror="true">
-      <arg value="clone"/>
-      <arg value="https://${GITHUB_TOKEN}@${GITHUB_REPO}"/>
-      <arg value="repo"/>
+    <!-- Clone with secret text -->
+    <exec executable="bash" failonerror="true">
+      <arg value="-c"/>
+      <arg value="git clone https://${GIT_TOKEN}@${GITHUB_REPO} repo"/>
     </exec>
     <exec executable="bash" failonerror="true">
       <arg value="-c"/>
