@@ -72,7 +72,7 @@
     <!-- Commit & push -->
     <exec executable="bash" failonerror="true">
       <arg value="-c"/>
-      <arg value="cd repo && git add ${GITHUB_PATH} && git commit -m 'CI: Update BAR' && git push origin ${GITHUB_BRANCH}"/>
+      <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}"/>
     </exec>
   </target>
 
