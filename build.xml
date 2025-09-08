@@ -8,7 +8,7 @@
   <property name="NAMESPACE" value="cp4i"/>
 
   <!-- GitHub repo details -->
-  <property name="GITHUB_REPO" value="github.com/Saikiran9824-pronteff/ace-saikiran.git"/>
+  <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran"/>
   <property name="GITHUB_BRANCH" value="main"/>
   <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar"/>
   <!-- Token will be injected by Jenkins credentials -->
@@ -37,6 +37,13 @@
   <!-- ================== PUSH BAR TO GITHUB ================== -->
   <target name="upload-github">
     <echo message="📦 Uploading BAR to GitHub repo: ${GITHUB_REPO}"/>
+
+    <!-- Remove old repo folder if it exists -->
+    <exec executable="bash" failonerror="false">
+      <arg value="-c"/>
+      <arg value="rm -rf repo"/>
+    </exec>
+
     <exec executable="git" failonerror="true">
       <arg value="config"/>
       <arg value="--global"/>
@@ -49,18 +56,23 @@
       <arg value="user.name"/>
       <arg value="ci-bot"/>
     </exec>
-    <!-- Clone with secret text -->
+
+    <!-- Clone with secret token -->
     <exec executable="bash" failonerror="true">
       <arg value="-c"/>
-      <arg value="git clone https://${GIT_TOKEN}@${GITHUB_REPO} repo"/>
+      <arg value="git clone https://${GIT_TOKEN}@github.com/${GITHUB_REPO}.git repo"/>
     </exec>
+
+    <!-- Copy BAR into repo -->
     <exec executable="bash" failonerror="true">
       <arg value="-c"/>
       <arg value="cp ${BAR_FILE} repo/${GITHUB_PATH}"/>
     </exec>
+
+    <!-- Commit & push -->
     <exec executable="bash" failonerror="true">
       <arg value="-c"/>
-      <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}"/>
+      <arg value="cd repo && git add ${GITHUB_PATH} && git commit -m 'CI: Update BAR' && git push origin ${GITHUB_BRANCH}"/>
     </exec>
   </target>
 
@@ -74,7 +86,7 @@
       <arg value="--type=merge"/>
       <arg value="-p"/>
       <arg>
-        <![CDATA[{ "spec": { "barURL": [ "https://raw.githubusercontent.com/YourOrg/ace-bars/${GITHUB_BRANCH}/${GITHUB_PATH}" ] } }]]>
+        <![CDATA[{ "spec": { "barURL": [ "https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}" ] } }]]>
       </arg>
     </exec>
   </target>
