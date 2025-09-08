@@ -6,18 +6,17 @@
   <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar"/>
   <property name="IR_NAME" value="server-5"/>
   <property name="NAMESPACE" value="cp4i"/>
-  <property name="AWS_REGION" value="ap-south-1"/>
-  <property name="S3_BUCKET" value="ace-bars-prod"/>
-  <property name="S3_KEY" value="prod/server-5/SampleGetApi.regenerated.bar"/>
 
-  <!-- ⚠️ Hardcoded AWS credentials (demo only, not production) -->
-  <property name="AWS_ACCESS_KEY_ID" value="AKIASEULZXXGVK2PGL54"/>
-  <property name="AWS_SECRET_ACCESS_KEY" value="j/qidrwbyunG2geareEjmQfXeMLMCkhb9Sph9MKi"/>
+  <!-- GitHub repo details -->
+  <property name="GITHUB_REPO" value="github.com/YourOrg/ace-bars.git"/>
+  <property name="GITHUB_BRANCH" value="main"/>
+  <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar"/>
+  <!-- Token will be injected by Jenkins credentials -->
+  <property environment="env"/>
+  <property name="GITHUB_TOKEN" value="${env.GITHUB_TOKEN}"/>
 
   <!-- OCP cluster details -->
   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
-  <!-- Token will be injected by Jenkins credentials -->
-  <property environment="env"/>
   <property name="OCP_TOKEN" value="${env.OCP_TOKEN}"/>
 
   <!-- ================== LOGIN TO OCP ================== -->
@@ -35,32 +34,47 @@
     </exec>
   </target>
 
-  <!-- ================== UPLOAD TO S3 ================== -->
-  <target name="upload-s3">
-    <echo message="📦 Uploading BAR to S3: s3://${S3_BUCKET}/${S3_KEY}"/>
-    <exec executable="aws" failonerror="true">
-      <env key="AWS_ACCESS_KEY_ID" value="${AWS_ACCESS_KEY_ID}"/>
-      <env key="AWS_SECRET_ACCESS_KEY" value="${AWS_SECRET_ACCESS_KEY}"/>
-      <arg value="s3"/>
-      <arg value="cp"/>
-      <arg value="${BAR_FILE}"/>
-      <arg value="s3://${S3_BUCKET}/${S3_KEY}"/>
-      <arg value="--region"/>
-      <arg value="${AWS_REGION}"/>
+  <!-- ================== PUSH BAR TO GITHUB ================== -->
+  <target name="upload-github">
+    <echo message="📦 Uploading BAR to GitHub repo: ${GITHUB_REPO}"/>
+    <exec executable="git" failonerror="true">
+      <arg value="config"/>
+      <arg value="--global"/>
+      <arg value="user.email"/>
+      <arg value="ci-bot@example.com"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+      <arg value="config"/>
+      <arg value="--global"/>
+      <arg value="user.name"/>
+      <arg value="ci-bot"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+      <arg value="clone"/>
+      <arg value="https://${GITHUB_TOKEN}@${GITHUB_REPO}"/>
+      <arg value="repo"/>
+    </exec>
+    <exec executable="bash" failonerror="true">
+      <arg value="-c"/>
+      <arg value="cp ${BAR_FILE} repo/${GITHUB_PATH}"/>
+    </exec>
+    <exec executable="bash" failonerror="true">
+      <arg value="-c"/>
+      <arg value="cd repo && git add ${GITHUB_PATH} && git commit -m 'CI: Update BAR' && git push origin ${GITHUB_BRANCH}"/>
     </exec>
   </target>
 
   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
-  <target name="patch-ir" depends="upload-s3,oc-login">
-    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from S3 public URL..."/>
+  <target name="patch-ir" depends="upload-github,oc-login">
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
     <exec executable="oc" failonerror="true">
       <arg value="patch"/>
       <arg value="integrationruntime"/>
       <arg value="${IR_NAME}"/>
       <arg value="--type=merge"/>
       <arg value="-p"/>
-      <!-- JSON payload (only barURL, barURLAuth already configured in IR YAML) -->
-      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://${S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${S3_KEY}&quot;]}}"/>
+      <!-- JSON payload with GitHub raw URL -->
+      <arg value="{&quot;spec&quot;:{&quot;barURL&quot;:[&quot;https://raw.githubusercontent.com/YourOrg/ace-bars/${GITHUB_BRANCH}/${GITHUB_PATH}&quot;]}}"/>
     </exec>
   </target>
 
