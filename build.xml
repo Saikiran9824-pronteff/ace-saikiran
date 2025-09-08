@@ -8,7 +8,7 @@
   <property name="NAMESPACE" value="cp4i"/>
 
   <!-- GitHub repo details -->
-  <property name="GITHUB_REPO" value="github.com/YourOrg/ace-bars.git"/>
+  <property name="GITHUB_REPO" value="github.com/Saikiran9824-pronteff/ace-saikiran.git"/>
   <property name="GITHUB_BRANCH" value="main"/>
   <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar"/>
   <!-- Token will be injected by Jenkins credentials -->
