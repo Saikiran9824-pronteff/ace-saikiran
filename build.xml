@@ -77,17 +77,12 @@
   </target>
 
   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
+  <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
   <target name="patch-ir" depends="upload-github,oc-login">
     <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
-    <exec executable="oc" failonerror="true">
-      <arg value="patch"/>
-      <arg value="integrationruntime"/>
-      <arg value="${IR_NAME}"/>
-      <arg value="--type=merge"/>
-      <arg value="-p"/>
-      <arg>
-        <![CDATA[{ "spec": { "barURL": [ "https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}" ] } }]]>
-      </arg>
+    <exec executable="bash" failonerror="true">
+      <arg value="-c"/>
+      <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{\"spec\": {\"barURL\": [\"https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}\"]}}' -n ${NAMESPACE}"/>
     </exec>
   </target>
 
