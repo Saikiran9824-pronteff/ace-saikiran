@@ -65,14 +65,19 @@
          <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}" />
       </exec>
    </target>
-   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
-   <target name="patch-ir" depends="upload-github,oc-login">
-      <echo message="&#x1f680; Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..." />
-      <exec executable="bash" failonerror="true">
-         <arg value="-c" />
-         <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}&quot;]}}' -n ${NAMESPACE}" />
-      </exec>
-   </target>
+  <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
+  <target name="patch-ir" depends="upload-github,oc-login">
+    <property name="BAR_URL"
+              value="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}"/>
+    
+    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
+    <echo message="🌐 BAR URL being applied: ${BAR_URL}"/>
+
+    <exec executable="bash" failonerror="true">
+      <arg value="-c"/>
+      <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;${BAR_URL}&quot;]}}' -n ${NAMESPACE}"/>
+    </exec>
+  </target>
    <!-- ================== VERIFY ROLLOUT ================== -->
    <target name="verify" depends="patch-ir">
       <echo message="&#x1f50d; Waiting for IntegrationRuntime pod to restart..." />
