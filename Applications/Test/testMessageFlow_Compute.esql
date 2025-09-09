@@ -1,0 +1,100 @@
+
+
+CREATE COMPUTE MODULE testMessageFlow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE response CHARACTER getResources();
+				DECLARE formattedResponse BLOB CAST(response AS BLOB CCSID 1208);
+				DECLARE cleanedBlob BLOB;
+				SET cleanedBlob = REPLACE(REPLACE(formattedResponse, X'0A', X''), X'20', X'');
+				DECLARE finalResponse CHARACTER CAST(cleanedBlob AS CHARACTER CCSID 1208);
+				
+				DECLARE BrokerLlistChar CHARACTER finalResponse;
+				DECLARE BrokerName, liveStatus CHARACTER;
+				DECLARE i INTEGER 1;
+				
+				DELETE FIELD OutputRoot.JSON.Data.ResourceList;
+				
+				WHILE POSITION('{"nodeName":"' IN BrokerLlistChar) > 0 DO
+					SET BrokerName = SUBSTRING(SUBSTRING(BrokerLlistChar AFTER '{"nodeName":"') BEFORE '","status":"');
+					SET liveStatus = SUBSTRING(SUBSTRING(BrokerLlistChar AFTER '","status":"') BEFORE '"}');
+					
+					IF liveStatus = 'running' THEN
+						DECLARE ResourceList CHARACTER getServerResources('mqsilist ' || BrokerName);
+						IF NOT CONTAINS(ResourceList, 'No integration servers') THEN
+							DECLARE ServerName CHARACTER;
+							SET ServerName = SUBSTRING(SUBSTRING(ResourceList AFTER 'server ') BEFORE ' on ');
+							SET liveStatus = SUBSTRING(SUBSTRING(ResourceList AFTER ' is ') BEFORE '.');
+							
+							IF liveStatus = 'running' THEN
+								DECLARE ApplicationList CHARACTER getServerResources('mqsilist '||BrokerName||' -e '||ServerName);
+								DECLARE ApplicationName, ApplicationStatus CHARACTER;
+								DECLARE appIndex INTEGER 1;
+								
+--								WHILE POSITION('Application ' IN ApplicationList) > 0 OR POSITION('REST API ' IN ApplicationList) > 0 DO
+--									IF POSITION('Application ' IN ApplicationList) > 0 THEN
+--										SET ApplicationName = SUBSTRING(SUBSTRING(ApplicationList AFTER 'Application ') BEFORE ' ');
+--									ELSE
+--										SET ApplicationName = SUBSTRING(SUBSTRING(ApplicationList AFTER 'REST API ') BEFORE ' ');
+--									END IF;
+--									
+--									SET ApplicationStatus = SUBSTRING(SUBSTRING(ApplicationList BEFORE '.') AFTER ' is ');
+--									
+--									DECLARE FormattedApplicationStatusBlob BLOB REPLACE(REPLACE(CAST(ApplicationStatus AS BLOB CCSID 1208), X'0A200A', X''), X'20', X'');
+--									DECLARE FormattedApplicationStatusChar CHARACTER CAST(FormattedApplicationStatusBlob AS CHARACTER CCSID 1208);
+--									
+--									SET OutputRoot.JSON.Data.ResourceList[i].nodeName = BrokerName;
+--									SET OutputRoot.JSON.Data.ResourceList[i].serverName = ServerName;
+--									SET OutputRoot.JSON.Data.ResourceList[i]."API Name" = ApplicationName;
+--									SET OutputRoot.JSON.Data.ResourceList[i]."API Status" = FormattedApplicationStatusChar;
+--									
+--									SET ApplicationList = SUBSTRING(ApplicationList AFTER ApplicationStatus);
+--									SET i = i + 1;
+--								END WHILE;
+								WHILE POSITION('Application ' IN ApplicationList) > 0 OR POSITION('REST API ' IN ApplicationList) > 0 DO
+  									DECLARE appPos INTEGER POSITION('Application ' IN ApplicationList);
+   									DECLARE restPos INTEGER POSITION('REST API ' IN ApplicationList);
+										IF appPos > 0 AND (restPos = 0 OR appPos < restPos) THEN
+											SET ApplicationName = SUBSTRING(SUBSTRING(ApplicationList AFTER 'Application ') BEFORE ' ');
+										ELSE
+										SET ApplicationName = SUBSTRING(SUBSTRING(ApplicationList AFTER 'REST API ') BEFORE ' ');
+									END IF;
+								
+									SET ApplicationStatus = SUBSTRING(SUBSTRING(ApplicationList BEFORE '.') AFTER ' is ');
+								
+									DECLARE FormattedApplicationStatusBlob BLOB REPLACE(REPLACE(CAST(ApplicationStatus AS BLOB CCSID 1208), X'0A200A', X''), X'20', X'');
+								
+									DECLARE FormattedApplicationStatusChar CHARACTER CAST(FormattedApplicationStatusBlob AS CHARACTER CCSID 1208);
+								
+									SET OutputRoot.JSON.Data.ResourceList[i].nodeName = BrokerName;
+									SET OutputRoot.JSON.Data.ResourceList[i].serverName = ServerName;
+									SET OutputRoot.JSON.Data.ResourceList[i]."API Name" = ApplicationName;
+									SET OutputRoot.JSON.Data.ResourceList[i]."API Status" = FormattedApplicationStatusChar;
+								
+									SET ApplicationList = SUBSTRING(ApplicationList AFTER ApplicationStatus);
+									SET i = i + 1;
+								END WHILE;
+								
+							END IF;
+						END IF;
+					ELSE
+						SET OutputRoot.JSON.Data.ResourceList[i].nodeName = BrokerName;
+						SET OutputRoot.JSON.Data.ResourceList[i]."Node Status" = liveStatus;
+						SET i = i + 1;
+					END IF;
+					
+					SET BrokerLlistChar = SUBSTRING(BrokerLlistChar AFTER '"}');
+				END WHILE;
+				
+				RETURN TRUE;
+			END;
+			
+			CREATE FUNCTION getResources() RETURNS CHARACTER
+			LANGUAGE JAVA
+			EXTERNAL NAME "com.ResourceListHaqwi.GetNodes.getNodeList";
+			
+			CREATE FUNCTION getServerResources(IN ResourceList CHARACTER) RETURNS CHARACTER
+			LANGUAGE JAVA
+			EXTERNAL NAME "com.ResourceListHaqwi.GetNodes.executeCommandTwo";
+		END MODULE;
