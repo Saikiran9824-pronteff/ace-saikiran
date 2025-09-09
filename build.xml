@@ -1,110 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ace-cp4i-deploy" default="deploy" basedir=".">
-
-  <!-- ================== PROPERTIES ================== -->
-  <!-- BAR from Git checkout path -->
-  <property name="BAR_FILE" value="target/myApp.bar"/>
-  <property name="IR_NAME" value="server-5"/>
-  <property name="NAMESPACE" value="cp4i"/>
-
-  <!-- GitHub repo details -->
-  <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran"/>
-  <property name="GITHUB_BRANCH" value="main"/>
-  <property name="GITHUB_PATH" value="bars/myApp.bar"/>
-  <!-- Token will be injected by Jenkins credentials -->
-  <property environment="env"/>
-  <property name="GIT_TOKEN" value="${env.GIT_TOKEN}"/>
-
-  <!-- OCP cluster details -->
-  <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443"/>
-  <property name="OCP_TOKEN" value="${env.OCP_TOKEN}"/>
-
-  <!-- ================== LOGIN TO OCP ================== -->
-  <target name="oc-login">
-    <echo message="🔐 Logging into OpenShift..."/>
-    <exec executable="oc" failonerror="true">
-      <arg value="login"/>
-      <arg value="${OCP_URL}"/>
-      <arg value="--token=${OCP_TOKEN}"/>
-      <arg value="--insecure-skip-tls-verify=true"/>
-    </exec>
-    <exec executable="oc" failonerror="true">
-      <arg value="project"/>
-      <arg value="${NAMESPACE}"/>
-    </exec>
-  </target>
-
-  <!-- ================== PUSH BAR TO GITHUB ================== -->
-  <target name="upload-github">
-    <echo message="📦 Uploading BAR to GitHub repo: ${GITHUB_REPO}"/>
-
-    <!-- Remove old repo folder if it exists -->
-    <exec executable="bash" failonerror="false">
-      <arg value="-c"/>
-      <arg value="rm -rf repo"/>
-    </exec>
-
-    <exec executable="git" failonerror="true">
-      <arg value="config"/>
-      <arg value="--global"/>
-      <arg value="user.email"/>
-      <arg value="ci-bot@example.com"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-      <arg value="config"/>
-      <arg value="--global"/>
-      <arg value="user.name"/>
-      <arg value="ci-bot"/>
-    </exec>
-
-    <!-- Clone with secret token -->
-    <exec executable="bash" failonerror="true">
-      <arg value="-c"/>
-      <arg value="git clone https://${GIT_TOKEN}@github.com/${GITHUB_REPO}.git repo"/>
-    </exec>
-
-    <!-- Copy BAR into repo -->
-    <exec executable="bash" failonerror="true">
-      <arg value="-c"/>
-      <arg value="cp ${BAR_FILE} repo/${GITHUB_PATH}"/>
-    </exec>
-
-    <!-- Commit & push -->
-    <exec executable="bash" failonerror="true">
-      <arg value="-c"/>
-      <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}"/>
-    </exec>
-  </target>
-
-  <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
-  <target name="patch-ir" depends="upload-github,oc-login">
-    <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
-    <property name="BAR_URL" value="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}"/>
-    <echo message="🌐 BAR URL being applied: ${BAR_URL}"/>
-    <exec executable="bash" failonerror="true">
-      <arg value="-c"/>
-      <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;${BAR_URL}&quot;]}}' -n ${NAMESPACE}"/>
-    </exec>
-  </target>
-
-
-  <!-- ================== VERIFY ROLLOUT ================== -->
-  <target name="verify" depends="patch-ir">
-    <echo message="🔍 Waiting for IntegrationRuntime pod to restart..."/>
-    <exec executable="oc" failonerror="true">
-      <arg value="wait"/>
-      <arg value="--for=condition=Ready"/>
-      <arg value="pod"/>
-      <arg value="-l"/>
-      <arg value="app.kubernetes.io/instance=${IR_NAME}"/>
-      <arg value="--timeout=300s"/>
-      <arg value="-n"/>
-      <arg value="${NAMESPACE}"/>
-    </exec>
-    <echo message="✅ BAR Deployment Completed Successfully!"/>
-  </target>
-
-  <!-- ================== MAIN ENTRY ================== -->
-  <target name="deploy" depends="verify"/>
-
+   <!-- ================== PROPERTIES ================== -->
+   <!-- BAR from Git checkout path -->
+   <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar" />
+   <property name="IR_NAME" value="server-5" />
+   <property name="NAMESPACE" value="cp4i" />
+   <!-- GitHub repo details -->
+   <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran" />
+   <property name="GITHUB_BRANCH" value="main" />
+   <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar" />
+   <!-- Token will be injected by Jenkins credentials -->
+   <property environment="env" />
+   <property name="GIT_TOKEN" value="${env.GIT_TOKEN}" />
+   <!-- OCP cluster details -->
+   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443" />
+   <property name="OCP_TOKEN" value="${env.OCP_TOKEN}" />
+   <!-- ================== LOGIN TO OCP ================== -->
+   <target name="oc-login">
+      <echo message="&#x1f510; Logging into OpenShift..." />
+      <exec executable="oc" failonerror="true">
+         <arg value="login" />
+         <arg value="${OCP_URL}" />
+         <arg value="--token=${OCP_TOKEN}" />
+         <arg value="--insecure-skip-tls-verify=true" />
+      </exec>
+      <exec executable="oc" failonerror="true">
+         <arg value="project" />
+         <arg value="${NAMESPACE}" />
+      </exec>
+   </target>
+   <!-- ================== PUSH BAR TO GITHUB ================== -->
+   <target name="upload-github">
+      <echo message="&#x1f4e6; Uploading BAR to GitHub repo: ${GITHUB_REPO}" />
+      <!-- Remove old repo folder if it exists -->
+      <exec executable="bash" failonerror="false">
+         <arg value="-c" />
+         <arg value="rm -rf repo" />
+      </exec>
+      <exec executable="git" failonerror="true">
+         <arg value="config" />
+         <arg value="--global" />
+         <arg value="user.email" />
+         <arg value="ci-bot@example.com" />
+      </exec>
+      <exec executable="git" failonerror="true">
+         <arg value="config" />
+         <arg value="--global" />
+         <arg value="user.name" />
+         <arg value="ci-bot" />
+      </exec>
+      <!-- Clone with secret token -->
+      <exec executable="bash" failonerror="true">
+         <arg value="-c" />
+         <arg value="git clone https://${GIT_TOKEN}@github.com/${GITHUB_REPO}.git repo" />
+      </exec>
+      <!-- Copy BAR into repo -->
+      <exec executable="bash" failonerror="true">
+         <arg value="-c" />
+         <arg value="cp ${BAR_FILE} repo/${GITHUB_PATH}" />
+      </exec>
+      <!-- Commit & push -->
+      <exec executable="bash" failonerror="true">
+         <arg value="-c" />
+         <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}" />
+      </exec>
+   </target>
+   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
+   <target name="patch-ir" depends="upload-github,oc-login">
+      <echo message="&#x1f680; Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..." />
+      <exec executable="bash" failonerror="true">
+         <arg value="-c" />
+         <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}&quot;]}}' -n ${NAMESPACE}" />
+      </exec>
+   </target>
+   <!-- ================== VERIFY ROLLOUT ================== -->
+   <target name="verify" depends="patch-ir">
+      <echo message="&#x1f50d; Waiting for IntegrationRuntime pod to restart..." />
+      <exec executable="oc" failonerror="true">
+         <arg value="wait" />
+         <arg value="--for=condition=Ready" />
+         <arg value="pod" />
+         <arg value="-l" />
+         <arg value="app.kubernetes.io/instance=${IR_NAME}" />
+         <arg value="--timeout=300s" />
+         <arg value="-n" />
+         <arg value="${NAMESPACE}" />
+      </exec>
+      <echo message="✅ BAR Deployment Completed Successfully!" />
+   </target>
+   <!-- ================== MAIN ENTRY ================== -->
+   <target name="deploy" depends="verify" />
 </project>
