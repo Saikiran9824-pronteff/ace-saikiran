@@ -2,13 +2,13 @@
 <project name="ace-cp4i-deploy" default="deploy" basedir=".">
    <!-- ================== PROPERTIES ================== -->
    <!-- BAR from Git checkout path -->
-   <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar" />
+   <property name="BAR_FILE" value="target/Jenkins_Test.vengala.20250905-004228.bar" />
    <property name="IR_NAME" value="server-5" />
    <property name="NAMESPACE" value="cp4i" />
    <!-- GitHub repo details -->
    <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran" />
    <property name="GITHUB_BRANCH" value="main" />
-   <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar" />
+   <property name="GITHUB_PATH" value="bars/Jenkins_Test.vengala.20250905-004228.bar" />
    <!-- Token will be injected by Jenkins credentials -->
    <property environment="env" />
    <property name="GIT_TOKEN" value="${env.GIT_TOKEN}" />
