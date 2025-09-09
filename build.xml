@@ -3,14 +3,14 @@
 
   <!-- ================== PROPERTIES ================== -->
   <!-- BAR from Git checkout path -->
-  <property name="BAR_FILE" value="target/SampleGetApi.regenerated.bar"/>
+  <property name="BAR_FILE" value="target/myApp.bar"/>
   <property name="IR_NAME" value="server-5"/>
   <property name="NAMESPACE" value="cp4i"/>
 
   <!-- GitHub repo details -->
   <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran"/>
   <property name="GITHUB_BRANCH" value="main"/>
-  <property name="GITHUB_PATH" value="bars/SampleGetApi.regenerated.bar"/>
+  <property name="GITHUB_PATH" value="bars/myApp.bar"/>
   <!-- Token will be injected by Jenkins credentials -->
   <property environment="env"/>
   <property name="GIT_TOKEN" value="${env.GIT_TOKEN}"/>
@@ -79,11 +79,14 @@
   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
   <target name="patch-ir" depends="upload-github,oc-login">
     <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
+    <property name="BAR_URL" value="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}"/>
+    <echo message="🌐 BAR URL being applied: ${BAR_URL}"/>
     <exec executable="bash" failonerror="true">
       <arg value="-c"/>
-      <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}&quot;]}}' -n ${NAMESPACE}"/>
+      <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;${BAR_URL}&quot;]}}' -n ${NAMESPACE}"/>
     </exec>
   </target>
+
 
   <!-- ================== VERIFY ROLLOUT ================== -->
   <target name="verify" depends="patch-ir">
