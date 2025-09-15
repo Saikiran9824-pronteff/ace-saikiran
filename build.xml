@@ -7,17 +7,19 @@
       <format property="TSTAMP" pattern="HHmmss"/>
    </tstamp>
 
-   <!-- Jenkins UI parameters -->
-   <property name="APP_NAME" value="${APP_NAME}" />
+   <!-- Application build sources -->
+   <property name="BUILD_DIR" value="Applications"/>
+   <property name="APP_NAME" value="${APP_NAME}" />   <!-- From Jenkins dropdown -->
+   <property name="TIMESTAMP" value="${DSTAMP}-${TSTAMP}" />
+
+   <!-- BAR output -->
+   <property name="OUTPUT_DIR" value="target"/>
+   <property name="BAR_FILE" value="${OUTPUT_DIR}/${APP_NAME}.${TIMESTAMP}.bar"/>
+
+   <!-- Jenkins dropdowns -->
    <property name="IR_NAME" value="${IR_NAME}" />
    <property name="NAMESPACE" value="${NAMESPACE}" />
    <property name="BAR_TOOL" value="${BAR_TOOL}" />
-
-   <!-- Paths -->
-   <property name="BUILD_DIR" value="Applications"/>
-   <property name="OUTPUT_DIR" value="target"/>
-   <property name="TIMESTAMP" value="${DSTAMP}-${TSTAMP}" />
-   <property name="BAR_FILE" value="${OUTPUT_DIR}/${APP_NAME}.${TIMESTAMP}.bar"/>
 
    <!-- GitHub repo details -->
    <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran" />
@@ -29,32 +31,35 @@
    <property name="OCP_TOKEN" value="${env.OCP_TOKEN}" />
    <property name="GIT_TOKEN" value="${env.GIT_TOKEN}" />
 
+   <!-- ================== TOOL SELECTION ================== -->
+   <condition property="is.ibmint">
+      <equals arg1="${BAR_TOOL}" arg2="ibmint"/>
+   </condition>
+
+   <condition property="is.mqsicreatebar">
+      <equals arg1="${BAR_TOOL}" arg2="mqsicreatebar"/>
+   </condition>
+
    <!-- ================== CREATE BAR FILE ================== -->
    <target name="create-bar">
       <mkdir dir="${OUTPUT_DIR}" />
       <echo message="📦 Creating BAR file for Application: ${APP_NAME} from ${BUILD_DIR} using tool: ${BAR_TOOL}" />
+   </target>
 
-      <!-- If BAR_TOOL=ibmint -->
-      <condition property="is.ibmint" value="true" else="false">
-         <equals arg1="${BAR_TOOL}" arg2="ibmint"/>
-      </condition>
-
-      <!-- If BAR_TOOL=mqsicreatebar -->
-      <condition property="is.mqsicreatebar" value="true" else="false">
-         <equals arg1="${BAR_TOOL}" arg2="mqsicreatebar"/>
-      </condition>
-
-      <!-- Run ibmint -->
-      <exec executable="ibmint" failonerror="true" unless="is.mqsicreatebar">
+   <!-- ibmint build -->
+   <target name="create-bar-ibmint" depends="create-bar" if="is.ibmint">
+      <exec executable="ibmint" failonerror="true">
          <arg value="package" />
          <arg value="--input-path" />
          <arg value="${BUILD_DIR}/${APP_NAME}" />
          <arg value="--output-bar-file" />
          <arg value="${BAR_FILE}" />
       </exec>
+   </target>
 
-      <!-- Run mqsicreatebar -->
-      <exec executable="mqsicreatebar" failonerror="true" unless="is.ibmint">
+   <!-- mqsicreatebar build -->
+   <target name="create-bar-mqsicreatebar" depends="create-bar" if="is.mqsicreatebar">
+      <exec executable="mqsicreatebar" failonerror="true">
          <arg value="-data" />
          <arg value="workspace" />
          <arg value="-b" />
@@ -63,6 +68,9 @@
          <arg value="${APP_NAME}" />
       </exec>
    </target>
+
+   <!-- Wrapper: runs the correct bar creation -->
+   <target name="create-bar-wrapper" depends="create-bar,create-bar-ibmint,create-bar-mqsicreatebar" />
 
    <!-- ================== LOGIN TO OCP ================== -->
    <target name="oc-login">
@@ -80,7 +88,7 @@
    </target>
 
    <!-- ================== PUSH BAR TO GITHUB ================== -->
-   <target name="upload-github" depends="create-bar">
+   <target name="upload-github" depends="create-bar-wrapper">
       <echo message="📦 Uploading BAR to GitHub repo: ${GITHUB_REPO}" />
       <!-- Remove old repo folder if it exists -->
       <exec executable="bash" failonerror="false">
@@ -120,9 +128,8 @@
    <target name="patch-ir" depends="upload-github,oc-login">
       <property name="BAR_URL"
                 value="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}"/>
-      
-      <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
-      <echo message="🌐 BAR URL being applied: ${BAR_URL}"/>
+      <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..." />
+      <echo message="🌐 BAR URL being applied: ${BAR_URL}" />
 
       <exec executable="bash" failonerror="true">
          <arg value="-c"/>
