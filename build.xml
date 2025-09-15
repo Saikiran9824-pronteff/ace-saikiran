@@ -1,25 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ace-cp4i-deploy" default="deploy" basedir=".">
    <!-- ================== PROPERTIES ================== -->
-   <!-- BAR from Git checkout path -->
-   <property name="BAR_FILE" value="target/SaiTeja_V.vengala.20250904-223334.bar" />
+   <property environment="env"/>
+   <tstamp>
+      <format property="DSTAMP" pattern="yyyyMMdd"/>
+      <format property="TSTAMP" pattern="HHmmss"/>
+   </tstamp>
 
-   <!-- Dynamic values (provided by Jenkins dropdown parameters) -->
+   <!-- Jenkins UI parameters -->
+   <property name="APP_NAME" value="${APP_NAME}" />
    <property name="IR_NAME" value="${IR_NAME}" />
    <property name="NAMESPACE" value="${NAMESPACE}" />
+   <property name="BAR_TOOL" value="${BAR_TOOL}" />
+
+   <!-- Paths -->
+   <property name="BUILD_DIR" value="Applications"/>
+   <property name="OUTPUT_DIR" value="target"/>
+   <property name="TIMESTAMP" value="${DSTAMP}-${TSTAMP}" />
+   <property name="BAR_FILE" value="${OUTPUT_DIR}/${APP_NAME}.${TIMESTAMP}.bar"/>
 
    <!-- GitHub repo details -->
    <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran" />
    <property name="GITHUB_BRANCH" value="main" />
-   <property name="GITHUB_PATH" value="bars/SaiTeja_V.vengala.20250904-223334.bar" />
-
-   <!-- Token will be injected by Jenkins credentials -->
-   <property environment="env" />
-   <property name="GIT_TOKEN" value="${env.GIT_TOKEN}" />
+   <property name="GITHUB_PATH" value="bars/${APP_NAME}.${TIMESTAMP}.bar" />
 
    <!-- OCP cluster details -->
    <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443" />
    <property name="OCP_TOKEN" value="${env.OCP_TOKEN}" />
+   <property name="GIT_TOKEN" value="${env.GIT_TOKEN}" />
+
+   <!-- ================== CREATE BAR FILE ================== -->
+   <target name="create-bar">
+      <mkdir dir="${OUTPUT_DIR}" />
+      <echo message="📦 Creating BAR file for Application: ${APP_NAME} from ${BUILD_DIR} using tool: ${BAR_TOOL}" />
+
+      <!-- If BAR_TOOL=ibmint -->
+      <condition property="is.ibmint" value="true" else="false">
+         <equals arg1="${BAR_TOOL}" arg2="ibmint"/>
+      </condition>
+
+      <!-- If BAR_TOOL=mqsicreatebar -->
+      <condition property="is.mqsicreatebar" value="true" else="false">
+         <equals arg1="${BAR_TOOL}" arg2="mqsicreatebar"/>
+      </condition>
+
+      <!-- Run ibmint -->
+      <exec executable="ibmint" failonerror="true" unless="is.mqsicreatebar">
+         <arg value="package" />
+         <arg value="--input-path" />
+         <arg value="${BUILD_DIR}/${APP_NAME}" />
+         <arg value="--output-bar-file" />
+         <arg value="${BAR_FILE}" />
+      </exec>
+
+      <!-- Run mqsicreatebar -->
+      <exec executable="mqsicreatebar" failonerror="true" unless="is.ibmint">
+         <arg value="-data" />
+         <arg value="workspace" />
+         <arg value="-b" />
+         <arg value="${BAR_FILE}" />
+         <arg value="-a" />
+         <arg value="${APP_NAME}" />
+      </exec>
+   </target>
 
    <!-- ================== LOGIN TO OCP ================== -->
    <target name="oc-login">
@@ -37,8 +80,9 @@
    </target>
 
    <!-- ================== PUSH BAR TO GITHUB ================== -->
-   <target name="upload-github">
+   <target name="upload-github" depends="create-bar">
       <echo message="📦 Uploading BAR to GitHub repo: ${GITHUB_REPO}" />
+      <!-- Remove old repo folder if it exists -->
       <exec executable="bash" failonerror="false">
          <arg value="-c" />
          <arg value="rm -rf repo" />
@@ -55,14 +99,17 @@
          <arg value="user.name" />
          <arg value="ci-bot" />
       </exec>
+      <!-- Clone with secret token -->
       <exec executable="bash" failonerror="true">
          <arg value="-c" />
          <arg value="git clone https://${GIT_TOKEN}@github.com/${GITHUB_REPO}.git repo" />
       </exec>
+      <!-- Copy BAR into repo -->
       <exec executable="bash" failonerror="true">
          <arg value="-c" />
          <arg value="cp ${BAR_FILE} repo/${GITHUB_PATH}" />
       </exec>
+      <!-- Commit & push -->
       <exec executable="bash" failonerror="true">
          <arg value="-c" />
          <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}" />
@@ -73,8 +120,10 @@
    <target name="patch-ir" depends="upload-github,oc-login">
       <property name="BAR_URL"
                 value="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}"/>
+      
       <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..."/>
       <echo message="🌐 BAR URL being applied: ${BAR_URL}"/>
+
       <exec executable="bash" failonerror="true">
          <arg value="-c"/>
          <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;${BAR_URL}&quot;]}}' -n ${NAMESPACE}"/>
@@ -83,7 +132,7 @@
 
    <!-- ================== VERIFY ROLLOUT ================== -->
    <target name="verify" depends="patch-ir">
-      <echo message="🔎 Waiting for IntegrationRuntime pod to restart..." />
+      <echo message="🔍 Waiting for IntegrationRuntime pod to restart..." />
       <exec executable="oc" failonerror="true">
          <arg value="wait" />
          <arg value="--for=condition=Ready" />
