@@ -2,16 +2,34 @@
 <project name="ace-ir-deploy" default="deploy" basedir=".">
 
    <!-- ================== PROPERTIES ================== -->
-   <property name="BUILD_DIR" value="Applications"/>
-   <property name="APP_NAME" value="MyApp"/>
-   <property name="OUTPUT_DIR" value="build"/>
-   <property name="BAR_FILE" value="${OUTPUT_DIR}/${APP_NAME}.bar"/>
+   <property environment="env"/>
+   <tstamp>
+      <format property="DSTAMP" pattern="yyyyMMdd"/>
+      <format property="TSTAMP" pattern="HHmmss"/>
+   </tstamp>
 
-   <!-- Choose BAR tool: ibmint OR mqsicreatebar -->
-   <property name="BAR_TOOL" value="ibmint"/>
+   <property name="BUILD_DIR" value="Applications"/>
+   <property name="APP_NAME" value="${APP_NAME}" />   <!-- From Jenkins dropdown -->
+   <property name="OUTPUT_DIR" value="build"/>
+   <property name="BAR_FILE" value="${OUTPUT_DIR}/${APP_NAME}.${DSTAMP}-${TSTAMP}.bar"/>
+
+   <!-- Jenkins dropdowns -->
+   <property name="IR_NAME" value="${IR_NAME}" />
+   <property name="NAMESPACE" value="${NAMESPACE}" />
+   <property name="BAR_TOOL" value="${BAR_TOOL}" />
 
    <!-- ACE Tools Path -->
    <property name="ACE_TOOLS" value="/opt/ace-12.0.7.0/tools"/>
+
+   <!-- GitHub repo details -->
+   <property name="GITHUB_REPO" value="Saikiran9824-pronteff/ace-saikiran" />
+   <property name="GITHUB_BRANCH" value="main" />
+   <property name="GITHUB_PATH" value="bars/${APP_NAME}.${DSTAMP}-${TSTAMP}.bar" />
+   <property name="GIT_TOKEN" value="${env.GIT_TOKEN}" />
+
+   <!-- OCP cluster details -->
+   <property name="OCP_URL" value="https://api.ocp.prontefflabs.com:6443" />
+   <property name="OCP_TOKEN" value="${env.OCP_TOKEN}" />
 
    <!-- ================== CONDITIONS ================== -->
    <condition property="is.ibmint">
@@ -25,61 +43,130 @@
    <!-- ================== CLEAN ================== -->
    <target name="clean">
       <delete dir="${OUTPUT_DIR}" />
+      <delete dir="workspace" />
+   </target>
+
+   <!-- ================== CREATE WORKSPACE ================== -->
+   <target name="prepare-workspace" depends="clean">
+      <mkdir dir="workspace"/>
+      <echo message="📂 Copying ${APP_NAME} into workspace for mqsicreatebar..." />
+      <copy todir="workspace/${APP_NAME}" failonerror="true">
+         <fileset dir="${BUILD_DIR}/${APP_NAME}" />
+      </copy>
+
+      <!-- Check if .project exists -->
+      <available file="workspace/${APP_NAME}/.project" property="project.exists"/>
+      <fail message="❌ .project file not found in workspace/${APP_NAME}. Cannot use mqsicreatebar!" unless="project.exists"/>
    </target>
 
    <!-- ================== CREATE BAR FILE ================== -->
    <target name="create-bar">
       <mkdir dir="${OUTPUT_DIR}" />
-      <echo message="📦 Creating BAR file for Application: ${APP_NAME} from ${BUILD_DIR} using tool: ${BAR_TOOL}" />
+      <echo message="📦 Creating BAR file for Application: ${APP_NAME} using tool: ${BAR_TOOL}" />
    </target>
 
    <!-- ibmint build -->
    <target name="create-bar-ibmint" depends="create-bar" if="is.ibmint">
       <exec executable="ibmint" failonerror="true">
-         <arg value="package" />
-         <arg value="--input-path" />
-         <arg value="${BUILD_DIR}/${APP_NAME}" />
-         <arg value="--output-bar-file" />
-         <arg value="${BAR_FILE}" />
+         <arg value="package"/>
+         <arg value="--input-path"/>
+         <arg value="${BUILD_DIR}/${APP_NAME}"/>
+         <arg value="--output-bar-file"/>
+         <arg value="${BAR_FILE}"/>
       </exec>
    </target>
 
    <!-- mqsicreatebar build -->
-   <target name="create-bar-mqsicreatebar" depends="create-bar" if="is.mqsicreatebar">
+   <target name="create-bar-mqsicreatebar" depends="prepare-workspace,create-bar" if="is.mqsicreatebar">
       <exec executable="${ACE_TOOLS}/mqsicreatebar" failonerror="true">
-         <arg value="-data" />
-         <arg value="workspace" />
-         <arg value="-b" />
-         <arg value="${BAR_FILE}" />
-         <arg value="-a" />
-         <arg value="${APP_NAME}" />
+         <arg value="-data"/>
+         <arg value="${basedir}/workspace"/>
+         <arg value="-b"/>
+         <arg value="${BAR_FILE}"/>
+         <arg value="-a"/>
+         <arg value="${APP_NAME}"/>
       </exec>
    </target>
 
-   <!-- Wrapper to pick the right tool -->
-   <target name="create-bar-wrapper" depends="create-bar,create-bar-ibmint,create-bar-mqsicreatebar"/>
+   <!-- Wrapper: choose correct tool -->
+   <target name="create-bar-wrapper" depends="create-bar-ibmint,create-bar-mqsicreatebar"/>
 
-   <!-- ================== UPLOAD TO GITHUB ================== -->
+   <!-- ================== LOGIN TO OCP ================== -->
+   <target name="oc-login">
+      <echo message="🔐 Logging into OpenShift..." />
+      <exec executable="oc" failonerror="true">
+         <arg value="login" />
+         <arg value="${OCP_URL}" />
+         <arg value="--token=${OCP_TOKEN}" />
+         <arg value="--insecure-skip-tls-verify=true" />
+      </exec>
+      <exec executable="oc" failonerror="true">
+         <arg value="project" />
+         <arg value="${NAMESPACE}" />
+      </exec>
+   </target>
+
+   <!-- ================== PUSH BAR TO GITHUB ================== -->
    <target name="upload-github" depends="create-bar-wrapper">
-      <echo message="⬆️ Uploading ${BAR_FILE} to GitHub..." />
-      <!-- Your upload logic here -->
+      <echo message="⬆️ Uploading ${BAR_FILE} to GitHub repo: ${GITHUB_REPO}" />
+      <exec executable="bash" failonerror="false">
+         <arg value="-c"/>
+         <arg value="rm -rf repo"/>
+      </exec>
+      <exec executable="git" failonerror="true">
+         <arg value="config"/>
+         <arg value="--global"/>
+         <arg value="user.email"/>
+         <arg value="ci-bot@example.com"/>
+      </exec>
+      <exec executable="git" failonerror="true">
+         <arg value="config"/>
+         <arg value="--global"/>
+         <arg value="user.name"/>
+         <arg value="ci-bot"/>
+      </exec>
+      <exec executable="bash" failonerror="true">
+         <arg value="-c"/>
+         <arg value="git clone https://${GIT_TOKEN}@github.com/${GITHUB_REPO}.git repo"/>
+      </exec>
+      <exec executable="bash" failonerror="true">
+         <arg value="-c"/>
+         <arg value="cp ${BAR_FILE} repo/${GITHUB_PATH}"/>
+      </exec>
+      <exec executable="bash" failonerror="true">
+         <arg value="-c"/>
+         <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}"/>
+      </exec>
    </target>
 
-   <!-- ================== PATCH IR ================== -->
-   <target name="patch-ir" depends="upload-github">
-      <echo message="🔧 Patching Integration Runtime with ${BAR_FILE}..." />
-      <!-- oc patch logic here -->
+   <!-- ================== PATCH INTEGRATIONRUNTIME ================== -->
+   <target name="patch-ir" depends="upload-github,oc-login">
+      <property name="BAR_URL"
+                value="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_PATH}"/>
+      <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..." />
+      <exec executable="bash" failonerror="true">
+         <arg value="-c"/>
+         <arg value="oc patch integrationruntime ${IR_NAME} --type=merge -p '{&quot;spec&quot;: {&quot;barURL&quot;: [&quot;${BAR_URL}&quot;]}}' -n ${NAMESPACE}"/>
+      </exec>
    </target>
 
-   <!-- ================== VERIFY ================== -->
+   <!-- ================== VERIFY ROLLOUT ================== -->
    <target name="verify" depends="patch-ir">
-      <echo message="🔍 Verifying deployment..." />
-      <!-- oc get pods or curl health check here -->
+      <echo message="🔍 Waiting for IntegrationRuntime pod to restart..." />
+      <exec executable="oc" failonerror="true">
+         <arg value="wait"/>
+         <arg value="--for=condition=Ready"/>
+         <arg value="pod"/>
+         <arg value="-l"/>
+         <arg value="app.kubernetes.io/instance=${IR_NAME}"/>
+         <arg value="--timeout=300s"/>
+         <arg value="-n"/>
+         <arg value="${NAMESPACE}"/>
+      </exec>
+      <echo message="✅ BAR Deployment Completed Successfully!" />
    </target>
 
-   <!-- ================== DEPLOY ================== -->
-   <target name="deploy" depends="verify">
-      <echo message="✅ Deployment Completed Successfully." />
-   </target>
+   <!-- ================== MAIN ENTRY ================== -->
+   <target name="deploy" depends="verify" />
 
 </project>
