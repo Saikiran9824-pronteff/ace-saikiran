@@ -1,0 +1,137 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "NPCI_OutWardAPI",
+    "version" : "1.0.0",
+    "description" : "NPCI_OutWardAPI"
+  },
+  "paths" : {
+    "/outward" : {
+      "post" : {
+        "operationId" : "postOutward",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/NPCIResponse"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a outward",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/NPCIRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/npci_outwardapi/v1",
+  "definitions" : {
+    "NPCIRequest" : {
+      "type" : "object",
+      "properties" : {
+        "request" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "type" : "object",
+              "properties" : {
+                "requestUUID" : {
+                  "type" : "string"
+                },
+                "channelId" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "npcioutwardReq" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ifsc" : {
+                      "type" : "string"
+                    },
+                    "accnum" : {
+                      "type" : "string"
+                    },
+                    "msgId" : {
+                      "type" : "string"
+                    },
+                    "ts" : {
+                      "type" : "string"
+                    },
+                    "txnid" : {
+                      "type" : "string"
+                    },
+                    "subProdType" : {
+                      "type" : "string"
+                    },
+                    "remittername" : {
+                      "type" : "string"
+                    },
+                    "remittertype" : {
+                      "type" : "string"
+                    },
+                    "initiationMode" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "NPCIResponse" : {
+      "type" : "object",
+      "properties" : {
+        "request" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "type" : "object",
+              "properties" : {
+                "requestUUID" : {
+                  "type" : "object",
+                  "properties" : { }
+                },
+                "channelId" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "npcioutwardReq" : {
+                  "type" : "object",
+                  "properties" : {
+                    "api" : {
+                      "type" : "string"
+                    },
+                    "reqMsgId" : {
+                      "type" : "string"
+                    },
+                    "ts" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

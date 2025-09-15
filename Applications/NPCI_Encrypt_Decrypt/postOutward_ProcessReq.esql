@@ -1,0 +1,91 @@
+
+ PATH com.npci.encdec;
+
+DECLARE ns2 NAMESPACE 'http://npci.org/upi/schema/';
+DECLARE ns3 NAMESPACE 'http://npci.org/cm/schema/';
+CREATE COMPUTE MODULE postOutward_ProcessReq
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		
+		
+		
+		----configure Dynamic values as Input JSON
+		
+		DECLARE inJsonReqRef REFERENCE TO InputRoot.JSON.Data.request;
+		 DECLARE inReqHdrRef REFERENCE TO inJsonReqRef.header;
+		 
+		 SET Environment.Variables.gbl = inReqHdrRef.requestUUID;
+	     SET Environment.Variables.RequestUUID = inReqHdrRef.requestUUID;
+		 SET Environment.Variables.ChannelId = inReqHdrRef.channelId;
+		 DECLARE cacheRef REFERENCE TO Environment.Variables.CachedData[>];
+		CREATE FIRSTCHILD OF OutputRoot.XMLNSC TYPE XMLNSC.XmlDeclaration NAME 'XmlDeclaration';
+		SET OutputRoot.XMLNSC.(XMLNSC.XmlDeclaration)*.(XMLNSC.Attribute)Version = '1.0';
+		SET OutputRoot.XMLNSC.(XMLNSC.XmlDeclaration)*.(XMLNSC.Attribute)Encoding = 'UTF-8';
+
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.(XMLNSC.Attribute)xmlns:ns2 = ns2;
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.(XMLNSC.Attribute)xmlns:ns3 = ns3;
+--	    SET OutputRoot.XMLNSC.ns2:RespBeneDetails.Head.(XMLNSC.Attribute)msgId = InputRoot.JSON.Data.request.body.npcioutwardReq.msgId; --Dynamic
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Head.(XMLNSC.Attribute)msgId = 'IIB' || LEFT(REPLACE(UUIDASCHAR, '-', ''), 32);
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Head.(XMLNSC.Attribute)orgId = cacheRef.npciorgId;--'109234';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Head.(XMLNSC.Attribute)prodType = 'BENENAMELOOKUP';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Head.(XMLNSC.Attribute)ts =  CAST(CURRENT_TIMESTAMP + CAST(330 AS INTERVAL MINUTE) AS CHARACTER FORMAT 'yyyy-MM-dd''T''HH:mm:ss.SSS') || '+05:30';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Head.(XMLNSC.Attribute)ver = '2.0';
+	    SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Txn.(XMLNSC.Attribute)id =InputRoot.JSON.Data.request.body.npcioutwardReq.txnid; --Dynamic
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Txn.(XMLNSC.Attribute)initiationMode ='00';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Txn.(XMLNSC.Attribute)subProdType =InputRoot.JSON.Data.request.body.npcioutwardReq.subProdType; --Dynamic
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Txn.(XMLNSC.Attribute)type ='FetchDetails';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Remitter.(XMLNSC.Attribute)addr = cacheRef.npciRemitterAddr;-- '109234@IIB';--'979088@dev';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Remitter.(XMLNSC.Attribute)name =InputRoot.JSON.Data.request.body.npcioutwardReq.remittername;
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Remitter.(XMLNSC.Attribute)type =InputRoot.JSON.Data.request.body.npcioutwardReq.remittertype;
+		
+		
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Beneficiary.Ac.Detail[1].(XMLNSC.Attribute)name ='IFSC';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Beneficiary.Ac.Detail[1].(XMLNSC.Attribute)value =InputRoot.JSON.Data.request.body.npcioutwardReq.ifsc;
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Beneficiary.Ac.Detail[2].(XMLNSC.Attribute)name ='ACNUM';
+		SET OutputRoot.XMLNSC.ns2:ReqBeneDetails.Beneficiary.Ac.Detail[2].(XMLNSC.Attribute)value =InputRoot.JSON.Data.request.body.npcioutwardReq.accnum;
+		
+		SET Environment.Variables.txnid = InputRoot.JSON.Data.request.body.npcioutwardReq.txnid;
+		 --Dynamic			
+
+
+		DECLARE ibxmlBlob BLOB;
+		DECLARE mycharresp CHARACTER;
+		SET ibxmlBlob = ASBITSTREAM(OutputRoot.XMLNSC CCSID 1208);
+		SET OutputRoot.XMLNSC = NULL;
+		SET mycharresp = CAST(ibxmlBlob AS CHARACTER CCSID 1208) ;
+		SET Environment.Variable.Signgeneration = signPayloadjava(mycharresp);
+		
+	--	DECLARE resBlob BLOB CAST(Environment.Variable.Signgeneration AS BLOB CCSID 1208);
+       
+		--   SET OutputRoot.BLOB.BLOB = resBlob;
+		SET ibxmlBlob = CAST(Environment.Variable.Signgeneration AS BLOB CCSID 1208);
+		SET OutputRoot.HTTPRequestHeader."Content-Type"= 'application/xml';
+		SET OutputRoot.HTTPRequestHeader."User-Agent"= 'Apache-HttpClient ';
+		
+			CREATE LASTCHILD OF OutputRoot DOMAIN('XMLNSC') PARSE(ibxmlBlob CCSID 1208);
+
+	
+	--SET OutputLocalEnvironment.Destination.HTTP.RequestURL = 'https://globalcertzone.npci.org.in/benenamelookup/ReqBeneDetails/2.0/urn:txnid:'||InputRoot.JSON.Data.request.body.npcioutwardReq.txnid;--   IIBorcRE865QOprcv2OuhKLlBldvLiBUJDv';
+	SET OutputLocalEnvironment.Destination.HTTP.RequestURL = cacheRef.npciOut_URL||InputRoot.JSON.Data.request.body.npcioutwardReq.txnid;
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;
+
+--CREATE FUNCTION verifyxmlsign(IN payload CHAR) RETURNS CHAR LANGUAGE JAVA EXTERNAL NAME "CipherUtils1.verifySign";
