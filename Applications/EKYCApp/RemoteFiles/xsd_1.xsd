@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.4-b01-. --><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://processor.newgen.gov.in/" version="1.0" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:tns="http://processor.newgen.gov.in/">
+
+  <xsd:element ibmSchExtn:docRoot="true" name="getResponse" type="tns:getResponse"/>
+
+  <xsd:element ibmSchExtn:docRoot="true" name="getResponseResponse" type="tns:getResponseResponse"/>
+
+  <xsd:complexType name="getResponse">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="arg0" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="getResponseResponse">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="return" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

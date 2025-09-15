@@ -1,0 +1,334 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "AadharVaultTokenAPI",
+    "version" : "1.0.0",
+    "description" : "AadharVaultTokenAPI"
+  },
+  "paths" : {
+    "/getvaultToken" : {
+      "post" : {
+        "operationId" : "getVaultToken",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/VaultTokenResponse"
+            }
+          },
+          "500" : {
+            "description" : "Error Response",
+            "schema" : {
+              "$ref" : "#/definitions/errorRes"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "get a vaulttoken",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/VaultTokenRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/getaadhar" : {
+      "post" : {
+        "operationId" : "getAadhar",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/AadharResponse"
+            }
+          },
+          "500" : {
+            "description" : "Error Response",
+            "schema" : {
+              "$ref" : "#/definitions/errorRes"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a aadhar",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/AadharRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/saveAadhar" : {
+      "post" : {
+        "operationId" : "SaveAadhar",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/AadharSaveResponse"
+            }
+          },
+          "500" : {
+            "description" : "Error Response",
+            "schema" : {
+              "$ref" : "#/definitions/errorRes"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a saveAadhar",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/AadharSaveRequest"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/aadhar/vault/v1",
+  "definitions" : {
+    "VaultTokenRequest" : {
+      "type" : "object",
+      "properties" : {
+        "request" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/reqheader"
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "getvaultTokenReq" : {
+                  "$ref" : "#/definitions/VaultTokenReq"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "VaultTokenResponse" : {
+      "type" : "object",
+      "properties" : {
+        "response" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/resheader"
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "vaultRes" : {
+                  "type" : "object",
+                  "properties" : {
+                    "return" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "reqheader" : {
+      "type" : "object",
+      "properties" : {
+        "requestUUID" : {
+          "type" : "string"
+        },
+        "channelId" : {
+          "type" : "string"
+        }
+      }
+    },
+    "resheader" : {
+      "type" : "object",
+      "properties" : {
+        "requestUUID" : {
+          "type" : "string"
+        },
+        "channelId" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "error" : {
+      "type" : "object",
+      "properties" : {
+        "errorCode" : {
+          "type" : "string"
+        },
+        "errorDesc" : {
+          "type" : "string"
+        }
+      }
+    },
+    "errorRes" : {
+      "type" : "object",
+      "properties" : {
+        "response" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/resheader"
+            },
+            "error" : {
+              "$ref" : "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "AadharRequest" : {
+      "type" : "object",
+      "properties" : {
+        "request" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/reqheader"
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "getaadharReq" : {
+                  "$ref" : "#/definitions/AadharReq"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "AadharResponse" : {
+      "type" : "object",
+      "properties" : {
+        "response" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/resheader"
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "aadharRes" : {
+                  "type" : "object",
+                  "properties" : {
+                    "return" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "VaultTokenReq" : {
+      "type" : "object",
+      "properties" : {
+        "tokenProp" : {
+          "type" : "string"
+        }
+      }
+    },
+    "AadharReq" : {
+      "type" : "object",
+      "properties" : {
+        "token" : {
+          "type" : "string"
+        }
+      }
+    },
+    "AadharSaveRequest" : {
+      "type" : "object",
+      "properties" : {
+        "request" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/reqheader"
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "aadharVaultSaveReq" : {
+                  "$ref" : "#/definitions/aadharVaultSaveReq"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "aadharVaultSaveReq" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string",
+          "description" : "This is Value"
+        },
+        "format" : {
+          "type" : "string",
+          "description" : "This is format"
+        },
+        "customTokenProperty" : {
+          "type" : "string",
+          "description" : "This is Vault token"
+        }
+      },
+      "required" : [ "customTokenProperty", "value", "format" ]
+    },
+    "AadharSaveResponse" : {
+      "type" : "object",
+      "properties" : {
+        "response" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "$ref" : "#/definitions/resheader"
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "vaultRes" : {
+                  "type" : "object",
+                  "properties" : {
+                    "return" : {
+                      "type" : "string",
+                      "description" : "This is Vault token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

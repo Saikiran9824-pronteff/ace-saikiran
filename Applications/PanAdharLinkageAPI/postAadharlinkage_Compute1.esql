@@ -1,0 +1,51 @@
+PATH com.signzy.encrypt;
+
+CREATE COMPUTE MODULE postAadharlinkage_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE envRef REFERENCE TO Environment.Variables;
+		
+		DECLARE encryptedJWResponse CHARACTER InputRoot.JSON.Data.encryptedData;
+		DECLARE privateKeyFilePath CHARACTER '/home/aceuser/generic/signzyprivtkey.pem';
+		
+		
+		 
+		set Environment.result = Decryption(encryptedJWResponse,privateKeyFilePath);
+		DECLARE myChar1 CHARACTER;
+--SET myChar='{\"result\":{\"linked\":true,\"message\":\"Your PAN FRXXXXXX8K is already linked to given Aadhaar 44XXXXXXXX47\",\"uid\":\"XXXX-XXXX-1947\",\"code\":\"EF40124\"}}';
+SET  myChar1 =REPLACE(Environment.result,'\','');
+ DECLARE myBlob BLOB CAST(myChar1 AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+ CREATE LASTCHILD OF envRef.final DOMAIN('JSON') PARSE(myBlob, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId);
+  
+		
+		
+		
+		CREATE FIELD OutputRoot.JSON.Data.response;
+			DECLARE outJsonRef , outHdrRef , outErrorRef , outItemRef , outPanValRef REFERENCE TO OutputRoot.JSON.Data.response;
+			CREATE LASTCHILD OF outJsonRef AS outHdrRef NAME 'header';
+				SET outHdrRef.requestUUID 	=  envRef.RequestUUID;
+		        SET outHdrRef.channelId 	=  envRef.ChannelId;
+		
+		
+		
+		IF envRef.final.JSON.Data.result.linked = 'true' THEN
+			     SET outHdrRef.status 		= 'success';
+			     CREATE LASTCHILD OF outJsonRef.body AS outPanValRef NAME 'PanadharResponse';
+					SET outPanValRef.result 	= envRef.final.JSON.Data.result;
+					
+					
+		ELSE
+			CREATE LASTCHILD OF outJsonRef.body AS outPanValRef NAME 'PanadharResponse';
+			SET outHdrRef.status 		= 'failed';
+				   SET outPanValRef.result 	= envRef.final.JSON.Data;
+			
+		END IF;
+		RETURN TRUE;
+	END;
+	
+--	CREATE FUNCTION Decryption (IN encryptedJWResponse CHARACTER, IN privateKeyFilePath CHARACTER )
+--	RETURNS CHARACTER
+--	LANGUAGE JAVA
+-- 	EXTERNAL NAME "encrypt_decrypt.Decryption.decrypt";
+
+END MODULE;

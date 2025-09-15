@@ -1,0 +1,46 @@
+PATH com.signzy.encrypt;
+
+CREATE COMPUTE MODULE postAadharlinkage_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		 DECLARE inJsonReqRef REFERENCE TO InputRoot.JSON.Data.request;
+		 DECLARE inReqHdrRef REFERENCE TO inJsonReqRef.header;
+		 DECLARE inPanAadharRef REFERENCE TO inJsonReqRef.body.Panadharreq;
+		 
+		 SET Environment.Variables.gbl = inReqHdrRef.requestUUID;
+	     SET Environment.Variables.RequestUUID = inReqHdrRef.requestUUID;
+		 SET Environment.Variables.ChannelId = inReqHdrRef.channelId;
+		 
+		 
+		 CREATE LASTCHILD OF Environment.PanAadharRequest DOMAIN 'JSON';
+         SET Environment.PanAadharRequest.JSON.Data.panNumber=inPanAadharRef.panNumber;
+		 SET Environment.PanAadharRequest.JSON.Data.uid=inPanAadharRef.uid;
+		
+		DECLARE myBlob BLOB;
+		SET myBlob = ASBITSTREAM(Environment.PanAadharRequest.JSON.Data CCSID 1208 ENCODING 546);
+		DECLARE myChar1 CHAR CAST(myBlob AS CHAR CCSID 1208 Encoding 546);
+		 
+--		 DECLARE payload CHARACTER '{
+--    "panNumber": "FRHPD3158K",
+--    "uid": "448883321947"
+--}';
+
+         SET OutputRoot.HTTPRequestHeader."Content-Type" = 'application/json';
+		 set OutputRoot.HTTPRequestHeader."Authorization" = 'xMyBzVENukP0FROSqe8DXLzDbPh4aGaW';
+		 
+	  --  set OutputRoot.JSON.Data.encryptedData = Encryption(myChar1,'C:\\Users\\DELL\\Desktop\\INDUSKEYS\\IndusPublicKey.pem');
+		   
+		 
+		 set OutputRoot.JSON.Data.encryptedData = Encryption(myChar1,'/home/aceuser/generic/Publickey.pem');
+		   
+		 
+		
+		RETURN TRUE;
+	END;
+	
+--	CREATE FUNCTION Encryption (IN payload CHARACTER, IN publicKeyFilePath CHARACTER )
+--	RETURNS CHARACTER
+--	LANGUAGE JAVA
+-- 	EXTERNAL NAME "encrypt_decrypt.Encryption.encrypt";
+END MODULE;

@@ -1,0 +1,10 @@
+BROKER SCHEMA com.signzy.encrypt
+
+CREATE FUNCTION Encryption (IN payload CHARACTER, IN publicKeyFilePath CHARACTER )
+	RETURNS CHARACTER
+	LANGUAGE JAVA
+ 	EXTERNAL NAME "encrypt_decrypt.Encryption.encrypt";
+CREATE FUNCTION Decryption (IN encryptedJWResponse CHARACTER, IN privateKeyFilePath CHARACTER )
+	RETURNS CHARACTER
+	LANGUAGE JAVA
+ 	EXTERNAL NAME "encrypt_decrypt.Decryption.decrypt";

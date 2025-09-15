@@ -1,0 +1,133 @@
+BROKER SCHEMA error.handler
+
+DECLARE cacheData SHARED ROW;
+
+
+CREATE COMPUTE MODULE Common_Exception_Handling_Compute
+CREATE FUNCTION Main() RETURNS BOOLEAN
+BEGIN
+CALL CopyMessageHeaders();
+DECLARE messageNumber, messageText,exceptionType,exceptionMsg CHARACTER '';
+       DECLARE ptrException REFERENCE TO InputExceptionList.*[1];
+WHILE LASTMOVE(ptrException) DO
+IF ptrException.Number IS NOT NULL THEN
+SET exceptionType = FIELDNAME(ptrException);
+			SET OutputLocalEnvironment.Destination.File.Name = 	'CustomExceptionDetails_IndusInd.txt';
+			SET OutputLocalEnvironment.Destination.File.Directory = 	'/home/aceuser/generic';
+        SET messageNumber = ptrException.Number;
+        SET messageText = ptrException.Text;
+        DECLARE insertStmt REFERENCE TO ptrException.Insert;
+        SET exceptionMsg = '';
+        WHILE LASTMOVE(insertStmt) DO
+        IF insertStmt.Text IS NOT NULL THEN
+        IF exceptionMsg = '' THEN
+        SET exceptionMsg = insertStmt.Text;
+        ELSE
+        SET exceptionMsg = exceptionMsg||'~'||insertStmt.Text;
+        END IF;
+        END IF;
+        MOVE insertStmt NEXTSIBLING;
+        END WHILE;
+        SET exceptionMsg = TRIM(exceptionMsg);
+  END IF;
+MOVE ptrException LASTCHILD;
+END WHILE;
+LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Into Exception Handler 1');
+SET Environment.Variables.ErrorInfo.exceptionType = exceptionType;
+SET Environment.Variables.ErrorInfo.exceptionNum = messageNumber;
+SET Environment.Variables.ErrorInfo.exceptionMsg = messageText;
+SET Environment.Variables.ErrorInfo.exceptionDetailMsg = exceptionMsg;
+IF exceptionType = 'UserException' THEN
+SET Environment.Variables.ErrorInfo.exceptionType = exceptionType||'~'||SUBSTRING(exceptionMsg BEFORE '~');
+END IF;
+IF EXISTS(cacheData.ExcepDetails[]) THEN
+	LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Into Exception Handler 12');
+PROPAGATE TO TERMINAL 'out';
+ELSE
+	LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Into Exception Handler 13');
+PROPAGATE TO TERMINAL 'out1';
+END IF;
+RETURN FALSE;
+END;
+
+CREATE PROCEDURE CopyMessageHeaders() BEGIN
+DECLARE I INTEGER 1;
+DECLARE J INTEGER;
+SET J = CARDINALITY(InputRoot.*[]);
+WHILE I < J DO
+SET OutputRoot.*[I] = InputRoot.*[I];
+SET I = I + 1;
+END WHILE;
+END;
+END MODULE;
+
+
+
+CREATE COMPUTE MODULE Common_Exception_Handling_Compute1
+CREATE FUNCTION Main() RETURNS BOOLEAN
+BEGIN
+CALL CopyMessageHeaders();
+---------------------------------- Adding the content type header values ----------------------------------------------------
+IF OutputRoot.HTTPReplyHeader."Content-Type" = '' OR OutputRoot.HTTPReplyHeader."Content-Type" IS NULL THEN
+SET OutputRoot.HTTPReplyHeader."Content-Type" = 'application/json';
+END IF;
+---------------------------------------------------------------------------------------------------------------------------
+DECLARE excepCode, inputVar ,detailExcpMsg CHARACTER '';
+IF NOT EXISTS(cacheData.ExcepDetails[]) THEN
+SET cacheData.ExcepDetails = InputLocalEnvironment.Variables.CustomExceptionDetails.XMLNSC.CustomErrorMsg;
+END IF;
+SET inputVar = Environment.Variables.ErrorInfo.exceptionType||'~'||Environment.Variables.ErrorInfo.exceptionNum||'~'||Environment.Variables.ErrorInfo.exceptionMsg;
+--CREATE FIELD OutputRoot.JSON.Data;
+--DECLARE outRef REFERENCE TO OutputRoot.JSON.Data;
+ LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Into Exception Handler 2');
+CREATE FIELD OutputRoot.JSON.Data.response.header;
+DECLARE outRefHeader REFERENCE TO OutputRoot.JSON.Data.response.header;
+CREATE FIELD OutputRoot.JSON.Data.response.error;
+
+DECLARE outRef REFERENCE TO OutputRoot.JSON.Data.response.error;
+
+SET outRefHeader.requestUUID =COALESCE(Environment.Variables.requestUUID,InputRoot.JSON.Data.request.header.requestUUID);
+SET outRefHeader.channelId = COALESCE(Environment.Variables.channelId,InputRoot.JSON.Data.request.header.channelId);
+SET outRefHeader.status = 'failure';
+FOR cacheRef AS cacheData.ExcepDetails.Error[] DO
+IF inputVar = cacheRef.InputValue THEN
+SET OutputRoot.HTTPReplyHeader."X-Original-HTTP-Status-Code" = cacheRef.httpstatusCode;
+SET outRef.errorCode = cacheRef.ErrorCode;
+--SET outRef.info = Environment.Variables.ErrorInfo.exceptionType;
+SET outRef.errorDesc = cacheRef.DetailedErrMsg;
+SET excepCode = cacheRef.ErrorCode;
+--SET detailExcpMsg = cacheRef.ResToConsumer||'.'||cacheRef.DetailedErrMsg;
+END IF;
+IF excepCode = '' AND cacheRef.InputValue = Environment.Variables.ErrorInfo.exceptionType THEN
+SET OutputRoot.HTTPReplyHeader."X-Original-HTTP-Status-Code" = cacheRef.httpstatusCode;
+SET outRef.errorCode = cacheRef.ErrorCode;
+--SET outRef.info = Environment.Variables.ErrorInfo.exceptionType;
+SET outRef.errorDesc = cacheRef.DetailedErrMsg;
+SET excepCode = cacheRef.ErrorCode;
+--SET detailExcpMsg = cacheRef.ResToConsumer||'.'||cacheRef.DetailedErrMsg;
+END IF;
+END FOR;
+
+IF CONTAINS(outRef.info,'UserException') THEN
+--SET outRef.info = 'UserException';
+END IF;
+
+PROPAGATE TO TERMINAL 'out' DELETE NONE;
+LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Into Exception Handler 21');
+PROPAGATE TO TERMINAL 'out1';
+LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Into Exception Handler 22');
+RETURN FALSE;
+END;
+
+CREATE PROCEDURE CopyMessageHeaders() BEGIN
+DECLARE I INTEGER 1;
+DECLARE J INTEGER;
+SET J = CARDINALITY(InputRoot.*[]);
+WHILE I < J DO
+SET OutputRoot.*[I] = InputRoot.*[I];
+SET I = I + 1;
+END WHILE;
+END;
+END MODULE;
+
+

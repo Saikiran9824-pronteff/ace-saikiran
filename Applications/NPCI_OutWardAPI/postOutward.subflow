@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:COMMON_CACHE_SERVICE_GET_IS_CACHE_DATA.subflow="COMMON_CACHE_SERVICE/GET_IS_CACHE_DATA.subflow" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmWSRequest.msgnode="ComIbmWSRequest.msgnode" xmlns:CommonLoggingLib_InvokeAsyncLogEvents.subflow="CommonLoggingLib/InvokeAsyncLogEvents.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility"
+    nsURI="postOutward.subflow" nsPrefix="postOutward.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="postOutward" bundleName="postOutward" pluginId="NPCI_OutWardAPI"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/NPCI_OutWardAPI/icons/full/obj16/postOutward.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/NPCI_OutWardAPI/icons/full/obj30/postOutward.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input_1" location="-1,160">
+        <translation xmi:type="utility:TranslatableString" key="Input" bundleName="postOutward" pluginId="NPCI_OutWardAPI"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output_1" location="1121,240">
+        <translation xmi:type="utility:TranslatableString" key="Output" bundleName="postOutward" pluginId="NPCI_OutWardAPI"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="186,160" computeExpression="esql://routine/#postOutward_ProcessReq.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="ProcessReq"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="962,145" computeExpression="esql://routine/#postOutward_ProcessResp.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="ProcessResp"/>
+      </nodes>
+      <nodes xmi:type="COMMON_CACHE_SERVICE_GET_IS_CACHE_DATA.subflow:FCMComposite_1" xmi:id="FCMComposite_1_4" location="123,78">
+        <translation xmi:type="utility:ConstantString" string="GET_IS_CACHE_DATA"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_5" location="387,158">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_6" location="774,147">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="581,152" URLSpecifier="https://globalcertzone.npci.org.in/benenamelookup/ReqBeneDetails/2.0/urn%3Atxnid%3AIIBorcRE865QOprcv2OuhKLlBldvLiBUJDv" followRedirection="true" httpVersion="1.1" enableKeepAlive="false" protocol="TLSv1.2" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="HTTP Request"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_7" location="331,79">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents2"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_8" location="1157,145">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents3"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_4" sourceNode="InTerminal.Input_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="OutTerminal.Output_1" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

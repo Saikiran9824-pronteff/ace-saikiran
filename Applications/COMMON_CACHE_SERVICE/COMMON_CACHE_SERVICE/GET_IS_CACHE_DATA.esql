@@ -1,0 +1,43 @@
+BROKER SCHEMA COMMON_CACHE_SERVICE
+
+DECLARE cacheGenericData SHARED ROW;
+
+CREATE COMPUTE MODULE GET_IS_CACHE_DATA_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyEntireMessage();
+
+		IF EXISTS(cacheGenericData.storedData[]) THEN
+			PROPAGATE TO TERMINAL 'out1';
+		ELSE
+			SET OutputLocalEnvironment.Destination.File.Name = 'CachedConfigData.xml';
+			PROPAGATE TO TERMINAL 'out';
+		END IF;
+		RETURN FALSE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;
+
+CREATE COMPUTE MODULE GET_IS_CACHE_DATA_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyEntireMessage();
+
+		IF NOT EXISTS(cacheGenericData.storedData[]) THEN
+			IF InputLocalEnvironment.File.Read.NoMatchReason <> '' THEN
+				THROW USER EXCEPTION VALUES('ERR-003', InputLocalEnvironment.Destination.File.Name);
+			ELSE
+				SET cacheGenericData.storedData = Environment.Variables.CachedData.XMLNSC.CachedValues;
+			END IF;
+		END IF;
+		SET Environment.Variables.CachedData = cacheGenericData.storedData;
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

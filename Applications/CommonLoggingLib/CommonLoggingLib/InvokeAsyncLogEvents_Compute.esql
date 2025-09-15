@@ -1,0 +1,36 @@
+BROKER SCHEMA CommonLoggingLib
+
+
+CREATE COMPUTE MODULE InvokeAsyncLogEvents_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE cacheRef 		REFERENCE TO Environment.Variables.CachedData[>];
+		IF Environment.Variables.tranId IS NULL THEN
+			SET Environment.Variables.tranId = UUIDASCHAR;
+		END IF;
+		IF Environment.Variables.inCount IS NULL THEN
+		   SET Environment.Variables.inCount = 1;
+		ELSE
+		   SET Environment.Variables.inCount = Environment.Variables.inCount+1;	
+		END IF;
+		DECLARE inRef REFERENCE TO InputRoot;
+		DECLARE envRef REFERENCE TO Environment;
+		CALL CommonUtilityLogFunctions.genCharData(inRef,envRef);	
+		SET OutputRoot.XMLNSC.logInfo.inputData = envRef.data;
+		SET OutputRoot.XMLNSC.logInfo.envData = Environment;
+		SET OutputRoot.XMLNSC.logInfo.msgFlowName = MessageFlowLabel;
+		SET OutputRoot.XMLNSC.logInfo.tranId = Environment.Variables.tranId;
+		SET OutputRoot.XMLNSC.logInfo.reqUUID = COALESCE(Environment.variables.gbl,Environment.Variables.RequestID); --'';--ask for location
+		SET OutputRoot.XMLNSC.logInfo.inCount = Environment.Variables.inCount;
+		IF EXISTS(InputExceptionList.*[]) THEN
+			SET OutputRoot.XMLNSC.logInfo.explist = InputExceptionList;
+			SET OutputRoot.XMLNSC.logInfo.expFlag = 'Y';
+		ELSE	
+			SET OutputRoot.XMLNSC.logInfo.expFlag = 'N';
+		END IF;	
+		
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL 				= cacheRef.CommonLoggingURL; 
+		RETURN TRUE;
+	END;
+END MODULE;

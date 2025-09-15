@@ -1,0 +1,5 @@
+BROKER SCHEMA com.npci.encdec
+
+
+CREATE FUNCTION signPayloadjava(IN payload CHAR) RETURNS CHAR LANGUAGE JAVA EXTERNAL NAME "CipherUtils1.signPayload";
+CREATE FUNCTION verifyxmlsign(IN payload CHAR) RETURNS CHAR LANGUAGE JAVA EXTERNAL NAME "CipherUtils1.verifySign";

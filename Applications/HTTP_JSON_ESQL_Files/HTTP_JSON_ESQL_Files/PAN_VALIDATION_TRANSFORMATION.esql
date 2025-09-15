@@ -1,0 +1,298 @@
+BROKER SCHEMA HTTP_JSON_ESQL_Files
+PATH HTTP_JSON_ESQL_Files;
+
+CREATE PROCEDURE generatePANValidationRequest (IN inRef REFERENCE, INOUT outRef REFERENCE, INOUT envRef REFERENCE)
+BEGIN
+	DECLARE i INTEGER 1;
+	--LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('Hello','World',3,4);
+	
+	DECLARE USERID,PATH,URL,PWD,VERSION CHARACTER;
+	FOR interface AS envRef.storedData.Interface[] DO
+		IF interface.name  = 'NSDL' THEN
+			SET USERID = interface.USERID;
+			SET PATH = interface.PATH;
+			SET URL = interface.URL;
+			SET PWD = interface.PWD;
+			SET VERSION = interface.VERSION;
+		END IF;	
+	END FOR;
+	IF NOT EXISTS(inRef.JSON.Data.efields.panNumbers.Item[]) THEN
+		THROW USER EXCEPTION VALUES ('ERR-001','Failure','Invalid Request');
+	END IF;		
+	DECLARE count INTEGER CARDINALITY (inRef.JSON.Data.efields.panNumbers.Item[]);
+	DECLARE requestURL CHARACTER;
+	
+	SET envRef.pancount = count;
+	SET envRef.variables.MntEvnt = inRef.JSON.Data.efields.panNumbers.Item[1];		  
+	IF count > 5 THEN
+		THROW USER EXCEPTION VALUES ('ERR-002','Failure','Number of PANs exceeds the limit (5)');
+	ELSE	  	
+		DECLARE req CHARACTER USERID ||'^';
+		WHILE (i<=count) DO
+			DECLARE panNo REFERENCE TO inRef.JSON.Data.efields.panNumbers.Item[i];
+			IF count = i THEN
+				SET req = req || panNo;
+			ELSE
+				SET req = req || panNo || '^';	
+			END IF;		  	
+			SET i = i+1;		  	
+		END WHILE;
+		SET requestURL = URL || '?' || PANSign(req,PATH,PWD,VERSION);
+		CALL HTTP_JSON_ESQL_Files.storeDynamicURL(requestURL,envRef);
+	END IF;		
+END;
+
+CREATE PROCEDURE generatePANValidationResponse (IN inRef REFERENCE, INOUT outRef REFERENCE, INOUT envRef REFERENCE )
+BEGIN
+	DECLARE wholeMsgChar CHAR CAST(inRef.BLOB.BLOB AS CHAR CCSID 1208);
+	DECLARE TEMP CHAR REPLACE(wholeMsgChar, '^', ' ^');
+	CALL Split(TEMP,envRef.Split.Array[],' ^');
+	DECLARE v_cr,v_lf,v_crlf CHAR; 
+	SET v_cr = CAST(X'0D' AS CHAR CCSID 1208); 
+	SET v_lf = CAST(X'0A' AS CHAR CCSID 1208); 
+	SET v_crlf = CAST(X'0D0A' AS CHAR CCSID 1208); 	
+	DECLARE count INTEGER envRef.pancount;
+	DECLARE panStatus CHARACTER TRIM(envRef.Split.Array[1]);
+	CREATE FIELD outRef.HTTPReplyHeader;
+	DECLARE outReplyHdr REFERENCE TO outRef.HTTPReplyHeader;
+	SET outReplyHdr."Content-Type" = 'application/json';
+	CREATE LASTCHILD OF outRef AS outRef DOMAIN('JSON');
+	CREATE FIELD outRef.Data;
+	DECLARE OUTREF REFERENCE TO outRef.Data;
+		
+	IF panStatus = '1' THEN
+		CASE
+			WHEN count = '1'  THEN
+				SET OUTREF.object 										   = 'validate-PAN';
+				CREATE FIELD OUTREF.efields IDENTITY(JSON.Array)efields;
+				SET OUTREF.efields.Item[1].panDetails.panNumber 		   = TRIM(envRef.Split.Array[2]);
+				SET OUTREF.efields.Item[1].panDetails.panStatus 		   = TRIM(envRef.Split.Array[3]);
+				SET OUTREF.efields.Item[1].panDetails.lastName 			   = TRIM(envRef.Split.Array[4]);
+				SET OUTREF.efields.Item[1].panDetails.firstName 		   = TRIM(envRef.Split.Array[5]);
+				SET OUTREF.efields.Item[1].panDetails.middleName 		   = TRIM(envRef.Split.Array[6]);
+				SET OUTREF.efields.Item[1].panDetails.panTitle 			   = TRIM(envRef.Split.Array[7]);
+				SET OUTREF.efields.Item[1].panDetails.lastUpdateDate	   = TRIM(envRef.Split.Array[8]);
+				SET OUTREF.efields.Item[1].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[9]);
+				SET OUTREF.efields.Item[1].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[10]);
+
+			WHEN count = '2'  THEN
+				SET OUTREF.object 										   = 'validate-PAN';
+				CREATE FIELD OUTREF.efields IDENTITY(JSON.Array)efields; 
+				SET OUTREF.efields.Item[1].panDetails.panNumber 		   = TRIM(envRef.Split.Array[2]);
+				SET OUTREF.efields.Item[1].panDetails.panStatus 		   = TRIM(envRef.Split.Array[3]);
+				SET OUTREF.efields.Item[1].panDetails.lastName 			   = TRIM(envRef.Split.Array[4]);
+				SET OUTREF.efields.Item[1].panDetails.firstName 		   = TRIM(envRef.Split.Array[5]);
+				SET OUTREF.efields.Item[1].panDetails.middleName 		   = TRIM(envRef.Split.Array[6]);
+				SET OUTREF.efields.Item[1].panDetails.panTitle 			   = TRIM(envRef.Split.Array[7]);
+				SET OUTREF.efields.Item[1].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[8]);
+				SET OUTREF.efields.Item[1].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[9]);
+				SET OUTREF.efields.Item[1].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[10]);
+				SET OUTREF.efields.Item[2].panDetails.panNumber 		   = TRIM(envRef.Split.Array[12]);
+				SET OUTREF.efields.Item[2].panDetails.panStatus 		   = TRIM(envRef.Split.Array[13]);
+				SET OUTREF.efields.Item[2].panDetails.lastName 			   = TRIM(envRef.Split.Array[14]);
+				SET OUTREF.efields.Item[2].panDetails.firstName 		   = TRIM(envRef.Split.Array[15]);
+				SET OUTREF.efields.Item[2].panDetails.middleName 		   = TRIM(envRef.Split.Array[16]);
+				SET OUTREF.efields.Item[2].panDetails.panTitle 			   = TRIM(envRef.Split.Array[17]);
+				SET OUTREF.efields.Item[2].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[18]);
+				SET OUTREF.efields.Item[2].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[19]);
+				SET OUTREF.efields.Item[2].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[20]);
+				
+			WHEN count = '3'  THEN
+				SET OUTREF.object 										   = 'validate-PAN';
+				CREATE FIELD OUTREF.efields IDENTITY(JSON.Array)efields; 
+				SET OUTREF.efields.Item[1].panDetails.panNumber 		   = TRIM(envRef.Split.Array[2]);
+				SET OUTREF.efields.Item[1].panDetails.panStatus 		   = TRIM(envRef.Split.Array[3]);
+				SET OUTREF.efields.Item[1].panDetails.lastName 			   = TRIM(envRef.Split.Array[4]);
+				SET OUTREF.efields.Item[1].panDetails.firstName 		   = TRIM(envRef.Split.Array[5]);
+				SET OUTREF.efields.Item[1].panDetails.middleName 		   = TRIM(envRef.Split.Array[6]);
+				SET OUTREF.efields.Item[1].panDetails.panTitle 			   = TRIM(envRef.Split.Array[7]);
+				SET OUTREF.efields.Item[1].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[8]);
+				SET OUTREF.efields.Item[1].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[9]);
+				SET OUTREF.efields.Item[1].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[10]);
+				SET OUTREF.efields.Item[2].panDetails.panNumber 		   = TRIM(envRef.Split.Array[12]);
+				SET OUTREF.efields.Item[2].panDetails.panStatus 		   = TRIM(envRef.Split.Array[13]);
+				SET OUTREF.efields.Item[2].panDetails.lastName 			   = TRIM(envRef.Split.Array[14]);
+				SET OUTREF.efields.Item[2].panDetails.firstName 		   = TRIM(envRef.Split.Array[15]);
+				SET OUTREF.efields.Item[2].panDetails.middleName 		   = TRIM(envRef.Split.Array[16]);
+				SET OUTREF.efields.Item[2].panDetails.panTitle 			   = TRIM(envRef.Split.Array[17]);
+				SET OUTREF.efields.Item[2].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[18]);
+				SET OUTREF.efields.Item[2].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[19]);
+				SET OUTREF.efields.Item[2].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[20]);
+				SET OUTREF.efields.Item[3].panDetails.panNumber 		   = TRIM(envRef.Split.Array[22]);
+				SET OUTREF.efields.Item[3].panDetails.panStatus 		   = TRIM(envRef.Split.Array[23]);
+				SET OUTREF.efields.Item[3].panDetails.lastName 			   = TRIM(envRef.Split.Array[24]);
+				SET OUTREF.efields.Item[3].panDetails.firstName 		   = TRIM(envRef.Split.Array[25]);
+				SET OUTREF.efields.Item[3].panDetails.middleName 		   = TRIM(envRef.Split.Array[26]);
+				SET OUTREF.efields.Item[3].panDetails.panTitle 			   = TRIM(envRef.Split.Array[27]);
+				SET OUTREF.efields.Item[3].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[28]);
+				SET OUTREF.efields.Item[3].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[29]);
+				SET OUTREF.efields.Item[3].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[30]);
+				
+			WHEN count = '4'  THEN
+				SET OUTREF.object 										   = 'validate-PAN';
+				CREATE FIELD OUTREF.efields IDENTITY(JSON.Array)efields; 
+				SET OUTREF.efields.Item[1].panDetails.panNumber 		   = TRIM(envRef.Split.Array[2]);
+				SET OUTREF.efields.Item[1].panDetails.panStatus 		   = TRIM(envRef.Split.Array[3]);
+				SET OUTREF.efields.Item[1].panDetails.lastName 			   = TRIM(envRef.Split.Array[4]);
+				SET OUTREF.efields.Item[1].panDetails.firstName 		   = TRIM(envRef.Split.Array[5]);
+				SET OUTREF.efields.Item[1].panDetails.middleName 		   = TRIM(envRef.Split.Array[6]);
+				SET OUTREF.efields.Item[1].panDetails.panTitle 			   = TRIM(envRef.Split.Array[7]);
+				SET OUTREF.efields.Item[1].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[8]);
+				SET OUTREF.efields.Item[1].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[9]);
+				SET OUTREF.efields.Item[1].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[10]);
+				SET OUTREF.efields.Item[2].panDetails.panNumber 		   = TRIM(envRef.Split.Array[12]);
+				SET OUTREF.efields.Item[2].panDetails.panStatus 		   = TRIM(envRef.Split.Array[13]);
+				SET OUTREF.efields.Item[2].panDetails.lastName 			   = TRIM(envRef.Split.Array[14]);
+				SET OUTREF.efields.Item[2].panDetails.firstName 		   = TRIM(envRef.Split.Array[15]);
+				SET OUTREF.efields.Item[2].panDetails.middleName 		   = TRIM(envRef.Split.Array[16]);
+				SET OUTREF.efields.Item[2].panDetails.panTitle 			   = TRIM(envRef.Split.Array[17]);
+				SET OUTREF.efields.Item[2].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[18]);
+				SET OUTREF.efields.Item[2].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[19]);
+				SET OUTREF.efields.Item[2].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[20]);
+				SET OUTREF.efields.Item[3].panDetails.panNumber 		   = TRIM(envRef.Split.Array[22]);
+				SET OUTREF.efields.Item[3].panDetails.panStatus 		   = TRIM(envRef.Split.Array[23]);
+				SET OUTREF.efields.Item[3].panDetails.lastName 			   = TRIM(envRef.Split.Array[24]);
+				SET OUTREF.efields.Item[3].panDetails.firstName 		   = TRIM(envRef.Split.Array[25]);
+				SET OUTREF.efields.Item[3].panDetails.middleName 		   = TRIM(envRef.Split.Array[26]);
+				SET OUTREF.efields.Item[3].panDetails.panTitle 			   = TRIM(envRef.Split.Array[27]);
+				SET OUTREF.efields.Item[3].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[28]);
+				SET OUTREF.efields.Item[3].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[29]);
+				SET OUTREF.efields.Item[3].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[30]);
+				SET OUTREF.efields.Item[4].panDetails.panNumber 		   = TRIM(envRef.Split.Array[32]);
+				SET OUTREF.efields.Item[4].panDetails.panStatus 		   = TRIM(envRef.Split.Array[33]);
+				SET OUTREF.efields.Item[4].panDetails.lastName 			   = TRIM(envRef.Split.Array[34]);
+				SET OUTREF.efields.Item[4].panDetails.firstName 		   = TRIM(envRef.Split.Array[35]);
+				SET OUTREF.efields.Item[4].panDetails.middleName 		   = TRIM(envRef.Split.Array[36]);
+				SET OUTREF.efields.Item[4].panDetails.panTitle 			   = TRIM(envRef.Split.Array[37]);
+				SET OUTREF.efields.Item[4].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[38]);
+				SET OUTREF.efields.Item[4].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[39]);
+				SET OUTREF.efields.Item[4].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[40]);
+				
+			WHEN count = '5'  THEN
+				SET OUTREF.object 										   = 'validate-PAN';
+				CREATE FIELD OUTREF.efields IDENTITY(JSON.Array)efields; 
+				SET OUTREF.efields.Item[1].panDetails.panNumber 		   = TRIM(envRef.Split.Array[2]);
+				SET OUTREF.efields.Item[1].panDetails.panStatus 		   = TRIM(envRef.Split.Array[3]);
+				SET OUTREF.efields.Item[1].panDetails.lastName 			   = TRIM(envRef.Split.Array[4]);
+				SET OUTREF.efields.Item[1].panDetails.firstName 		   = TRIM(envRef.Split.Array[5]);
+				SET OUTREF.efields.Item[1].panDetails.middleName 		   = TRIM(envRef.Split.Array[6]);
+				SET OUTREF.efields.Item[1].panDetails.panTitle 			   = TRIM(envRef.Split.Array[7]);
+				SET OUTREF.efields.Item[1].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[8]);
+				SET OUTREF.efields.Item[1].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[9]);
+				SET OUTREF.efields.Item[1].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[10]);
+				SET OUTREF.efields.Item[2].panDetails.panNumber 		   = TRIM(envRef.Split.Array[12]);
+				SET OUTREF.efields.Item[2].panDetails.panStatus 		   = TRIM(envRef.Split.Array[13]);
+				SET OUTREF.efields.Item[2].panDetails.lastName 			   = TRIM(envRef.Split.Array[14]);
+				SET OUTREF.efields.Item[2].panDetails.firstName 		   = TRIM(envRef.Split.Array[15]);
+				SET OUTREF.efields.Item[2].panDetails.middleName 		   = TRIM(envRef.Split.Array[16]);
+				SET OUTREF.efields.Item[2].panDetails.panTitle 			   = TRIM(envRef.Split.Array[17]);
+				SET OUTREF.efields.Item[2].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[18]);
+				SET OUTREF.efields.Item[2].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[19]);
+				SET OUTREF.efields.Item[2].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[20]);
+				SET OUTREF.efields.Item[3].panDetails.panNumber 		   = TRIM(envRef.Split.Array[22]);
+				SET OUTREF.efields.Item[3].panDetails.panStatus 		   = TRIM(envRef.Split.Array[23]);
+				SET OUTREF.efields.Item[3].panDetails.lastName 			   = TRIM(envRef.Split.Array[24]);
+				SET OUTREF.efields.Item[3].panDetails.firstName 		   = TRIM(envRef.Split.Array[25]);
+				SET OUTREF.efields.Item[3].panDetails.middleName 		   = TRIM(envRef.Split.Array[26]);
+				SET OUTREF.efields.Item[3].panDetails.panTitle 			   = TRIM(envRef.Split.Array[27]);
+				SET OUTREF.efields.Item[3].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[28]);
+				SET OUTREF.efields.Item[3].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[29]);
+				SET OUTREF.efields.Item[3].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[30]);
+				SET OUTREF.efields.Item[4].panDetails.panNumber 		   = TRIM(envRef.Split.Array[32]);
+				SET OUTREF.efields.Item[4].panDetails.panStatus 		   = TRIM(envRef.Split.Array[33]);
+				SET OUTREF.efields.Item[4].panDetails.lastName 			   = TRIM(envRef.Split.Array[34]);
+				SET OUTREF.efields.Item[4].panDetails.firstName 		   = TRIM(envRef.Split.Array[35]);
+				SET OUTREF.efields.Item[4].panDetails.middleName 		   = TRIM(envRef.Split.Array[36]);
+				SET OUTREF.efields.Item[4].panDetails.panTitle 			   = TRIM(envRef.Split.Array[37]);
+				SET OUTREF.efields.Item[4].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[38]);
+				SET OUTREF.efields.Item[4].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[39]);
+				SET OUTREF.efields.Item[4].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[40]);
+				SET OUTREF.efields.Item[5].panDetails.panNumber		       = TRIM(envRef.Split.Array[42]);
+				SET OUTREF.efields.Item[5].panDetails.panStatus		       = TRIM(envRef.Split.Array[43]);
+				SET OUTREF.efields.Item[5].panDetails.lastName 			   = TRIM(envRef.Split.Array[44]);
+				SET OUTREF.efields.Item[5].panDetails.firstName 		   = TRIM(envRef.Split.Array[45]);
+				SET OUTREF.efields.Item[5].panDetails.middleName 		   = TRIM(envRef.Split.Array[46]);
+				SET OUTREF.efields.Item[5].panDetails.panTitle 			   = TRIM(envRef.Split.Array[47]);
+				SET OUTREF.efields.Item[5].panDetails.lastUpdateDate 	   = TRIM(envRef.Split.Array[48]);
+				SET OUTREF.efields.Item[5].panDetails.nameOnCard 		   = TRIM(envRef.Split.Array[49]);
+				SET OUTREF.efields.Item[5].panDetails.aadhaarSeedingStatus = TRIM(envRef.Split.Array[50]);
+			ELSE
+
+			END CASE;
+			
+		ELSE 
+			CREATE NEXTSIBLING OF outReplyHdr."Content-Type" TYPE Name NAME 'X-Original-HTTP-Status-Code';
+			SET OUTREF.status = 'Failure';
+				CASE
+					WHEN STARTSWITH(panStatus, '2') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '500';
+						SET OUTREF.desc = 'System Error'; 
+					WHEN STARTSWITH(panStatus, '3') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'Authentication Failure';
+					WHEN STARTSWITH(panStatus, '4') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'User not authorized';
+					WHEN STARTSWITH(panStatus, '5') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '500';
+						SET OUTREF.desc = 'No PANs Entered';
+					WHEN STARTSWITH(panStatus, '6') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'User validity has expired'; 
+					WHEN STARTSWITH(panStatus, '7') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '500';
+						SET OUTREF.desc = 'Number of PANs exceeds the limit (5)';
+					WHEN STARTSWITH(panStatus, '8') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'Not enough balance';
+					WHEN STARTSWITH(panStatus, '9') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'Not an HTTPs request';
+					WHEN STARTSWITH(panStatus, '10') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'POST method not used';
+					WHEN STARTSWITH(panStatus, '11') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'SLAB_CHANGE_RUNNING';
+					WHEN STARTSWITH(panStatus, '12') THEN
+						SET outReplyHdr."X-Original-HTTP-Status-Code" = '400';
+						SET OUTREF.desc = 'Invalid version number entered';
+				ELSE
+					
+				END CASE;	
+		END IF;
+END;
+
+
+CREATE FUNCTION PANSign(IN data CHARACTER,IN filepath CHARACTER,IN pwd CHARACTER,IN version CHARACTER)
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "com.panvalidation.signer.signer.datasignature";
+
+
+CREATE PROCEDURE Split (IN S CHARACTER, IN Env REFERENCE, IN Delim CHARACTER)
+BEGIN
+   DECLARE P INTEGER;
+   DECLARE Idx INTEGER 1;
+
+   SET Env.Split = NULL;
+   
+   REPEAT
+      SET P = POSITION(Delim IN S);
+      IF P = 0 THEN
+         SET Env.Split.Array[Idx] = S;
+      ELSE
+         SET Env.Split.Array[Idx] = LEFT(S, P - 1);
+         SET S = SUBSTRING(S FROM P + LENGTH(Delim));
+         SET Idx = Idx + 1;
+      END IF;
+   UNTIL P = 0
+      
+   END REPEAT;   
+
+END;
+
+CREATE PROCEDURE generatePanValidationError (INOUT outRef REFERENCE, INOUT envRef REFERENCE, IN inExcpList REFERENCE )
+BEGIN
+		
+END;

@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.apache.org/axis2" xmlns:ax21="http://token.safenet.com/xsd" xmlns:ax23="http://token.safenet.com/xsd" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns="http://ws.apache.org/axis2" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <xsd:import namespace="http://token.safenet.com/xsd" schemaLocation="SafeNetTokenizer_InlineSchema2.xsd"/>
+            <xsd:complexType name="Exception">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" name="Exception" nillable="true" type="xsd:anyType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element ibmSchExtn:docRoot="true" name="TokenException">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="TokenException" nillable="true" type="ax23:TokenException"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewTokenFormat">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="leadPositions" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="trailPositions" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="leadMask" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewTokenFormatResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewRegExTokenFormat">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="splitter" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="splicer" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewRegExTokenFormatResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewTokenFormatWithRandomTokenLength">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="formatForToken" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="minLength" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="maxLength" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="leadMask" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewTokenFormatWithRandomTokenLengthResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertToken">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenWithTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenWithTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="UpdateTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="UpdateTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:SiteBean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="token" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetValueResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteToken">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="token" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenByTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenByTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:SiteBean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="Mask">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="startToken" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="MaskResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteValueBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataSmartCheck">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="saveExceptions" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataSmartCheckResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="ax23:TmResult"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchWithCustomDataSmartCheck">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="saveExceptions" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchWithCustomDataSmartCheckResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="ax23:TmResult"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchWithSmartCheck">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="saveExceptions" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetBatchWithSmartCheckResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="ax23:TmResult"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="deleteTokenWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="token" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenBatchWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenEx">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="token" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenExResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:SiteBean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="UpdateBatchTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokenProperty" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="UpdateBatchTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:SiteBean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenExBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteTokenExBatchResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:SiteBean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteValueWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DeleteValueBatchWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithMultipleVault">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithMultipleVaultResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="saveExceptions" type="xsd:boolean"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokenProperty" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="ax23:TmResult"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithTokenPropertyBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokenProperty" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithTokenPropertyBatchResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetCustomTokenPropertyByTokens">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetCustomTokenPropertyByTokensResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetCustomTokenPropertyByValue">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetCustomTokenPropertyByValueResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertIrreversibleToken">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="saveExceptions" type="xsd:boolean"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokenProperty" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertIrreversibleTokenResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="ax23:TmResult"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateMaskingFormat">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="showFirst" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="showLast" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="maskChar" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateMaskingFormatResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DisableTokenBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="tokens" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="DisableTokenBatchResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:SiteBean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetDisabledTokens">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="startDate" nillable="true" type="xsd:dateTime"/>
+                        <xsd:element minOccurs="0" name="endDate" nillable="true" type="xsd:dateTime"/>
+                        <xsd:element minOccurs="0" name="searchCriteria" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetDisabledTokensResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataAndTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataAndTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokenWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokenWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokenBatchWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokenBatchWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataAndTokenPropertySmartCheck">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="saveExceptions" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataAndTokenPropertySmartCheckResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="ax23:TmResult"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewTokenFormatWithTokenLength">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="leadPositions" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="trailPositions" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="leadMask" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="tokenLength" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="CreateNewTokenFormatWithTokenLengthResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenWithCustomDataWithTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="value" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertTokenWithCustomDataWithTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetValueWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="token" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetValueWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatch">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xsd:string"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="format" type="xsd:int"/>
+                        <xsd:element minOccurs="0" name="luhnCheck" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="InsertBatchWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokensByDateWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="calendarDate" nillable="true" type="xsd:dateTime"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokensByDateWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokensByTokenProperty">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tokenProp" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customTokenProperty" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokensByTokenPropertyResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokensByRangeDateWithCustomData">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="0" name="naeUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="naePassword" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbUser" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="dbPswd" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="tableName" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="customData" nillable="true" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="startDate" nillable="true" type="xsd:dateTime"/>
+                        <xsd:element minOccurs="0" name="endDate" nillable="true" type="xsd:dateTime"/>
+                        <xsd:element minOccurs="0" name="searchCriteria" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element ibmSchExtn:docRoot="true" name="GetTokensByRangeDateWithCustomDataResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>

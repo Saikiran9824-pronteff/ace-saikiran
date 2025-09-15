@@ -1,0 +1,62 @@
+
+
+CREATE COMPUTE MODULE VaultToken_Req
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		
+		DECLARE inJsonReqRef	REFERENCE TO InputRoot.JSON.Data.request;
+		DECLARE inReqHdrRef 	REFERENCE TO inJsonReqRef.header;
+		--DECLARE inVaultRef 		REFERENCE TO inJsonReqRef.body.vaultTokenReq;
+		DECLARE inVaultRef 		REFERENCE TO inJsonReqRef.body.getvaultTokenReq;
+		DECLARE cacheRef 		REFERENCE TO Environment.Variables.CachedData[>];
+		
+		SET Environment.Variables.RequestID = inReqHdrRef.requestUUID;
+		SET Environment.Variables.gbl 		= inReqHdrRef.requestUUID;
+		SET Environment.Variables.ChannelID = inReqHdrRef.channelId;
+		
+		CREATE FIELD OutputRoot.XMLNSC.soap:Envelope;  
+		DECLARE outEnvRef , outSoapBodyRef , outGetTokenRef REFERENCE TO OutputRoot.XMLNSC.soap:Envelope; 
+		
+		SET outEnvRef.(XMLNSC.NamespaceDecl)xmlns:soap 	= soap;
+		SET outEnvRef.(XMLNSC.NamespaceDecl)xmlns:axis 		= axis;  
+		
+		SET outEnvRef.soap:Header VALUE = NULL;
+		CREATE LASTCHILD OF outEnvRef AS outSoapBodyRef NAME 'soap:Body';  
+			CREATE LASTCHILD OF outSoapBodyRef AS outGetTokenRef NAME 'axis:GetTokensByTokenProperty';
+--				SET outGetTokenRef.axis:naeUser 		= -inVaultRef.naeUser;
+--				SET outGetTokenRef.axis:naePassword 	= inVaultRef.naePassword;
+--				SET outGetTokenRef.axis:dbUser 			= inVaultRef.dbUser;
+--				SET outGetTokenRef.axis:dbPswd 			= inVaultRef.dbPswd;
+--				SET outGetTokenRef.axis:tableName 		= inVaultRef.tableName;
+				
+				SET outGetTokenRef.axis:naeUser 		= cacheRef.naeUser; -- 'adhvlt';  
+				SET outGetTokenRef.axis:naePassword 	= cacheRef.naePassword; -- '0f9ee7919b83ffdf2c6e48c3b32ab817';
+				SET outGetTokenRef.axis:dbUser 			= cacheRef.dbUser;  --'adhadm'; 
+				SET outGetTokenRef.axis:dbPswd 			= cacheRef.dbPswd;  --'ee86cd99eeb18133a88f730bb963dae5'; 
+				SET outGetTokenRef.axis:tableName 		= cacheRef.tableName; -- 'AADHAR_TEST'; 
+				SET outGetTokenRef.axis:tokenProp		= ''; --inVaultRef.tokenProp;
+				SET outGetTokenRef.axis:customTokenProperty		= inVaultRef.tokenProp;
+				
+	--	SET OutputLocalEnvironment.Destination.HTTP.RequestURL	= cacheRef.VaultURL; 
+		
+		SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = cacheRef.VaultURL; -- 'https://vaultuat.indusind.com:8443/axis2/services/SafeNetTokenizer' ; 
+			
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

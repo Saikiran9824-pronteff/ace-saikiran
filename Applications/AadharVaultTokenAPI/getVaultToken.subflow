@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:COMMON_CACHE_SERVICE_GET_IS_CACHE_DATA.subflow="COMMON_CACHE_SERVICE/GET_IS_CACHE_DATA.subflow" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmSOAPExtract.msgnode="ComIbmSOAPExtract.msgnode" xmlns:ComIbmSOAPRequest.msgnode="ComIbmSOAPRequest.msgnode" xmlns:CommonLoggingLib_InvokeAsyncLogEvents.subflow="CommonLoggingLib/InvokeAsyncLogEvents.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow"
+    xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="getVaultToken.subflow" nsPrefix="getVaultToken.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="getVaultToken" bundleName="getVaultToken" pluginId="AadharVaultTokenAPI"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AadharVaultTokenAPI/icons/full/obj16/getVaultToken.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AadharVaultTokenAPI/icons/full/obj30/getVaultToken.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input_1" location="73,138">
+        <translation xmi:type="utility:TranslatableString" key="Input" bundleName="getVaultToken" pluginId="AadharVaultTokenAPI"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output_1" location="1059,129">
+        <translation xmi:type="utility:TranslatableString" key="Output" bundleName="getVaultToken" pluginId="AadharVaultTokenAPI"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="950,130" computeExpression="esql://routine/#VaultToken_Res.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="VaultToken_Res"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_2" location="802,133">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents2"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="402,137" computeExpression="esql://routine/#VaultToken_Req.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="VaultToken_Req"/>
+      </nodes>
+      <nodes xmi:type="COMMON_CACHE_SERVICE_GET_IS_CACHE_DATA.subflow:FCMComposite_1" xmi:id="FCMComposite_1_5" location="280,134">
+        <translation xmi:type="utility:ConstantString" string="GET_IS_CACHE_DATA"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_6" location="150,138">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents"/>
+      </nodes>
+      <nodes xmi:type="CommonLoggingLib_InvokeAsyncLogEvents.subflow:FCMComposite_1" xmi:id="FCMComposite_1_9" location="492,137">
+        <translation xmi:type="utility:ConstantString" string="InvokeAsyncLogEvents1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="632,136" wsdlFileName="RemoteFiles/SafeNetTokenizer.wsdl" selectedPortType="SafeNetTokenizerPortType" selectedBinding="SafeNetTokenizerSoap11Binding" selectedOperation="GetTokensByTokenProperty" selectedPort="SafeNetTokenizerHttpsSoap11Endpoint" targetNamespace="http://ws.apache.org/axis2" useHTTPTransport="true" webServiceURL="https://vaultuat.indusind.com:8443/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpsSoap11Endpoint/"
+          sslProtocol="TLS">
+        <translation xmi:type="utility:ConstantString" string="SOAP Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPExtract.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="741,132">
+        <translation xmi:type="utility:ConstantString" string="SOAP Extract"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="OutTerminal.Output_1" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_6" sourceNode="InTerminal.Input_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.fault" targetTerminalName="InTerminal.in">
+        <bendPoints>168,77,-153,83</bendPoints>
+      </connections>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

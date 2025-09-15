@@ -1,0 +1,38 @@
+BROKER SCHEMA CommonLoggingLib
+
+
+CREATE COMPUTE MODULE InvokeLogEvents_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE data, data1 CHARACTER;
+		DECLARE messageflowName CHARACTER MessageFlowLabel;
+		DECLARE reqUUID CHARACTER Environment.variables.gbl;
+		IF Environment.Variables.tranId IS NULL THEN
+			SET Environment.Variables.tranId = UUIDASCHAR;
+		END IF;
+		IF NOT EXISTS(InputExceptionList.*[]) THEN	
+			DECLARE inRef REFERENCE TO InputRoot;
+			DECLARE envRef REFERENCE TO Environment;
+			CALL CommonUtilityLogFunctions.genEncodedCharData(inRef,envRef);  
+		    IF Environment.Variables.inCount IS NULL THEN
+		    	SET Environment.Variables.inCount = 1;
+		    ELSE
+		    	SET Environment.Variables.inCount = Environment.Variables.inCount+1;	
+		    END IF;	
+            LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('INFO',messageflowName,NodeLabel,'RequestUUID: '||reqUUID,Environment.Variables.tranId,'EventNo:00'||CAST(Environment.Variables.inCount AS CHARACTER),envRef.encodedData);   
+			DELETE FIELD Environment.XMLNSC;
+			DELETE FIELD Environment.out;
+		ELSE
+		    DECLARE inRefExcp REFERENCE TO InputExceptionList;
+		    DECLARE inRef REFERENCE TO InputRoot;
+			DECLARE envRef REFERENCE TO Environment;
+			CALL CommonUtilityLogFunctions.genCharData(inRefExcp,envRef);
+			CALL CommonUtilityLogFunctions.genEncodedCharData(inRef,envRef);            
+			LOG EVENT SEVERITY 1 CATALOG 'BIPmsgs' MESSAGE 2951 VALUES('ERROR',messageflowName,NodeLabel,'RequestUUID: '||reqUUID,Environment.Variables.tranId,'EventNo:999','ERROR_OUT',envRef.encodedData, envRef.data);
+			DELETE FIELD Environment.XMLNSC;
+			DELETE FIELD Environment.out;
+		END IF;	
+		SET OutputRoot = InputRoot;		
+		RETURN TRUE;
+	END;
+END MODULE;

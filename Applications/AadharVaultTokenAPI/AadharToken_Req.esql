@@ -1,0 +1,68 @@
+
+--DECLARE soapenv NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+DECLARE soap    NAMESPACE 'http://www.w3.org/2003/05/soap-envelope' ;
+DECLARE axis 	NAMESPACE 'http://ws.apache.org/axis2';
+
+CREATE COMPUTE MODULE AadharToken_Req
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		
+		DECLARE inJsonReqRef	REFERENCE TO InputRoot.JSON.Data.request;
+		DECLARE inReqHdrRef 	REFERENCE TO inJsonReqRef.header;
+		DECLARE inAadharRef 	REFERENCE TO inJsonReqRef.body.getaadharReq;
+		DECLARE cacheRef 		REFERENCE TO Environment.Variables.CachedData[>];
+		
+		SET Environment.Variables.RequestID = inReqHdrRef.requestUUID;
+		SET Environment.Variables.gbl 		= inReqHdrRef.requestUUID;
+		SET Environment.Variables.ChannelID = inReqHdrRef.channelId;
+		
+		CREATE FIELD OutputRoot.XMLNSC.soap:Envelope;  
+		DECLARE outEnvRef  , outSoapBodyRef , outGetValRef REFERENCE TO OutputRoot.XMLNSC.soap:Envelope;
+		
+		SET outEnvRef.(XMLNSC.NamespaceDecl)xmlns:soap 	    = soap;
+		SET outEnvRef.(XMLNSC.NamespaceDecl)xmlns:axis 		= axis;  
+		
+		SET outEnvRef.soap:Header VALUE = NULL;
+		CREATE LASTCHILD OF outEnvRef AS outSoapBodyRef NAME 'soap:Body'; 
+			CREATE LASTCHILD OF outSoapBodyRef AS outGetValRef NAME 'axis:GetValue';
+			
+--				SET outGetValRef.axis:naeUser 		= inAadharRef.naeUser;
+--				SET outGetValRef.axis:naePassword 	= inAadharRef.naePassword;
+--				SET outGetValRef.axis:dbUser 		= inAadharRef.dbUser;
+--				SET outGetValRef.axis:dbPswd 		= inAadharRef.dbPswd;
+--				SET outGetValRef.axis:tableName 	= inAadharRef.tableName;
+--				
+				SET outGetValRef.axis:naeUser 		=   cacheRef.naeUser; -- 'adhvlt'  ;
+				SET outGetValRef.axis:naePassword 	=   cacheRef.naePassword; -- '0f9ee7919b83ffdf2c6e48c3b32ab817' ; 
+				SET outGetValRef.axis:dbUser 		=   cacheRef.dbUser;  -- 'adhadm' ; 
+				SET outGetValRef.axis:dbPswd 		=   cacheRef.dbPswd;  -- 'ee86cd99eeb18133a88f730bb963dae5' ;
+				SET outGetValRef.axis:tableName 	=   cacheRef.tableName; -- 'AADHAR_TEST' ; 
+				
+				SET outGetValRef.axis:token 		= inAadharRef.token;
+				SET outGetValRef.axis:format 		= cacheRef.format;   --'0' ;
+		
+	--	SET OutputLocalEnvironment.Destination.HTTP.RequestURL	= 'http://10.24.62.42:8080/axis2/services/SafeNetTokenizer'; --cacheRef.VaultURL; 
+					
+	--	SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = 'http://10.24.62.42:8080/axis2/services/SafeNetTokenizer' ; --cacheRef.VaultURL;
+		
+		SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL =  cacheRef.VaultURL; -- 'https://vaultuat.indusind.com:8443/axis2/services/SafeNetTokenizer' ;		
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

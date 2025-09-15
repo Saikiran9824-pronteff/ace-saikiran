@@ -1,0 +1,66 @@
+DECLARE ns NAMESPACE 'http://processor.newgen.gov.in/';
+
+
+CREATE COMPUTE MODULE getOTP_Request
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		
+		DECLARE inRef REFERENCE TO InputRoot.JSON.Data;
+		CREATE FIELD OutputRoot.XMLNSC.kycrequest;
+		DECLARE outRef REFERENCE TO OutputRoot.XMLNSC.kycrequest;
+		
+		SET outRef.of_flag 		= 'Y';
+		SET outRef.pid 			= 'Riskcovry';--inRef.pid ;
+		SET outRef.option 		= 'OR';
+		SET outRef.uid 			= '707531493946';--inRef.uid;
+		SET outRef.otpchannel 	= '01';
+		SET outRef.rc 			= 'Y';
+		SET outRef.mec 			= 'Y';
+		SET outRef.udc 			= 'IUIA76232I02361';  -- will change for prod
+		SET outRef.dc 			= 'NC';
+		SET outRef.txn 			= '';
+		SET outRef.rrn 			= '';  -- need to confirm
+		SET outRef.pfr 			= 'N';  -- need to confirm
+		SET outRef.bcekyckey 	= 'wQWuDLZPRrKbKhVEU9n/PgVFOMSpNyNPM1+ll3aK7wY=';--707531493946inRef.bcekyckey;
+		
+		
+		DECLARE wholeMsgBlob BLOB ASBITSTREAM(outRef CCSID 1208 ENCODING 546 OPTIONS FolderBitStream);
+		DECLARE wholeMsgChar CHAR CAST(wholeMsgBlob AS CHAR CCSID 1208);
+		
+		DECLARE encryptMsg CHARACTER ekycEncrypt(wholeMsgChar);
+		
+		
+		
+		--SET OutputRoot.SOAP.Body.ns:getResponse.arg0 = 'PqNBQyVHZVmvzXv+VcbHf/JOYpwzZGof64JclFnvH337Edhd5xgqGm5YRfHsajroOrqU2tvs2ASU4m+bBDExiC3JaNovW5P4P7LDmGMwv53DzQfJEGQYSC2jR3ys+UUvePo03DiYGoNOf3rQHffiupCG37TybNd20+J8+FaE4APtpcByRogFE7fVh9i4D7NLVdnn8cMzuOlKlMpuQGxStQcQOMGWluodbv/yZ2Qud35dy5SE75tO3z8EZxaMdYsMc8vfT9jDjfYM+8j/2o8DI9QL0Gye9RtFlU8sKKyiDHYE7jQYiugPUBlynUECTHqeP6FXcf1nBRfhCB7OH9/xDqHQqmmf4O5/7UonQbUPircMUXtaFDX01vx9RVVxSOSNA/htOX7mmcJ5mp03oKbnlUaMnUia3nX2yFDt5fRBXF8OQXmWTfiFXmOF3KImi12RefJDDA/dTa58HN6EEcSIlFfr9DdmEOdyQwSOlwuCKxM=';
+		SET OutputRoot.SOAP.Body.ns:getResponse.arg0 = encryptMsg;
+		RETURN TRUE;
+	END;
+
+	
+END MODULE;
+
+
+CREATE COMPUTE MODULE getOTP_Response
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE decryptMsg CHARACTER ekycDncrypt(InputRoot.SOAP.Body.ns:getResponseResponse.return);
+		
+		set OutputRoot.JSON.Data.res = decryptMsg;
+	--InputRoot.SOAP.Body.ns:getResponseResponse.return;
+		RETURN TRUE;
+	END;
+	END MODULE;
+
+CREATE FUNCTION ekycEncrypt(IN text CHAR)
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "com.newgen.EncryptionDecryption.encrypt";
+
+
+CREATE FUNCTION ekycDncrypt(IN text CHAR)
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "com.newgen.EncryptionDecryption.decrypt";

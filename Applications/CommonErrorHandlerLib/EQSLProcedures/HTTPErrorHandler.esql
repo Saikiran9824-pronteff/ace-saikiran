@@ -1,0 +1,93 @@
+BROKER SCHEMA EQSLProcedures
+
+CREATE COMPUTE MODULE HTTPErrorHandler
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+			
+		DECLARE ExcpType CHARACTER;
+		DECLARE ErrDesp CHARACTER;
+		DECLARE ErrCd CHARACTER;
+		DECLARE Ref1 REFERENCE TO InputExceptionList.*[1];	        
+		DECLARE ErrTxt1 CHARACTER;
+		DECLARE ErrTxt2 CHARACTER;	           
+	
+		WHILE LASTMOVE(Ref1) DO
+			IF(Ref1.Number IS NOT NULL) THEN	        		
+				SET ExcpType=FIELDNAME(Ref1);
+			END IF;
+			MOVE Ref1 LASTCHILD;
+		END WHILE;	        
+	
+		IF ExcpType='MessageException' THEN	     
+			DECLARE Ref1 REFERENCE TO InputExceptionList.*[1];
+			WHILE LASTMOVE(Ref1) DO
+				IF Ref1.Number is NOT NULL THEN	            		  
+					IF Ref1.Insert[3].Text IS NOT NULL AND Ref1.Insert[3].Text <> '0' THEN	                		
+						SET ErrCd=Ref1.Insert[3].Text;
+					ELSE
+						SET ErrCd=Ref1.Number;
+					END IF;
+					SET ErrDesp = Ref1.Text;
+				END IF;
+				MOVE Ref1 LASTCHILD;
+			END WHILE;
+		ELSEIF (ExcpType ='DatabaseException'OR ExcpType = 'UserException') THEN
+			DECLARE Ref1 REFERENCE TO InputExceptionList.*[1];
+			WHILE LASTMOVE(Ref1) DO
+				IF(Ref1.Number is NOT NULL) THEN
+					SET ErrCd = Ref1.Number;
+					IF(Ref1.Insert[<].Text IS NOT NULL AND Ref1.Insert[<].Text <> '0') THEN
+						SET ErrDesp = Ref1.Insert[<].Text;
+					ELSE
+						SET ErrDesp = Ref1.Text;
+					END IF;
+				END IF;
+				MOVE Ref1 LASTCHILD;
+			END WHILE;	              
+		ELSEIF ExcpType='ConfigurationException' OR ExcpType='ConversionException'OR ExcpType= 'CastException' OR ExcpType='SecurityException'OR ExcpType='CastException'
+			   OR ExcpType='ParserException' OR ExcpType='FatalException' OR ExcpType='SocketException' OR ExcpType='SocketTimeoutException' THEN
+			DECLARE Ref1 REFERENCE TO InputExceptionList.*[1];
+			WHILE LASTMOVE(Ref1) DO
+				IF Ref1.Number is NOT NULL THEN	            		
+					SET ErrCd = Ref1.Number;
+					SET ErrDesp = Ref1.Text;
+				END IF;
+				MOVE Ref1 LASTCHILD;
+			END WHILE;
+		ELSE
+			DECLARE Ref1 REFERENCE TO InputExceptionList.*[1];
+			WHILE LASTMOVE(Ref1) DO	            	
+				IF(Ref1.Number is NOT NULL) THEN	                	
+					SET ErrCd=Ref1.Number;
+					SET ErrDesp = Ref1.Text;
+					SET ErrTxt1=Ref1.Insert[<].Text;
+					IF(ErrTxt1 IS NOT NULL) THEN	                   		
+						SET ErrTxt2= ErrDesp||'  '||ErrTxt1;
+					ELSE
+						SET ErrTxt2= ErrDesp;
+					END IF;
+					SET ErrDesp = ErrTxt2;
+				END IF;
+				MOVE Ref1 LASTCHILD;
+			END WHILE;
+		END IF;
+		
+		CREATE FIELD OutputRoot.JSON.Data.response.header;
+		DECLARE outRefHeader REFERENCE TO OutputRoot.JSON.Data.response.header;
+		CREATE FIELD OutputRoot.JSON.Data.response.error;
+		DECLARE outRefError REFERENCE TO OutputRoot.JSON.Data.response.error;
+		SET outRefHeader.status 	 = 'failure';	
+		SET outRefHeader.requestUUID = Environment.Variables.requestUUID;
+		SET outRefHeader.channelId 	 = Environment.Variables.channelId;
+		SET outRefError.errorCode 	 = ErrCd;
+		IF(ErrDesp > '' AND ExcpType > '') THEN
+			SET outRefError.errorDesc 					= ExcpType || '-' || ErrDesp;
+		ELSE
+			SET outRefError.errorDesc 					= ErrDesp;
+		END IF;
+		PROPAGATE TO LABEL 'sendReply';
+		
+		RETURN FALSE;
+	END;
+END MODULE;

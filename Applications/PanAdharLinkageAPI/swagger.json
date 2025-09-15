@@ -1,0 +1,121 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "PanAdharLinkageAPI",
+    "version" : "1.0.0",
+    "description" : "PanAdharLinkageAPI"
+  },
+  "paths" : {
+    "/aadharlinkage" : {
+      "post" : {
+        "operationId" : "postAadharlinkage",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/PanAadharLinkageRes"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a aadharlinkage",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/PanAadharLinkageReq"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/panadharlinkageapi/v1",
+  "definitions" : {
+    "PanAadharLinkageReq" : {
+      "type" : "object",
+      "properties" : {
+        "request" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "type" : "object",
+              "properties" : {
+                "requestUUID" : {
+                  "type" : "string"
+                },
+                "channelId" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "Panadharreq" : {
+                  "type" : "object",
+                  "properties" : {
+                    "panNumber" : {
+                      "type" : "string"
+                    },
+                    "uid" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "PanAadharLinkageRes" : {
+      "type" : "object",
+      "properties" : {
+        "response" : {
+          "type" : "object",
+          "properties" : {
+            "header" : {
+              "type" : "object",
+              "properties" : {
+                "requestUUID" : {
+                  "type" : "string"
+                },
+                "channelId" : {
+                  "type" : "string"
+                },
+                "status" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "body" : {
+              "type" : "object",
+              "properties" : {
+                "result" : {
+                  "type" : "object",
+                  "properties" : {
+                    "linked" : {
+                      "type" : "string"
+                    },
+                    "uid" : {
+                      "type" : "string"
+                    },
+                    "message" : {
+                      "type" : "string"
+                    },
+                    "code" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

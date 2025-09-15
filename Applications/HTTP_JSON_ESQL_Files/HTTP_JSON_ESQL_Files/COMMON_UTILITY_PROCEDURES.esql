@@ -1,0 +1,27 @@
+BROKER SCHEMA HTTP_JSON_ESQL_Files
+
+
+CREATE PROCEDURE storeDynamicURL (IN url CHARACTER, INOUT envRef REFERENCE )
+BEGIN
+	IF url <> '' THEN
+		SET envRef.RequestURL = url;
+	END IF;	
+END;
+
+CREATE PROCEDURE storeDynamicURI (IN uri CHARACTER, INOUT envRef REFERENCE )
+BEGIN
+	IF uri <> '' THEN
+		SET envRef.RequestURI = uri;
+	END IF;	
+END;
+
+--CREATE FUNCTION encrypt(IN text CHAR, IN sKey CHAR)
+--RETURNS CHARACTER
+--LANGUAGE JAVA
+--EXTERNAL NAME "com.indusind.gem.util.GemCryptoUtil.encrypt";            
+--
+--
+--CREATE FUNCTION decrypt(IN text CHAR, IN sKey CHAR)
+--RETURNS CHARACTER
+--LANGUAGE JAVA
+--EXTERNAL NAME "com.indusind.gem.util.GemCryptoUtil.decrypt";

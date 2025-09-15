@@ -1,0 +1,2154 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://ws.apache.org/axis2" xmlns:ax21="http://token.safenet.com/xsd" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns="http://ws.apache.org/axis2" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsdl:documentation>SafeNetTokenizer<wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <generatedXSD location="SafeNetTokenizer_InlineSchema1.xsd"/>
+        <generatedXSD location="SafeNetTokenizer_InlineSchema2.xsd"/>
+        <binding hasEncoding="false" imported="false" name="SafeNetTokenizerHttpBinding" originalBindingStyle="document"/>
+        <binding hasEncoding="false" imported="false" name="SafeNetTokenizerSoap11Binding" originalBindingStyle="document"/>
+        <binding hasEncoding="false" imported="true" name="SafeNetTokenizerSoap12Binding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+    <wsdl:types>
+        
+        
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.apache.org/axis2" xmlns:ax23="http://token.safenet.com/xsd" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+            <xsd:import namespace="http://token.safenet.com/xsd" schemaLocation="SafeNetTokenizer_InlineSchema2.xsd"/>
+            <xsd:include schemaLocation="SafeNetTokenizer_InlineSchema1.xsd"/>
+    </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://token.safenet.com/xsd" xmlns:ax22="http://ws.apache.org/axis2">
+            <xsd:import namespace="http://ws.apache.org/axis2" schemaLocation="SafeNetTokenizer_InlineSchema1.xsd"/>
+            <xsd:include schemaLocation="SafeNetTokenizer_InlineSchema2.xsd"/>
+    </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="DeleteTokenRequest">
+        <wsdl:part element="ns:DeleteToken" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenResponse"/>
+    <wsdl:message name="TokenException">
+        <wsdl:part element="ns:TokenException" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertIrreversibleTokenRequest">
+        <wsdl:part element="ns:InsertIrreversibleToken" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertIrreversibleTokenResponse">
+        <wsdl:part element="ns:InsertIrreversibleTokenResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenRequest">
+        <wsdl:part element="ns:InsertToken" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenResponse">
+        <wsdl:part element="ns:InsertTokenResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithTokenPropertyRequest">
+        <wsdl:part element="ns:InsertBatchWithTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithTokenPropertyResponse">
+        <wsdl:part element="ns:InsertBatchWithTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokensByTokenPropertyRequest">
+        <wsdl:part element="ns:GetTokensByTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokensByTokenPropertyResponse">
+        <wsdl:part element="ns:GetTokensByTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenBatchWithCustomDataRequest">
+        <wsdl:part element="ns:DeleteTokenBatchWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenBatchWithCustomDataResponse"/>
+    <wsdl:message name="InsertTokenWithCustomDataRequest">
+        <wsdl:part element="ns:InsertTokenWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenWithCustomDataResponse">
+        <wsdl:part element="ns:InsertTokenWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataAndTokenPropertyRequest">
+        <wsdl:part element="ns:InsertBatchWithCustomDataAndTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataAndTokenPropertyResponse">
+        <wsdl:part element="ns:InsertBatchWithCustomDataAndTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateTokenPropertyRequest">
+        <wsdl:part element="ns:UpdateTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateTokenPropertyResponse">
+        <wsdl:part element="ns:UpdateTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetDisabledTokensRequest">
+        <wsdl:part element="ns:GetDisabledTokens" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetDisabledTokensResponse">
+        <wsdl:part element="ns:GetDisabledTokensResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataSmartCheckRequest">
+        <wsdl:part element="ns:InsertBatchWithCustomDataSmartCheck" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataSmartCheckResponse">
+        <wsdl:part element="ns:InsertBatchWithCustomDataSmartCheckResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="deleteTokenWithCustomDataRequest">
+        <wsdl:part element="ns:deleteTokenWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="deleteTokenWithCustomDataResponse"/>
+    <wsdl:message name="DeleteValueWithCustomDataRequest">
+        <wsdl:part element="ns:DeleteValueWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteValueWithCustomDataResponse"/>
+    <wsdl:message name="CreateNewRegExTokenFormatRequest">
+        <wsdl:part element="ns:CreateNewRegExTokenFormat" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewRegExTokenFormatResponse">
+        <wsdl:part element="ns:CreateNewRegExTokenFormatResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetCustomTokenPropertyByTokensRequest">
+        <wsdl:part element="ns:GetCustomTokenPropertyByTokens" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetCustomTokenPropertyByTokensResponse">
+        <wsdl:part element="ns:GetCustomTokenPropertyByTokensResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokensByDateWithCustomDataRequest">
+        <wsdl:part element="ns:GetTokensByDateWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokensByDateWithCustomDataResponse">
+        <wsdl:part element="ns:GetTokensByDateWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="MaskRequest">
+        <wsdl:part element="ns:Mask" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="MaskResponse">
+        <wsdl:part element="ns:MaskResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewTokenFormatWithTokenLengthRequest">
+        <wsdl:part element="ns:CreateNewTokenFormatWithTokenLength" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewTokenFormatWithTokenLengthResponse">
+        <wsdl:part element="ns:CreateNewTokenFormatWithTokenLengthResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenWithCustomDataWithTokenPropertyRequest">
+        <wsdl:part element="ns:InsertTokenWithCustomDataWithTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenWithCustomDataWithTokenPropertyResponse">
+        <wsdl:part element="ns:InsertTokenWithCustomDataWithTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenByTokenPropertyRequest">
+        <wsdl:part element="ns:DeleteTokenByTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenByTokenPropertyResponse">
+        <wsdl:part element="ns:DeleteTokenByTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckRequest">
+        <wsdl:part element="ns:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckResponse">
+        <wsdl:part element="ns:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokenWithCustomDataRequest">
+        <wsdl:part element="ns:GetTokenWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokenWithCustomDataResponse">
+        <wsdl:part element="ns:GetTokenWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchRequest">
+        <wsdl:part element="ns:GetBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchResponse">
+        <wsdl:part element="ns:GetBatchResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokenBatchWithCustomDataRequest">
+        <wsdl:part element="ns:GetTokenBatchWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokenBatchWithCustomDataResponse">
+        <wsdl:part element="ns:GetTokenBatchWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteValueBatchRequest">
+        <wsdl:part element="ns:DeleteValueBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteValueBatchResponse"/>
+    <wsdl:message name="DisableTokenBatchRequest">
+        <wsdl:part element="ns:DisableTokenBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DisableTokenBatchResponse">
+        <wsdl:part element="ns:DisableTokenBatchResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateBatchTokenPropertyRequest">
+        <wsdl:part element="ns:UpdateBatchTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateBatchTokenPropertyResponse">
+        <wsdl:part element="ns:UpdateBatchTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchRequest">
+        <wsdl:part element="ns:InsertBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchResponse">
+        <wsdl:part element="ns:InsertBatchResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchWithSmartCheckRequest">
+        <wsdl:part element="ns:GetBatchWithSmartCheck" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchWithSmartCheckResponse">
+        <wsdl:part element="ns:GetBatchWithSmartCheckResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetCustomTokenPropertyByValueRequest">
+        <wsdl:part element="ns:GetCustomTokenPropertyByValue" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetCustomTokenPropertyByValueResponse">
+        <wsdl:part element="ns:GetCustomTokenPropertyByValueResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenWithTokenPropertyRequest">
+        <wsdl:part element="ns:InsertTokenWithTokenProperty" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertTokenWithTokenPropertyResponse">
+        <wsdl:part element="ns:InsertTokenWithTokenPropertyResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataRequest">
+        <wsdl:part element="ns:InsertBatchWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataResponse">
+        <wsdl:part element="ns:InsertBatchWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithMultipleVaultRequest">
+        <wsdl:part element="ns:InsertBatchWithMultipleVault" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithMultipleVaultResponse">
+        <wsdl:part element="ns:InsertBatchWithMultipleVaultResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokensByRangeDateWithCustomDataRequest">
+        <wsdl:part element="ns:GetTokensByRangeDateWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetTokensByRangeDateWithCustomDataResponse">
+        <wsdl:part element="ns:GetTokensByRangeDateWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchWithCustomDataRequest">
+        <wsdl:part element="ns:GetBatchWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchWithCustomDataResponse">
+        <wsdl:part element="ns:GetBatchWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewTokenFormatRequest">
+        <wsdl:part element="ns:CreateNewTokenFormat" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewTokenFormatResponse">
+        <wsdl:part element="ns:CreateNewTokenFormatResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteValueRequest">
+        <wsdl:part element="ns:DeleteValue" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteValueResponse"/>
+    <wsdl:message name="InsertBatchWithTokenPropertyBatchRequest">
+        <wsdl:part element="ns:InsertBatchWithTokenPropertyBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithTokenPropertyBatchResponse">
+        <wsdl:part element="ns:InsertBatchWithTokenPropertyBatchResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenExBatchRequest">
+        <wsdl:part element="ns:DeleteTokenExBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenExBatchResponse">
+        <wsdl:part element="ns:DeleteTokenExBatchResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenBatchRequest">
+        <wsdl:part element="ns:DeleteTokenBatch" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenBatchResponse"/>
+    <wsdl:message name="DeleteValueBatchWithCustomDataRequest">
+        <wsdl:part element="ns:DeleteValueBatchWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteValueBatchWithCustomDataResponse"/>
+    <wsdl:message name="GetValueWithCustomDataRequest">
+        <wsdl:part element="ns:GetValueWithCustomData" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetValueWithCustomDataResponse">
+        <wsdl:part element="ns:GetValueWithCustomDataResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateMaskingFormatRequest">
+        <wsdl:part element="ns:CreateMaskingFormat" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateMaskingFormatResponse">
+        <wsdl:part element="ns:CreateMaskingFormatResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchWithCustomDataSmartCheckRequest">
+        <wsdl:part element="ns:GetBatchWithCustomDataSmartCheck" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetBatchWithCustomDataSmartCheckResponse">
+        <wsdl:part element="ns:GetBatchWithCustomDataSmartCheckResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenExRequest">
+        <wsdl:part element="ns:DeleteTokenEx" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteTokenExResponse">
+        <wsdl:part element="ns:DeleteTokenExResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataAndTokenPropertySmartCheckRequest">
+        <wsdl:part element="ns:InsertBatchWithCustomDataAndTokenPropertySmartCheck" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="InsertBatchWithCustomDataAndTokenPropertySmartCheckResponse">
+        <wsdl:part element="ns:InsertBatchWithCustomDataAndTokenPropertySmartCheckResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewTokenFormatWithRandomTokenLengthRequest">
+        <wsdl:part element="ns:CreateNewTokenFormatWithRandomTokenLength" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewTokenFormatWithRandomTokenLengthResponse">
+        <wsdl:part element="ns:CreateNewTokenFormatWithRandomTokenLengthResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetValueRequest">
+        <wsdl:part element="ns:GetValue" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="GetValueResponse">
+        <wsdl:part element="ns:GetValueResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:portType name="SafeNetTokenizerPortType">
+        <wsdl:operation name="DeleteToken">
+            <wsdl:input message="ns:DeleteTokenRequest" wsaw:Action="urn:DeleteToken"/>
+            <wsdl:output message="ns:DeleteTokenResponse" wsaw:Action="urn:DeleteTokenResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteTokenTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertIrreversibleToken">
+            <wsdl:input message="ns:InsertIrreversibleTokenRequest" wsaw:Action="urn:InsertIrreversibleToken"/>
+            <wsdl:output message="ns:InsertIrreversibleTokenResponse" wsaw:Action="urn:InsertIrreversibleTokenResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertIrreversibleTokenTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertToken">
+            <wsdl:input message="ns:InsertTokenRequest" wsaw:Action="urn:InsertToken"/>
+            <wsdl:output message="ns:InsertTokenResponse" wsaw:Action="urn:InsertTokenResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertTokenTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenProperty">
+            <wsdl:input message="ns:InsertBatchWithTokenPropertyRequest" wsaw:Action="urn:InsertBatchWithTokenProperty"/>
+            <wsdl:output message="ns:InsertBatchWithTokenPropertyResponse" wsaw:Action="urn:InsertBatchWithTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByTokenProperty">
+            <wsdl:input message="ns:GetTokensByTokenPropertyRequest" wsaw:Action="urn:GetTokensByTokenProperty"/>
+            <wsdl:output message="ns:GetTokensByTokenPropertyResponse" wsaw:Action="urn:GetTokensByTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetTokensByTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatchWithCustomData">
+            <wsdl:input message="ns:DeleteTokenBatchWithCustomDataRequest" wsaw:Action="urn:DeleteTokenBatchWithCustomData"/>
+            <wsdl:output message="ns:DeleteTokenBatchWithCustomDataResponse" wsaw:Action="urn:DeleteTokenBatchWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteTokenBatchWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomData">
+            <wsdl:input message="ns:InsertTokenWithCustomDataRequest" wsaw:Action="urn:InsertTokenWithCustomData"/>
+            <wsdl:output message="ns:InsertTokenWithCustomDataResponse" wsaw:Action="urn:InsertTokenWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertTokenWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenProperty">
+            <wsdl:input message="ns:InsertBatchWithCustomDataAndTokenPropertyRequest" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenProperty"/>
+            <wsdl:output message="ns:InsertBatchWithCustomDataAndTokenPropertyResponse" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateTokenProperty">
+            <wsdl:input message="ns:UpdateTokenPropertyRequest" wsaw:Action="urn:UpdateTokenProperty"/>
+            <wsdl:output message="ns:UpdateTokenPropertyResponse" wsaw:Action="urn:UpdateTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:UpdateTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetDisabledTokens">
+            <wsdl:input message="ns:GetDisabledTokensRequest" wsaw:Action="urn:GetDisabledTokens"/>
+            <wsdl:output message="ns:GetDisabledTokensResponse" wsaw:Action="urn:GetDisabledTokensResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetDisabledTokensTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataSmartCheck">
+            <wsdl:input message="ns:InsertBatchWithCustomDataSmartCheckRequest" wsaw:Action="urn:InsertBatchWithCustomDataSmartCheck"/>
+            <wsdl:output message="ns:InsertBatchWithCustomDataSmartCheckResponse" wsaw:Action="urn:InsertBatchWithCustomDataSmartCheckResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithCustomDataSmartCheckTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTokenWithCustomData">
+            <wsdl:input message="ns:deleteTokenWithCustomDataRequest" wsaw:Action="urn:deleteTokenWithCustomData"/>
+            <wsdl:output message="ns:deleteTokenWithCustomDataResponse" wsaw:Action="urn:deleteTokenWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:deleteTokenWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueWithCustomData">
+            <wsdl:input message="ns:DeleteValueWithCustomDataRequest" wsaw:Action="urn:DeleteValueWithCustomData"/>
+            <wsdl:output message="ns:DeleteValueWithCustomDataResponse" wsaw:Action="urn:DeleteValueWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteValueWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewRegExTokenFormat">
+            <wsdl:input message="ns:CreateNewRegExTokenFormatRequest" wsaw:Action="urn:CreateNewRegExTokenFormat"/>
+            <wsdl:output message="ns:CreateNewRegExTokenFormatResponse" wsaw:Action="urn:CreateNewRegExTokenFormatResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:CreateNewRegExTokenFormatTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByTokens">
+            <wsdl:input message="ns:GetCustomTokenPropertyByTokensRequest" wsaw:Action="urn:GetCustomTokenPropertyByTokens"/>
+            <wsdl:output message="ns:GetCustomTokenPropertyByTokensResponse" wsaw:Action="urn:GetCustomTokenPropertyByTokensResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetCustomTokenPropertyByTokensTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByDateWithCustomData">
+            <wsdl:input message="ns:GetTokensByDateWithCustomDataRequest" wsaw:Action="urn:GetTokensByDateWithCustomData"/>
+            <wsdl:output message="ns:GetTokensByDateWithCustomDataResponse" wsaw:Action="urn:GetTokensByDateWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetTokensByDateWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="Mask">
+            <wsdl:input message="ns:MaskRequest" wsaw:Action="urn:Mask"/>
+            <wsdl:output message="ns:MaskResponse" wsaw:Action="urn:MaskResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:MaskTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithTokenLength">
+            <wsdl:input message="ns:CreateNewTokenFormatWithTokenLengthRequest" wsaw:Action="urn:CreateNewTokenFormatWithTokenLength"/>
+            <wsdl:output message="ns:CreateNewTokenFormatWithTokenLengthResponse" wsaw:Action="urn:CreateNewTokenFormatWithTokenLengthResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:CreateNewTokenFormatWithTokenLengthTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomDataWithTokenProperty">
+            <wsdl:input message="ns:InsertTokenWithCustomDataWithTokenPropertyRequest" wsaw:Action="urn:InsertTokenWithCustomDataWithTokenProperty"/>
+            <wsdl:output message="ns:InsertTokenWithCustomDataWithTokenPropertyResponse" wsaw:Action="urn:InsertTokenWithCustomDataWithTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertTokenWithCustomDataWithTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenByTokenProperty">
+            <wsdl:input message="ns:DeleteTokenByTokenPropertyRequest" wsaw:Action="urn:DeleteTokenByTokenProperty"/>
+            <wsdl:output message="ns:DeleteTokenByTokenPropertyResponse" wsaw:Action="urn:DeleteTokenByTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteTokenByTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck">
+            <wsdl:input message="ns:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckRequest" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck"/>
+            <wsdl:output message="ns:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckResponse" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheckTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenWithCustomData">
+            <wsdl:input message="ns:GetTokenWithCustomDataRequest" wsaw:Action="urn:GetTokenWithCustomData"/>
+            <wsdl:output message="ns:GetTokenWithCustomDataResponse" wsaw:Action="urn:GetTokenWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetTokenWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatch">
+            <wsdl:input message="ns:GetBatchRequest" wsaw:Action="urn:GetBatch"/>
+            <wsdl:output message="ns:GetBatchResponse" wsaw:Action="urn:GetBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenBatchWithCustomData">
+            <wsdl:input message="ns:GetTokenBatchWithCustomDataRequest" wsaw:Action="urn:GetTokenBatchWithCustomData"/>
+            <wsdl:output message="ns:GetTokenBatchWithCustomDataResponse" wsaw:Action="urn:GetTokenBatchWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetTokenBatchWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatch">
+            <wsdl:input message="ns:DeleteValueBatchRequest" wsaw:Action="urn:DeleteValueBatch"/>
+            <wsdl:output message="ns:DeleteValueBatchResponse" wsaw:Action="urn:DeleteValueBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteValueBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DisableTokenBatch">
+            <wsdl:input message="ns:DisableTokenBatchRequest" wsaw:Action="urn:DisableTokenBatch"/>
+            <wsdl:output message="ns:DisableTokenBatchResponse" wsaw:Action="urn:DisableTokenBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DisableTokenBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateBatchTokenProperty">
+            <wsdl:input message="ns:UpdateBatchTokenPropertyRequest" wsaw:Action="urn:UpdateBatchTokenProperty"/>
+            <wsdl:output message="ns:UpdateBatchTokenPropertyResponse" wsaw:Action="urn:UpdateBatchTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:UpdateBatchTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatch">
+            <wsdl:input message="ns:InsertBatchRequest" wsaw:Action="urn:InsertBatch"/>
+            <wsdl:output message="ns:InsertBatchResponse" wsaw:Action="urn:InsertBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithSmartCheck">
+            <wsdl:input message="ns:GetBatchWithSmartCheckRequest" wsaw:Action="urn:GetBatchWithSmartCheck"/>
+            <wsdl:output message="ns:GetBatchWithSmartCheckResponse" wsaw:Action="urn:GetBatchWithSmartCheckResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetBatchWithSmartCheckTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByValue">
+            <wsdl:input message="ns:GetCustomTokenPropertyByValueRequest" wsaw:Action="urn:GetCustomTokenPropertyByValue"/>
+            <wsdl:output message="ns:GetCustomTokenPropertyByValueResponse" wsaw:Action="urn:GetCustomTokenPropertyByValueResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetCustomTokenPropertyByValueTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithTokenProperty">
+            <wsdl:input message="ns:InsertTokenWithTokenPropertyRequest" wsaw:Action="urn:InsertTokenWithTokenProperty"/>
+            <wsdl:output message="ns:InsertTokenWithTokenPropertyResponse" wsaw:Action="urn:InsertTokenWithTokenPropertyResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertTokenWithTokenPropertyTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomData">
+            <wsdl:input message="ns:InsertBatchWithCustomDataRequest" wsaw:Action="urn:InsertBatchWithCustomData"/>
+            <wsdl:output message="ns:InsertBatchWithCustomDataResponse" wsaw:Action="urn:InsertBatchWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithMultipleVault">
+            <wsdl:input message="ns:InsertBatchWithMultipleVaultRequest" wsaw:Action="urn:InsertBatchWithMultipleVault"/>
+            <wsdl:output message="ns:InsertBatchWithMultipleVaultResponse" wsaw:Action="urn:InsertBatchWithMultipleVaultResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithMultipleVaultTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByRangeDateWithCustomData">
+            <wsdl:input message="ns:GetTokensByRangeDateWithCustomDataRequest" wsaw:Action="urn:GetTokensByRangeDateWithCustomData"/>
+            <wsdl:output message="ns:GetTokensByRangeDateWithCustomDataResponse" wsaw:Action="urn:GetTokensByRangeDateWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetTokensByRangeDateWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomData">
+            <wsdl:input message="ns:GetBatchWithCustomDataRequest" wsaw:Action="urn:GetBatchWithCustomData"/>
+            <wsdl:output message="ns:GetBatchWithCustomDataResponse" wsaw:Action="urn:GetBatchWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetBatchWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormat">
+            <wsdl:input message="ns:CreateNewTokenFormatRequest" wsaw:Action="urn:CreateNewTokenFormat"/>
+            <wsdl:output message="ns:CreateNewTokenFormatResponse" wsaw:Action="urn:CreateNewTokenFormatResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:CreateNewTokenFormatTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValue">
+            <wsdl:input message="ns:DeleteValueRequest" wsaw:Action="urn:DeleteValue"/>
+            <wsdl:output message="ns:DeleteValueResponse" wsaw:Action="urn:DeleteValueResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteValueTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenPropertyBatch">
+            <wsdl:input message="ns:InsertBatchWithTokenPropertyBatchRequest" wsaw:Action="urn:InsertBatchWithTokenPropertyBatch"/>
+            <wsdl:output message="ns:InsertBatchWithTokenPropertyBatchResponse" wsaw:Action="urn:InsertBatchWithTokenPropertyBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithTokenPropertyBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenExBatch">
+            <wsdl:input message="ns:DeleteTokenExBatchRequest" wsaw:Action="urn:DeleteTokenExBatch"/>
+            <wsdl:output message="ns:DeleteTokenExBatchResponse" wsaw:Action="urn:DeleteTokenExBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteTokenExBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatch">
+            <wsdl:input message="ns:DeleteTokenBatchRequest" wsaw:Action="urn:DeleteTokenBatch"/>
+            <wsdl:output message="ns:DeleteTokenBatchResponse" wsaw:Action="urn:DeleteTokenBatchResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteTokenBatchTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatchWithCustomData">
+            <wsdl:input message="ns:DeleteValueBatchWithCustomDataRequest" wsaw:Action="urn:DeleteValueBatchWithCustomData"/>
+            <wsdl:output message="ns:DeleteValueBatchWithCustomDataResponse" wsaw:Action="urn:DeleteValueBatchWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteValueBatchWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetValueWithCustomData">
+            <wsdl:input message="ns:GetValueWithCustomDataRequest" wsaw:Action="urn:GetValueWithCustomData"/>
+            <wsdl:output message="ns:GetValueWithCustomDataResponse" wsaw:Action="urn:GetValueWithCustomDataResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetValueWithCustomDataTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMaskingFormat">
+            <wsdl:input message="ns:CreateMaskingFormatRequest" wsaw:Action="urn:CreateMaskingFormat"/>
+            <wsdl:output message="ns:CreateMaskingFormatResponse" wsaw:Action="urn:CreateMaskingFormatResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:CreateMaskingFormatTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomDataSmartCheck">
+            <wsdl:input message="ns:GetBatchWithCustomDataSmartCheckRequest" wsaw:Action="urn:GetBatchWithCustomDataSmartCheck"/>
+            <wsdl:output message="ns:GetBatchWithCustomDataSmartCheckResponse" wsaw:Action="urn:GetBatchWithCustomDataSmartCheckResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetBatchWithCustomDataSmartCheckTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenEx">
+            <wsdl:input message="ns:DeleteTokenExRequest" wsaw:Action="urn:DeleteTokenEx"/>
+            <wsdl:output message="ns:DeleteTokenExResponse" wsaw:Action="urn:DeleteTokenExResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:DeleteTokenExTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertySmartCheck">
+            <wsdl:input message="ns:InsertBatchWithCustomDataAndTokenPropertySmartCheckRequest" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertySmartCheck"/>
+            <wsdl:output message="ns:InsertBatchWithCustomDataAndTokenPropertySmartCheckResponse" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertySmartCheckResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:InsertBatchWithCustomDataAndTokenPropertySmartCheckTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithRandomTokenLength">
+            <wsdl:input message="ns:CreateNewTokenFormatWithRandomTokenLengthRequest" wsaw:Action="urn:CreateNewTokenFormatWithRandomTokenLength"/>
+            <wsdl:output message="ns:CreateNewTokenFormatWithRandomTokenLengthResponse" wsaw:Action="urn:CreateNewTokenFormatWithRandomTokenLengthResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:CreateNewTokenFormatWithRandomTokenLengthTokenException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetValue">
+            <wsdl:input message="ns:GetValueRequest" wsaw:Action="urn:GetValue"/>
+            <wsdl:output message="ns:GetValueResponse" wsaw:Action="urn:GetValueResponse"/>
+            <wsdl:fault message="ns:TokenException" name="TokenException" wsaw:Action="urn:GetValueTokenException"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SafeNetTokenizerSoap11Binding" type="ns:SafeNetTokenizerPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="DeleteToken">
+            <soap:operation soapAction="urn:DeleteToken" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertIrreversibleToken">
+            <soap:operation soapAction="urn:InsertIrreversibleToken" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertToken">
+            <soap:operation soapAction="urn:InsertToken" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenProperty">
+            <soap:operation soapAction="urn:InsertBatchWithTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByTokenProperty">
+            <soap:operation soapAction="urn:GetTokensByTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatchWithCustomData">
+            <soap:operation soapAction="urn:DeleteTokenBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomData">
+            <soap:operation soapAction="urn:InsertTokenWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenProperty">
+            <soap:operation soapAction="urn:InsertBatchWithCustomDataAndTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateTokenProperty">
+            <soap:operation soapAction="urn:UpdateTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetDisabledTokens">
+            <soap:operation soapAction="urn:GetDisabledTokens" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataSmartCheck">
+            <soap:operation soapAction="urn:InsertBatchWithCustomDataSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTokenWithCustomData">
+            <soap:operation soapAction="urn:deleteTokenWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueWithCustomData">
+            <soap:operation soapAction="urn:DeleteValueWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewRegExTokenFormat">
+            <soap:operation soapAction="urn:CreateNewRegExTokenFormat" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByTokens">
+            <soap:operation soapAction="urn:GetCustomTokenPropertyByTokens" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByDateWithCustomData">
+            <soap:operation soapAction="urn:GetTokensByDateWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="Mask">
+            <soap:operation soapAction="urn:Mask" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithTokenLength">
+            <soap:operation soapAction="urn:CreateNewTokenFormatWithTokenLength" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomDataWithTokenProperty">
+            <soap:operation soapAction="urn:InsertTokenWithCustomDataWithTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenByTokenProperty">
+            <soap:operation soapAction="urn:DeleteTokenByTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck">
+            <soap:operation soapAction="urn:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenWithCustomData">
+            <soap:operation soapAction="urn:GetTokenWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatch">
+            <soap:operation soapAction="urn:GetBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenBatchWithCustomData">
+            <soap:operation soapAction="urn:GetTokenBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatch">
+            <soap:operation soapAction="urn:DeleteValueBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DisableTokenBatch">
+            <soap:operation soapAction="urn:DisableTokenBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateBatchTokenProperty">
+            <soap:operation soapAction="urn:UpdateBatchTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatch">
+            <soap:operation soapAction="urn:InsertBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithSmartCheck">
+            <soap:operation soapAction="urn:GetBatchWithSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByValue">
+            <soap:operation soapAction="urn:GetCustomTokenPropertyByValue" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithTokenProperty">
+            <soap:operation soapAction="urn:InsertTokenWithTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomData">
+            <soap:operation soapAction="urn:InsertBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithMultipleVault">
+            <soap:operation soapAction="urn:InsertBatchWithMultipleVault" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByRangeDateWithCustomData">
+            <soap:operation soapAction="urn:GetTokensByRangeDateWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomData">
+            <soap:operation soapAction="urn:GetBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormat">
+            <soap:operation soapAction="urn:CreateNewTokenFormat" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValue">
+            <soap:operation soapAction="urn:DeleteValue" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenPropertyBatch">
+            <soap:operation soapAction="urn:InsertBatchWithTokenPropertyBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenExBatch">
+            <soap:operation soapAction="urn:DeleteTokenExBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatch">
+            <soap:operation soapAction="urn:DeleteTokenBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatchWithCustomData">
+            <soap:operation soapAction="urn:DeleteValueBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetValueWithCustomData">
+            <soap:operation soapAction="urn:GetValueWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMaskingFormat">
+            <soap:operation soapAction="urn:CreateMaskingFormat" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomDataSmartCheck">
+            <soap:operation soapAction="urn:GetBatchWithCustomDataSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenEx">
+            <soap:operation soapAction="urn:DeleteTokenEx" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertySmartCheck">
+            <soap:operation soapAction="urn:InsertBatchWithCustomDataAndTokenPropertySmartCheck" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithRandomTokenLength">
+            <soap:operation soapAction="urn:CreateNewTokenFormatWithRandomTokenLength" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetValue">
+            <soap:operation soapAction="urn:GetValue" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="SafeNetTokenizerSoap12Binding" type="ns:SafeNetTokenizerPortType">
+        <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="DeleteToken">
+            <soap12:operation soapAction="urn:DeleteToken" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertIrreversibleToken">
+            <soap12:operation soapAction="urn:InsertIrreversibleToken" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertToken">
+            <soap12:operation soapAction="urn:InsertToken" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenProperty">
+            <soap12:operation soapAction="urn:InsertBatchWithTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByTokenProperty">
+            <soap12:operation soapAction="urn:GetTokensByTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatchWithCustomData">
+            <soap12:operation soapAction="urn:DeleteTokenBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomData">
+            <soap12:operation soapAction="urn:InsertTokenWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenProperty">
+            <soap12:operation soapAction="urn:InsertBatchWithCustomDataAndTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateTokenProperty">
+            <soap12:operation soapAction="urn:UpdateTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetDisabledTokens">
+            <soap12:operation soapAction="urn:GetDisabledTokens" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataSmartCheck">
+            <soap12:operation soapAction="urn:InsertBatchWithCustomDataSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTokenWithCustomData">
+            <soap12:operation soapAction="urn:deleteTokenWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueWithCustomData">
+            <soap12:operation soapAction="urn:DeleteValueWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewRegExTokenFormat">
+            <soap12:operation soapAction="urn:CreateNewRegExTokenFormat" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByTokens">
+            <soap12:operation soapAction="urn:GetCustomTokenPropertyByTokens" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByDateWithCustomData">
+            <soap12:operation soapAction="urn:GetTokensByDateWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="Mask">
+            <soap12:operation soapAction="urn:Mask" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithTokenLength">
+            <soap12:operation soapAction="urn:CreateNewTokenFormatWithTokenLength" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomDataWithTokenProperty">
+            <soap12:operation soapAction="urn:InsertTokenWithCustomDataWithTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenByTokenProperty">
+            <soap12:operation soapAction="urn:DeleteTokenByTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck">
+            <soap12:operation soapAction="urn:InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenWithCustomData">
+            <soap12:operation soapAction="urn:GetTokenWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatch">
+            <soap12:operation soapAction="urn:GetBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenBatchWithCustomData">
+            <soap12:operation soapAction="urn:GetTokenBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatch">
+            <soap12:operation soapAction="urn:DeleteValueBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DisableTokenBatch">
+            <soap12:operation soapAction="urn:DisableTokenBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateBatchTokenProperty">
+            <soap12:operation soapAction="urn:UpdateBatchTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatch">
+            <soap12:operation soapAction="urn:InsertBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithSmartCheck">
+            <soap12:operation soapAction="urn:GetBatchWithSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByValue">
+            <soap12:operation soapAction="urn:GetCustomTokenPropertyByValue" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithTokenProperty">
+            <soap12:operation soapAction="urn:InsertTokenWithTokenProperty" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomData">
+            <soap12:operation soapAction="urn:InsertBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithMultipleVault">
+            <soap12:operation soapAction="urn:InsertBatchWithMultipleVault" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByRangeDateWithCustomData">
+            <soap12:operation soapAction="urn:GetTokensByRangeDateWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomData">
+            <soap12:operation soapAction="urn:GetBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormat">
+            <soap12:operation soapAction="urn:CreateNewTokenFormat" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValue">
+            <soap12:operation soapAction="urn:DeleteValue" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenPropertyBatch">
+            <soap12:operation soapAction="urn:InsertBatchWithTokenPropertyBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenExBatch">
+            <soap12:operation soapAction="urn:DeleteTokenExBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatch">
+            <soap12:operation soapAction="urn:DeleteTokenBatch" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatchWithCustomData">
+            <soap12:operation soapAction="urn:DeleteValueBatchWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetValueWithCustomData">
+            <soap12:operation soapAction="urn:GetValueWithCustomData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMaskingFormat">
+            <soap12:operation soapAction="urn:CreateMaskingFormat" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomDataSmartCheck">
+            <soap12:operation soapAction="urn:GetBatchWithCustomDataSmartCheck" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenEx">
+            <soap12:operation soapAction="urn:DeleteTokenEx" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertySmartCheck">
+            <soap12:operation soapAction="urn:InsertBatchWithCustomDataAndTokenPropertySmartCheck" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithRandomTokenLength">
+            <soap12:operation soapAction="urn:CreateNewTokenFormatWithRandomTokenLength" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetValue">
+            <soap12:operation soapAction="urn:GetValue" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TokenException">
+                <soap12:fault name="TokenException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="SafeNetTokenizerHttpBinding" type="ns:SafeNetTokenizerPortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="DeleteToken">
+            <http:operation location="SafeNetTokenizer/DeleteToken"/>
+            <wsdl:input>
+                <mime:content part="DeleteToken" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteToken" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertIrreversibleToken">
+            <http:operation location="SafeNetTokenizer/InsertIrreversibleToken"/>
+            <wsdl:input>
+                <mime:content part="InsertIrreversibleToken" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertIrreversibleToken" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertToken">
+            <http:operation location="SafeNetTokenizer/InsertToken"/>
+            <wsdl:input>
+                <mime:content part="InsertToken" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertToken" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenProperty">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByTokenProperty">
+            <http:operation location="SafeNetTokenizer/GetTokensByTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="GetTokensByTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetTokensByTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatchWithCustomData">
+            <http:operation location="SafeNetTokenizer/DeleteTokenBatchWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="DeleteTokenBatchWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteTokenBatchWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomData">
+            <http:operation location="SafeNetTokenizer/InsertTokenWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="InsertTokenWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertTokenWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenProperty">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithCustomDataAndTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithCustomDataAndTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithCustomDataAndTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateTokenProperty">
+            <http:operation location="SafeNetTokenizer/UpdateTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="UpdateTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="UpdateTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDisabledTokens">
+            <http:operation location="SafeNetTokenizer/GetDisabledTokens"/>
+            <wsdl:input>
+                <mime:content part="GetDisabledTokens" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetDisabledTokens" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataSmartCheck">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithCustomDataSmartCheck"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithCustomDataSmartCheck" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithCustomDataSmartCheck" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTokenWithCustomData">
+            <http:operation location="SafeNetTokenizer/deleteTokenWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="deleteTokenWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="deleteTokenWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueWithCustomData">
+            <http:operation location="SafeNetTokenizer/DeleteValueWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="DeleteValueWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteValueWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewRegExTokenFormat">
+            <http:operation location="SafeNetTokenizer/CreateNewRegExTokenFormat"/>
+            <wsdl:input>
+                <mime:content part="CreateNewRegExTokenFormat" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="CreateNewRegExTokenFormat" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByTokens">
+            <http:operation location="SafeNetTokenizer/GetCustomTokenPropertyByTokens"/>
+            <wsdl:input>
+                <mime:content part="GetCustomTokenPropertyByTokens" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetCustomTokenPropertyByTokens" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByDateWithCustomData">
+            <http:operation location="SafeNetTokenizer/GetTokensByDateWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="GetTokensByDateWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetTokensByDateWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Mask">
+            <http:operation location="SafeNetTokenizer/Mask"/>
+            <wsdl:input>
+                <mime:content part="Mask" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Mask" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithTokenLength">
+            <http:operation location="SafeNetTokenizer/CreateNewTokenFormatWithTokenLength"/>
+            <wsdl:input>
+                <mime:content part="CreateNewTokenFormatWithTokenLength" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="CreateNewTokenFormatWithTokenLength" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithCustomDataWithTokenProperty">
+            <http:operation location="SafeNetTokenizer/InsertTokenWithCustomDataWithTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="InsertTokenWithCustomDataWithTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertTokenWithCustomDataWithTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenByTokenProperty">
+            <http:operation location="SafeNetTokenizer/DeleteTokenByTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="DeleteTokenByTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteTokenByTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenWithCustomData">
+            <http:operation location="SafeNetTokenizer/GetTokenWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="GetTokenWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetTokenWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatch">
+            <http:operation location="SafeNetTokenizer/GetBatch"/>
+            <wsdl:input>
+                <mime:content part="GetBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokenBatchWithCustomData">
+            <http:operation location="SafeNetTokenizer/GetTokenBatchWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="GetTokenBatchWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetTokenBatchWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatch">
+            <http:operation location="SafeNetTokenizer/DeleteValueBatch"/>
+            <wsdl:input>
+                <mime:content part="DeleteValueBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteValueBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DisableTokenBatch">
+            <http:operation location="SafeNetTokenizer/DisableTokenBatch"/>
+            <wsdl:input>
+                <mime:content part="DisableTokenBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DisableTokenBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateBatchTokenProperty">
+            <http:operation location="SafeNetTokenizer/UpdateBatchTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="UpdateBatchTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="UpdateBatchTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatch">
+            <http:operation location="SafeNetTokenizer/InsertBatch"/>
+            <wsdl:input>
+                <mime:content part="InsertBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithSmartCheck">
+            <http:operation location="SafeNetTokenizer/GetBatchWithSmartCheck"/>
+            <wsdl:input>
+                <mime:content part="GetBatchWithSmartCheck" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetBatchWithSmartCheck" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCustomTokenPropertyByValue">
+            <http:operation location="SafeNetTokenizer/GetCustomTokenPropertyByValue"/>
+            <wsdl:input>
+                <mime:content part="GetCustomTokenPropertyByValue" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetCustomTokenPropertyByValue" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertTokenWithTokenProperty">
+            <http:operation location="SafeNetTokenizer/InsertTokenWithTokenProperty"/>
+            <wsdl:input>
+                <mime:content part="InsertTokenWithTokenProperty" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertTokenWithTokenProperty" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomData">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithMultipleVault">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithMultipleVault"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithMultipleVault" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithMultipleVault" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetTokensByRangeDateWithCustomData">
+            <http:operation location="SafeNetTokenizer/GetTokensByRangeDateWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="GetTokensByRangeDateWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetTokensByRangeDateWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomData">
+            <http:operation location="SafeNetTokenizer/GetBatchWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="GetBatchWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetBatchWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormat">
+            <http:operation location="SafeNetTokenizer/CreateNewTokenFormat"/>
+            <wsdl:input>
+                <mime:content part="CreateNewTokenFormat" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="CreateNewTokenFormat" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValue">
+            <http:operation location="SafeNetTokenizer/DeleteValue"/>
+            <wsdl:input>
+                <mime:content part="DeleteValue" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteValue" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithTokenPropertyBatch">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithTokenPropertyBatch"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithTokenPropertyBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithTokenPropertyBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenExBatch">
+            <http:operation location="SafeNetTokenizer/DeleteTokenExBatch"/>
+            <wsdl:input>
+                <mime:content part="DeleteTokenExBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteTokenExBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenBatch">
+            <http:operation location="SafeNetTokenizer/DeleteTokenBatch"/>
+            <wsdl:input>
+                <mime:content part="DeleteTokenBatch" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteTokenBatch" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteValueBatchWithCustomData">
+            <http:operation location="SafeNetTokenizer/DeleteValueBatchWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="DeleteValueBatchWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteValueBatchWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetValueWithCustomData">
+            <http:operation location="SafeNetTokenizer/GetValueWithCustomData"/>
+            <wsdl:input>
+                <mime:content part="GetValueWithCustomData" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetValueWithCustomData" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateMaskingFormat">
+            <http:operation location="SafeNetTokenizer/CreateMaskingFormat"/>
+            <wsdl:input>
+                <mime:content part="CreateMaskingFormat" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="CreateMaskingFormat" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetBatchWithCustomDataSmartCheck">
+            <http:operation location="SafeNetTokenizer/GetBatchWithCustomDataSmartCheck"/>
+            <wsdl:input>
+                <mime:content part="GetBatchWithCustomDataSmartCheck" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetBatchWithCustomDataSmartCheck" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteTokenEx">
+            <http:operation location="SafeNetTokenizer/DeleteTokenEx"/>
+            <wsdl:input>
+                <mime:content part="DeleteTokenEx" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="DeleteTokenEx" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="InsertBatchWithCustomDataAndTokenPropertySmartCheck">
+            <http:operation location="SafeNetTokenizer/InsertBatchWithCustomDataAndTokenPropertySmartCheck"/>
+            <wsdl:input>
+                <mime:content part="InsertBatchWithCustomDataAndTokenPropertySmartCheck" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="InsertBatchWithCustomDataAndTokenPropertySmartCheck" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateNewTokenFormatWithRandomTokenLength">
+            <http:operation location="SafeNetTokenizer/CreateNewTokenFormatWithRandomTokenLength"/>
+            <wsdl:input>
+                <mime:content part="CreateNewTokenFormatWithRandomTokenLength" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="CreateNewTokenFormatWithRandomTokenLength" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetValue">
+            <http:operation location="SafeNetTokenizer/GetValue"/>
+            <wsdl:input>
+                <mime:content part="GetValue" type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="GetValue" type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="SafeNetTokenizer">
+        <wsdl:port binding="ns:SafeNetTokenizerSoap11Binding" name="SafeNetTokenizerHttpsSoap11Endpoint">
+            <soap:address location="https://vaultuat.indusind.com:8443/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpsSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port binding="ns:SafeNetTokenizerSoap11Binding" name="SafeNetTokenizerHttpSoap11Endpoint">
+            <soap:address location="http://vaultuat.indusind.com:8080/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port binding="ns:SafeNetTokenizerSoap12Binding" name="SafeNetTokenizerHttpSoap12Endpoint">
+            <soap12:address location="http://vaultuat.indusind.com:8080/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port binding="ns:SafeNetTokenizerSoap12Binding" name="SafeNetTokenizerHttpsSoap12Endpoint">
+            <soap12:address location="https://vaultuat.indusind.com:8443/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpsSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port binding="ns:SafeNetTokenizerHttpBinding" name="SafeNetTokenizerHttpEndpoint">
+            <http:address location="http://vaultuat.indusind.com:8080/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpEndpoint/"/>
+        </wsdl:port>
+        <wsdl:port binding="ns:SafeNetTokenizerHttpBinding" name="SafeNetTokenizerHttpsEndpoint">
+            <http:address location="https://vaultuat.indusind.com:8443/axis2/services/SafeNetTokenizer.SafeNetTokenizerHttpsEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,212 @@
+
+
+Importing file: \axis2\services\SafeNetTokenizer.wsdl
+
+The WSDL import will proceed with bindings SafeNetTokenizerSoap12Binding.
+Creating wsdl schema document for RemoteFiles/SafeNetTokenizer.xsd.
+Parsing wsdl binding {http://ws.apache.org/axis2}SafeNetTokenizerSoap12Binding.
+Parsing wsdl binding input DeleteToken.
+Parsing wsdl binding output DeleteToken.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertIrreversibleToken.
+Parsing wsdl binding output InsertIrreversibleToken.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertToken.
+Parsing wsdl binding output InsertToken.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithTokenProperty.
+Parsing wsdl binding output InsertBatchWithTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetTokensByTokenProperty.
+Parsing wsdl binding output GetTokensByTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteTokenBatchWithCustomData.
+Parsing wsdl binding output DeleteTokenBatchWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertTokenWithCustomData.
+Parsing wsdl binding output InsertTokenWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithCustomDataAndTokenProperty.
+Parsing wsdl binding output InsertBatchWithCustomDataAndTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input UpdateTokenProperty.
+Parsing wsdl binding output UpdateTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetDisabledTokens.
+Parsing wsdl binding output GetDisabledTokens.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithCustomDataSmartCheck.
+Parsing wsdl binding output InsertBatchWithCustomDataSmartCheck.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input deleteTokenWithCustomData.
+Parsing wsdl binding output deleteTokenWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteValueWithCustomData.
+Parsing wsdl binding output DeleteValueWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input CreateNewRegExTokenFormat.
+Parsing wsdl binding output CreateNewRegExTokenFormat.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetCustomTokenPropertyByTokens.
+Parsing wsdl binding output GetCustomTokenPropertyByTokens.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetTokensByDateWithCustomData.
+Parsing wsdl binding output GetTokensByDateWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input Mask.
+Parsing wsdl binding output Mask.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input CreateNewTokenFormatWithTokenLength.
+Parsing wsdl binding output CreateNewTokenFormatWithTokenLength.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertTokenWithCustomDataWithTokenProperty.
+Parsing wsdl binding output InsertTokenWithCustomDataWithTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteTokenByTokenProperty.
+Parsing wsdl binding output DeleteTokenByTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck.
+Parsing wsdl binding output InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetTokenWithCustomData.
+Parsing wsdl binding output GetTokenWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetBatch.
+Parsing wsdl binding output GetBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetTokenBatchWithCustomData.
+Parsing wsdl binding output GetTokenBatchWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteValueBatch.
+Parsing wsdl binding output DeleteValueBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DisableTokenBatch.
+Parsing wsdl binding output DisableTokenBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input UpdateBatchTokenProperty.
+Parsing wsdl binding output UpdateBatchTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatch.
+Parsing wsdl binding output InsertBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetBatchWithSmartCheck.
+Parsing wsdl binding output GetBatchWithSmartCheck.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetCustomTokenPropertyByValue.
+Parsing wsdl binding output GetCustomTokenPropertyByValue.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertTokenWithTokenProperty.
+Parsing wsdl binding output InsertTokenWithTokenProperty.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithCustomData.
+Parsing wsdl binding output InsertBatchWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithMultipleVault.
+Parsing wsdl binding output InsertBatchWithMultipleVault.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetTokensByRangeDateWithCustomData.
+Parsing wsdl binding output GetTokensByRangeDateWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetBatchWithCustomData.
+Parsing wsdl binding output GetBatchWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input CreateNewTokenFormat.
+Parsing wsdl binding output CreateNewTokenFormat.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteValue.
+Parsing wsdl binding output DeleteValue.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithTokenPropertyBatch.
+Parsing wsdl binding output InsertBatchWithTokenPropertyBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteTokenExBatch.
+Parsing wsdl binding output DeleteTokenExBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteTokenBatch.
+Parsing wsdl binding output DeleteTokenBatch.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteValueBatchWithCustomData.
+Parsing wsdl binding output DeleteValueBatchWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetValueWithCustomData.
+Parsing wsdl binding output GetValueWithCustomData.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input CreateMaskingFormat.
+Parsing wsdl binding output CreateMaskingFormat.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetBatchWithCustomDataSmartCheck.
+Parsing wsdl binding output GetBatchWithCustomDataSmartCheck.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input DeleteTokenEx.
+Parsing wsdl binding output DeleteTokenEx.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input InsertBatchWithCustomDataAndTokenPropertySmartCheck.
+Parsing wsdl binding output InsertBatchWithCustomDataAndTokenPropertySmartCheck.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input CreateNewTokenFormatWithRandomTokenLength.
+Parsing wsdl binding output CreateNewTokenFormatWithRandomTokenLength.
+Parsing wsdl binding fault TokenException.
+Parsing wsdl binding input GetValue.
+Parsing wsdl binding output GetValue.
+Parsing wsdl binding fault TokenException.
+Processing doc style for operation DeleteToken.
+Processing doc style for operation InsertIrreversibleToken.
+Processing doc style for operation InsertToken.
+Processing doc style for operation InsertBatchWithTokenProperty.
+Processing doc style for operation GetTokensByTokenProperty.
+Processing doc style for operation DeleteTokenBatchWithCustomData.
+Processing doc style for operation InsertTokenWithCustomData.
+Processing doc style for operation InsertBatchWithCustomDataAndTokenProperty.
+Processing doc style for operation UpdateTokenProperty.
+Processing doc style for operation GetDisabledTokens.
+Processing doc style for operation InsertBatchWithCustomDataSmartCheck.
+Processing doc style for operation deleteTokenWithCustomData.
+Processing doc style for operation DeleteValueWithCustomData.
+Processing doc style for operation CreateNewRegExTokenFormat.
+Processing doc style for operation GetCustomTokenPropertyByTokens.
+Processing doc style for operation GetTokensByDateWithCustomData.
+Processing doc style for operation Mask.
+Processing doc style for operation CreateNewTokenFormatWithTokenLength.
+Processing doc style for operation InsertTokenWithCustomDataWithTokenProperty.
+Processing doc style for operation DeleteTokenByTokenProperty.
+Processing doc style for operation InsertBatchWithCustomDataAndTokenPropertyBatchSmartCheck.
+Processing doc style for operation GetTokenWithCustomData.
+Processing doc style for operation GetBatch.
+Processing doc style for operation GetTokenBatchWithCustomData.
+Processing doc style for operation DeleteValueBatch.
+Processing doc style for operation DisableTokenBatch.
+Processing doc style for operation UpdateBatchTokenProperty.
+Processing doc style for operation InsertBatch.
+Processing doc style for operation GetBatchWithSmartCheck.
+Processing doc style for operation GetCustomTokenPropertyByValue.
+Processing doc style for operation InsertTokenWithTokenProperty.
+Processing doc style for operation InsertBatchWithCustomData.
+Processing doc style for operation InsertBatchWithMultipleVault.
+Processing doc style for operation GetTokensByRangeDateWithCustomData.
+Processing doc style for operation GetBatchWithCustomData.
+Processing doc style for operation CreateNewTokenFormat.
+Processing doc style for operation DeleteValue.
+Processing doc style for operation InsertBatchWithTokenPropertyBatch.
+Processing doc style for operation DeleteTokenExBatch.
+Processing doc style for operation DeleteTokenBatch.
+Processing doc style for operation DeleteValueBatchWithCustomData.
+Processing doc style for operation GetValueWithCustomData.
+Processing doc style for operation CreateMaskingFormat.
+Processing doc style for operation GetBatchWithCustomDataSmartCheck.
+Processing doc style for operation DeleteTokenEx.
+Processing doc style for operation InsertBatchWithCustomDataAndTokenPropertySmartCheck.
+Processing doc style for operation CreateNewTokenFormatWithRandomTokenLength.
+Processing doc style for operation GetValue.
+Populating WSDL schema RemoteFiles/SafeNetTokenizer.xsd.
+Creating file RemoteFiles/SafeNetTokenizer.xsd in the workspace.
+Creating file /AadharVaultTokenAPI/SafeNetTokenizer_InlineSchema1.xsd in the workspace.
+Creating file /AadharVaultTokenAPI/SafeNetTokenizer_InlineSchema2.xsd in the workspace.
+Copying source WSDL SafeNetTokenizer?wsdl to SafeNetTokenizer.wsdl.
+
+Elapsed time processing this message definition file: 16.643 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

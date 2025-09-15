@@ -1,0 +1,177 @@
+
+
+
+PATH com.npci.encdec;
+DECLARE ns2 NAMESPACE 'http://npci.org/upi/schema/';
+DECLARE ns3 NAMESPACE 'http://npci.org/cm/schema/';
+CREATE COMPUTE MODULE CallBack_ProcessReqq
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		DECLARE cacheRef REFERENCE TO Environment.Variables.CachedData[>];
+
+		SET Environment.msgid =InputRoot.XMLNSC.ns2:*.Head.(XMLNSC.Attribute)msgId;
+		SET Environment.ts =InputRoot.XMLNSC.ns2:*.Head.(XMLNSC.Attribute)ts;
+		SET Environment.subProdType =InputRoot.XMLNSC.ns2:*.Txn.(XMLNSC.Attribute)subProdType;
+		SET Environment.txnid =InputRoot.XMLNSC.ns2:*.Txn.(XMLNSC.Attribute)id;
+		SET Environment.benename =InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)beneName;
+		SET Environment.initiationMode =InputRoot.XMLNSC.ns2:*.Txn.(XMLNSC.Attribute)initiationMode;
+		SET Environment.result =InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)resp;		
+		
+		
+
+
+		DECLARE myBlob BLOB;
+		DECLARE sig_bool BOOLEAN;
+		SET myBlob = ASBITSTREAM(InputRoot.XMLNSC CCSID 1208 ENCODING 546);
+		DECLARE myChar1 CHAR CAST(myBlob AS CHAR CCSID 1208 Encoding 546);
+
+		SET Environment.signature = verifyxmlsign(myChar1);
+		IF Environment.signature = 'true' THEN
+
+			CREATE FIRSTCHILD OF OutputRoot.XMLNSC TYPE XMLNSC.XmlDeclaration NAME 'XmlDeclaration';
+			SET OutputRoot.XMLNSC.(XMLNSC.XmlDeclaration)*.(XMLNSC.Attribute)Version = '1.0';
+			SET OutputRoot.XMLNSC.(XMLNSC.XmlDeclaration)*.(XMLNSC.Attribute)Encoding = 'UTF-8';
+			SET OutputRoot.XMLNSC.(XMLNSC.XmlDeclaration)*.(XMLNSC.Attribute)StandAlone = 'yes';
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)xmlns:ns2 = ns2;
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)api = 'RespBeneDetails';
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)reqMsgId = Environment.msgid;
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)ts = Environment.ts;			
+
+
+		ELSE
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)xmlns:ns2 = ns2;
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)xmlns:ns3 = ns3;
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)api = 'RespBeneDetails';
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)reqMsgId = Environment.msgid;
+			SET OutputRoot.XMLNSC.ns2:Ack.(XMLNSC.Attribute)ts = Environment.ts;
+			SET OutputRoot.XMLNSC.ns2:Ack.errorMessages.errorCd = 'Signature Validation failed';
+			SET OutputRoot.XMLNSC.ns2:Ack.errorMessages.errorDtl = 'Signature Validation failed'; ---Error
+			PROPAGATE TO TERMINAL 'out';
+			RETURN FALSE;
+		END IF;
+		PROPAGATE TO TERMINAL 'out';	
+
+
+		IF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)resp = 'SUCCESS' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.beneName = COALESCE(Environment.benename,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = 'UB' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = 'UB';
+			SET OutputRoot.JSON.Data.errDesc = 'UNABLE TO PROCESS';
+
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = '12' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = '12';
+			SET OutputRoot.JSON.Data.errDesc = 'ACCOUNT NOT FOUND';
+			
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = '08' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = '08';
+			SET OutputRoot.JSON.Data.errDesc = 'HOST(CBS)OFFLINE';
+				
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = 'M3' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = 'M3';
+			SET OutputRoot.JSON.Data.errDesc = 'ACCOUNT INACTIVE';	
+			
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = '60' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = '60';
+			SET OutputRoot.JSON.Data.errDesc = 'CONSENT NOT PROVIDED BY BENEFICIARY';	
+			
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = '62' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = '62';
+			SET OutputRoot.JSON.Data.errDesc = 'MAXIMUM NUMBER OF ATTEMPTS REACHED';
+			
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = 'MJ' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = 'MJ';
+			SET OutputRoot.JSON.Data.errDesc = 'INVALID BENEFICIARY IFSC';	
+		
+		ELSEIF InputRoot.XMLNSC.ns2:*.Resp.(XMLNSC.Attribute)errCode = 'E15' THEN
+			SET OutputRoot.JSON.Data.msgId = COALESCE(Environment.msgid,'');
+			SET OutputRoot.JSON.Data.ts = COALESCE(Environment.ts,'');
+			SET OutputRoot.JSON.Data.subProdType = COALESCE(Environment.subProdType,'');
+			SET OutputRoot.JSON.Data.txnid = COALESCE(Environment.txnid,'');
+			SET OutputRoot.JSON.Data.initiationMode =COALESCE(Environment.initiationMode,'');
+			SET OutputRoot.JSON.Data.result = COALESCE(Environment.result,'');
+			SET OutputRoot.JSON.Data.errCode = 'E15';
+			SET OutputRoot.JSON.Data.errDesc = 'INVALID RESPONSE CODE';					
+			
+
+		END IF;	   
+		
+		
+
+
+		DECLARE ChannelURL CHARACTER;
+
+		SET Environment.id = Environment.txnid;
+		SET Environment.Variable.cacheURLs = SUBSTRING(Environment.id FROM 4 FOR 4);
+		SET ChannelURL = Environment.Variable.cacheURLs || '_URL';
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = cacheRef.{ChannelURL};
+		-- SET OutputLocalEnvironment.Destination.HTTP.RequestURL = cacheRef ||'.'|| Environment.Variable.cacheURLs ;
+		--SET OutputLocalEnvironment.Destination.HTTP.RequestURL = 'https://postman-echo.com/post';
+		PROPAGATE TO TERMINAL 'out1';
+		RETURN FALSE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

@@ -1,0 +1,103 @@
+BROKER SCHEMA HTTP_JSON_ESQL_Files
+
+
+--DECLARE xsi NAMESPACE 'http://www.w3.org/2001/XMLSchema-instance';
+
+CREATE PROCEDURE IBL0843_TDclose_Repay_v1_Request (IN inRef REFERENCE, INOUT outRef REFERENCE, INOUT envRef REFERENCE )
+BEGIN
+
+	SET envRef.RequestUUID= inRef.JSON.Data.requestUUID;
+	CREATE LASTCHILD OF outRef AS outRef DOMAIN('XMLNSC');
+	SET outRef.FIXML.(XMLNSC.Attribute)xsi:schemaLocation ='http://www.finacle.com/fixml  executeFinacleScript.xsd';
+	SET outRef.FIXML.Header.RequestHeader.MessageKey.RequestUUID = envRef.RequestUUID;
+	DECLARE outputRefHdr REFERENCE TO outRef.FIXML.Header.RequestHeader ;
+	SET outputRefHdr.MessageKey.ServiceRequestId = 'executeFinacleScript' ;
+	SET outputRefHdr.MessageKey.ServiceRequestVersion = '10.2';
+	SET outputRefHdr.MessageKey.ChannelId = inRef.JSON.Data.channelId;
+	SET outputRefHdr.MessageKey.LanguageId = '';
+	SET outputRefHdr.RequestMessageInfo.BankId = '' ;
+	SET outputRefHdr.RequestMessageInfo.TimeZone = '';
+	SET outputRefHdr.RequestMessageInfo.EntityId = '';
+	SET outputRefHdr.RequestMessageInfo.EntityType = '';
+	SET outputRefHdr.RequestMessageInfo.ArmCorrelationId ='';
+	SET outputRefHdr.RequestMessageInfo.MessageDateTime = CURRENT_TIMESTAMP ;
+	SET outputRefHdr.Reversal.ParentRequestUUID = '';
+	SET outputRefHdr.Security.Token.PasswordToken.UserId = '';
+	SET outputRefHdr.Security.Token.PasswordToken.Password = '';
+	SET outputRefHdr.Security.FICertToken = '';
+	SET outputRefHdr.Security.RealUserLoginSessionId = '';
+	SET outputRefHdr.Security.RealUser = '';
+	SET outputRefHdr.Security.RealUserPwd = '';
+	SET outputRefHdr.Security.SSOTransferToken = '';
+	SET outputRefHdr.CustomInfo.table.key = '';
+	SET outputRefHdr.CustomInfo.table.value ='';
+	SET outRef.FIXML.Body.executeFinacleScriptRequest.ExecuteFinacleScriptInputVO.requestId = 'IBL0843_TDclose_Repay.scr';
+	SET outRef.FIXML.Body.executeFinacleScript_CustomData.cifId = inRef.JSON.Data.efields.cifId;
+	
+	SET outRef.FIXML.Body.executeFinacleScript_CustomData.amt = inRef.JSON.Data.amt;
+	SET outRef.FIXML.Body.executeFinacleScript_CustomData.clsValDt = inRef.JSON.Data.clsValDt;
+	SET outRef.FIXML.Body.executeFinacleScript_CustomData.repymntAcctId = inRef.JSON.Data.repymntAcctId;
+	SET outRef.FIXML.Body.executeFinacleScript_CustomData.AcctNum = inRef.JSON.Data.AcctNum;
+	
+END;
+
+
+
+CREATE PROCEDURE IBL0843_TDclose_Repay_v1_Response (IN inRef REFERENCE, INOUT outRef REFERENCE, INOUT envRef REFERENCE )
+BEGIN
+
+	CREATE FIELD outRef.HTTPReplyHeader;
+	DECLARE outReplyHdr REFERENCE TO outRef.HTTPReplyHeader;
+	SET outReplyHdr."Content-Type" = 'application/json';
+	SET outReplyHdr."Cache-Control" = 'no-cache';
+	DECLARE inputRefResBody REFERENCE TO inRef.XMLNSC.FIXML.Body;
+ 	IF inRef.XMLNSC.FIXML.Header.ResponseHeader.HostTransaction.Status = 'SUCCESS' THEN
+ 		CREATE LASTCHILD OF outRef AS outRef DOMAIN('JSON');
+ 		CREATE FIELD outRef.Data;
+ 		DECLARE OutRef REFERENCE TO outRef.Data;
+ 		IF inRef.XMLNSC.FIXML.Body.executeFinacleScriptResponse.executeFinacleScript_CustomData.STATUS = 'S'  THEN
+ 			IF EXISTS(inputRefResBody.executeFinacleScriptResponse.executeFinacleScript_CustomData.AccountInquiry.AcctDtls[]) THEN
+	            DECLARE inRefAcctInq REFERENCE TO inputRefResBody.executeFinacleScriptResponse.executeFinacleScript_CustomData;
+	            SET OutRef.object 					= 'close-FD';
+	            SET OutRef.efields.FORACID 			= inRefAcctInq.FORACID;
+	            SET OutRef.efields.PREMATURE_CLS_RATE 			= inRefAcctInq.PREMATURE_CLS_RATE;
+	            SET OutRef.efields.NET_AMT_PAYOUT 		= inRefAcctInq.NET_AMT_PAYOUT;
+	            SET OutRef.efields.NET_INT_AMT	 	= inRefAcctInq.NET_INT_AMT;
+	            SET OutRef.efields.CLS_VAL_DATE 			= inRefAcctInq.CLS_VAL_DATE;
+	            SET OutRef.efields.WITHDRAW_AMT 			= inRefAcctInq.WITHDRAW_AMT;
+	            SET OutRef.efields.originalDepAmt 	= inRefAcctInq.ORIGINAL_DEP_AMT;
+	            SET OutRef.efields.TRAN_DATE 		= inRefAcctInq.TRAN_DATE;
+	            SET OutRef.efields.TRAN_ID 			= inRefAcctInq.TRAN_ID;
+	            SET OutRef.efields.REASON 			= inRefAcctInq.REASON;
+	            
+ 			ELSE
+ 				SET OutRef.object 			= 'close-FD';
+	            SET OutRef.status 			= inputRefResBody.executeFinacleScriptResponse.executeFinacleScript_CustomData.REASON; 
+ 			END IF;         
+ 		END IF;
+ 		IF inRef.XMLNSC.FIXML.Body.executeFinacleScriptResponse.executeFinacleScript_CustomData.STATUS = 'F'  THEN
+ 			SET OutRef.status 	= 'Failure';
+ 			SET OutRef.errorDesc = inRef.XMLNSC.FIXML.Body.executeFinacleScriptResponse.executeFinacleScript_CustomData.REASON;
+ 		END IF;
+ 	ELSE
+ 		SET outReplyHdr."X-Original-HTTP-Status-Code" = '500';
+        IF EXISTS(inRef.XMLNSC.FIXML.Body.Error[]) THEN
+        	CREATE LASTCHILD OF outRef AS outRef DOMAIN('JSON');
+ 			CREATE FIELD outRef.Data;
+ 			DECLARE OutRef REFERENCE TO outRef.Data;
+            SET OutRef.status 	  = inRef.XMLNSC.FIXML.Header.ResponseHeader.HostTransaction.Status;
+         	IF EXISTS (inRef.XMLNSC.FIXML.Body.Error.FIBusinessException[]) THEN
+              	SET OutRef.errorCode = inRef.XMLNSC.FIXML.Body.Error.FIBusinessException.ErrorDetail.ErrorCode;
+              	SET OutRef.errorDesc = inRef.XMLNSC.FIXML.Body.Error.FIBusinessException.ErrorDetail.ErrorDesc;
+           	ELSE
+              	SET OutRef.errorCode = inRef.XMLNSC.FIXML.Body.Error.FISystemException.ErrorDetail.ErrorCode;
+              	SET OutRef.errorDesc = inRef.XMLNSC.FIXML.Body.Error.FISystemException.ErrorDetail.ErrorDesc;
+          	END IF ;
+        ELSE
+            SET inRef.status     = inRef.XMLNSC.FIXML.Header.ResponseHeader.HostTransaction.Status;
+          	SET outRef.efields	 = inputRefResBody.executeFinacleScriptResponse.executeFinacleScript_CustomData;
+           	--SET inRef.errorCode  = 'Not Able to get Success Response from Target System';
+       	END IF ;
+    END IF ;
+                  
+END;

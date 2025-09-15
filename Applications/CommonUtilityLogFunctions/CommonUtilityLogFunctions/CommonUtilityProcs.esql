@@ -1,0 +1,24 @@
+BROKER SCHEMA CommonUtilityLogFunctions
+
+
+CREATE PROCEDURE genEncodedCharData (IN inRef REFERENCE,INOUT envRef REFERENCE)
+	BEGIN
+		DECLARE data CHARACTER;
+		DECLARE options INTEGER BITOR(FolderBitStream, ValidateNone);
+		IF envRef.isChar = 'Y' THEN
+			SET envRef.encodedData = inRef;
+		ELSE	
+			SET envRef.out = ASBITSTREAM(inRef,,1208,,,,options);
+			SET data = CAST(envRef.out AS CHARACTER CCSID 1208);
+			SET envRef.encodedData = data;
+			DELETE FIELD envRef.out;
+		END IF;	
+	END;
+	
+CREATE PROCEDURE genCharData (IN inRef REFERENCE,INOUT envRef REFERENCE)
+	BEGIN
+		DECLARE options INTEGER BITOR(FolderBitStream, ValidateNone);
+		SET envRef.out = ASBITSTREAM(inRef,,1208,,,,options);
+		SET envRef.data = CAST(envRef.out AS CHARACTER CCSID 1208);
+		--DELETE FIELD envRef.out;
+	END;	
