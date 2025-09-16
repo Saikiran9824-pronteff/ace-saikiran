@@ -135,7 +135,7 @@
       </exec>
       <exec executable="bash" failonerror="true">
          <arg value="-c"/>
-         <arg value="cd repo && git add ${GITHUB_PATH} && git commit -m 'CI: Update BAR' && git push origin ${GITHUB_BRANCH}"/>
+         <arg value="cd repo &amp;&amp; git add ${GITHUB_PATH} &amp;&amp; git commit -m 'CI: Update BAR' &amp;&amp; git push origin ${GITHUB_BRANCH}"/>
       </exec>
    </target>
 
@@ -146,7 +146,7 @@
       <echo message="🚀 Patching IntegrationRuntime ${IR_NAME} with BAR from GitHub..." />
       <exec executable="bash" failonerror="true">
          <arg value="-c"/>
-         <arg value="oc get integrationruntime ${IR_NAME} -n ${NAMESPACE} -o json | jq --arg newbar \"${BAR_URL}\" '.spec.barURL |= ( map(if (. | endswith(\"/\" + ($newbar | split(\"/\")[-1]))) then $newbar else . end) + if any(.[]; . == $newbar) then [] else [$newbar] end )' | oc apply -f -"/>
+         <arg value="oc get integrationruntime ${IR_NAME} -n ${NAMESPACE} -o json | jq --arg newbar &quot;${BAR_URL}&quot; '.spec.barURL |= ( map(if (. | endswith(&quot;/&quot; + ($newbar | split(&quot;/&quot;)[-1]))) then $newbar else . end) + if any(.[]; . == $newbar) then [] else [$newbar] end )' | oc apply -f -"/>
       </exec>
    </target>
 
